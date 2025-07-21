@@ -1,0 +1,38 @@
+@extends('layouts.app')
+
+@section('title', '| Tentang Kami')
+
+@section('content')
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-10">Tentang Gereja Kristen Sumba Jemaat Reda Pada</h1>
+        <div class="bg-white rounded-lg shadow-lg p-6 lg:p-8">
+            <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                Selamat datang di Gereja Kristen Sumba Jemaat Reda Pada. Kami adalah komunitas iman yang berakar kuat pada
+                nilai-nilai kasih, pelayanan, dan kebersamaan, yang melayani Tuhan dan sesama di tanah Sumba.
+            </p>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-3">Visi Kami</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Menjadi gereja yang bertumbuh dalam iman, menjadi berkat bagi sesama, dan memuliakan nama Tuhan di Sumba dan
+                seluruh dunia.
+            </p>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-3">Misi Kami</h2>
+            <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4">
+                <li>Menyelenggarakan ibadah yang hidup dan bermakna.</li>
+                <li>Membina jemaat untuk bertumbuh dalam pengenalan akan Kristus.</li>
+                <li>Melaksanakan pelayanan diakonia untuk kesejahteraan masyarakat.</li>
+                <li>Mewartakan Injil Kristus melalui kesaksian hidup dan perkataan.</li>
+            </ul>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-3">Sejarah Singkat</h2>
+            <p class="text-gray-700 leading-relaxed">
+                Didirikan pada tahun [Tahun Pendirian], Gereja Kristen Sumba Jemaat Reda Pada telah menjadi pilar spiritual
+                bagi banyak keluarga di wilayah ini. Kami terus berkomitmen untuk menjadi terang dan garam di tengah-tengah
+                komunitas kami.
+            </p>
+            <div class="mt-8 text-center">
+                <p class="text-xl font-semibold text-blue-700">"Sebab di mana dua atau tiga orang berkumpul dalam Nama-Ku,
+                    di situ Aku ada di tengah-tengah mereka."</p>
+                <p class="text-lg text-gray-600">- Matius 18:20</p>
+            </div>
+        </div>
+    </div>
+@endsection
