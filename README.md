@@ -202,8 +202,8 @@ Kontribusi dalam bentuk *bug reports*, *feature requests*, atau *pull requests* 
 Proyek ini dilisensikan di bawah [Lisensi MIT](https://opensource.org/licenses/MIT).
 
 ## 📧 Kontak
+Jika Anda memiliki pertanyaan atau ingin menghubungi, silakan kirim pesan langsung ke inbox Facebook.
+**Facebook:** [Ranus Ate](https://web.facebook.com/nanu.ranusate) (inbox langsung)
 
-Jika Anda memiliki pertanyaan atau ingin menghubungi, silakan kirim email ke:
-[your-email@example.com](mailto:your-email@example.com)
 
 ---
