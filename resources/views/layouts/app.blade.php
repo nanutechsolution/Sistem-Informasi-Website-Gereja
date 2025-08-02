@@ -14,6 +14,9 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
 </head>
 
 <body class="font-sans antialiased bg-gray-50 text-gray-800">
@@ -47,6 +50,31 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @stack('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('main-navbar');
+            console.log(navbar);
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.remove('hidden');
+                    navbar.classList.add('opacity-100');
+                } else {
+                    navbar.classList.add('hidden');
+                    navbar.classList.remove('opacity-100');
+                }
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+    </script>
+
 </body>
 
 </html>

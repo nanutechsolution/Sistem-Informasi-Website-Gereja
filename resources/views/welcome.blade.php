@@ -2,52 +2,59 @@
 
 @section('title', '| Beranda')
 @section('content')
-    <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20 overflow-hidden">
+    <section class="relative h-screen  bg-gradient-to-r from-blue-700 to-blue-900 text-white overflow-hidden"
+        data-aos-offset="0">
         <div class="absolute inset-0 z-0">
             <img src="https://www.emporioarchitect.com/upload/portofolio/jasa-arsitek-tapanuli-sumatera-utara-desain-gereja-naipospos-tonga-22324815151020024717-0.jpg"
                 alt="Gereja Kristen Sumba" class="w-full h-full object-cover opacity-50">
         </div>
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">
-                Selamat Datang di <br><span class="text-yellow-300">Gereja Kristen Sumba Jemaat Reda Pada</span>
-            </h1>
-            <p class="text-lg sm:text-xl mb-8 opacity-90 animate-fade-in-up">
-                Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan.
-            </p>
-            <div class="space-x-4">
-                <a href="{{ route('public.about') }}"
-                    class="inline-block bg-yellow-400 text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
-                    Tentang Kami
-                </a>
-                <a href="{{ route('public.contact') }}"
-                    class="inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-white hover:text-blue-900 transition duration-300 ease-in-out transform hover:scale-105">
-                    Kontak Kami
-                </a>
+
+        <div
+            class="relative z-10 flex items-center justify-center h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4" data-aos="fade-up">
+                    Selamat Datang di <br>
+                    <span class="text-yellow-300">Gereja Kristen Sumba Jemaat Reda Pada</span>
+                </h1>
+
+                <p class="text-lg sm:text-xl mb-8 opacity-90" data-aos="fade-up" data-aos-delay="200">
+                    Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan.
+                </p>
+                <div class="space-x-4" data-aos="fade-up" data-aos-delay="400">
+                    <a href="{{ route('public.about') }}"
+                        class="inline-block bg-yellow-400 text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
+                        Tentang Kami
+                    </a>
+                    <a href="{{ route('public.contact') }}"
+                        class="inline-block bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-white hover:text-blue-900 transition duration-300 ease-in-out transform hover:scale-105">
+                        Kontak Kami
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50">
+    {{-- Berita & Pengumuman --}}
+    <section class="py-16 bg-gray-50" data-aos="fade-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10">Berita & Pengumuman Terbaru</h2>
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10" data-aos="fade-up">Berita & Pengumuman
+                Terbaru</h2>
             @if ($latestPosts->isEmpty())
-                <p class="text-center text-gray-600">Belum ada berita atau pengumuman terbaru.</p>
+                <p class="text-center text-gray-600" data-aos="fade-up" data-aos-delay="100">Belum ada berita atau
+                    pengumuman terbaru.</p>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    @foreach ($latestPosts as $post)
-                        <div
-                            class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl">
-                            {{-- Tambah kelas hover --}}
+                    @foreach ($latestPosts as $index => $post)
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+                            data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                             @if ($post->image)
                                 <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $post->image) }}"
                                     alt="{{ $post->title }}">
                             @else
                                 <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                             @endif
@@ -63,7 +70,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="text-center mt-10">
+                <div class="text-center mt-10" data-aos="zoom-in">
                     <a href="{{ route('public.posts.index') }}"
                         class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Lihat
                         Semua Berita</a>
@@ -72,22 +79,25 @@
         </div>
     </section>
 
-    <section class="py-16 bg-white">
+    {{-- Acara Mendatang --}}
+    <section class="py-16 bg-white" data-aos="fade-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10">Acara Mendatang</h2>
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10" data-aos="fade-up">Acara Mendatang</h2>
             @if ($upcomingEvents->isEmpty())
-                <p class="text-center text-gray-600">Tidak ada acara mendatang yang terdaftar.</p>
+                <p class="text-center text-gray-600" data-aos="fade-up" data-aos-delay="100">Tidak ada acara mendatang yang
+                    terdaftar.</p>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach ($upcomingEvents as $event)
-                        <div
-                            class="bg-gray-50 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-lg">
+                    @foreach ($upcomingEvents as $index => $event)
+                        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-lg"
+                            data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                             <div class="p-6">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2 truncate">{{ $event->title }}</h3>
                                 <p class="text-gray-600 text-sm mb-3"><strong class="font-medium">Lokasi:</strong>
                                     {{ $event->location ?? 'Online' }}</p>
                                 <p class="text-gray-600 text-sm mb-4"><strong class="font-medium">Waktu:</strong>
-                                    {{ $event->start_time->format('d M Y, H:i') }} @if ($event->end_time)
+                                    {{ $event->start_time->format('d M Y, H:i') }}
+                                    @if ($event->end_time)
                                         - {{ $event->end_time->format('H:i') }}
                                     @endif
                                 </p>
@@ -100,7 +110,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="text-center mt-10">
+                <div class="text-center mt-10" data-aos="zoom-in">
                     <a href="{{ route('public.events.index') }}"
                         class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Lihat
                         Semua Acara</a>
@@ -109,15 +119,18 @@
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50">
+    {{-- Jadwal Ibadah --}}
+    <section class="py-16 bg-gray-50" data-aos="fade-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10">Jadwal Ibadah Rutin</h2>
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10" data-aos="fade-up">Jadwal Ibadah Rutin</h2>
             @if ($upcomingSchedules->isEmpty())
-                <p class="text-center text-gray-600">Tidak ada jadwal ibadah mendatang yang terdaftar.</p>
+                <p class="text-center text-gray-600" data-aos="fade-up" data-aos-delay="100">Tidak ada jadwal ibadah
+                    mendatang yang terdaftar.</p>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach ($upcomingSchedules as $schedule)
-                        <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:shadow-lg">
+                    @foreach ($upcomingSchedules as $index => $schedule)
+                        <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:shadow-lg"
+                            data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                             <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ $schedule->title }}</h3>
                             <p class="text-gray-600 text-sm mb-1"><strong class="font-medium">Tanggal:</strong>
                                 {{ $schedule->date->format('d M Y') }}</p>
@@ -131,7 +144,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="text-center mt-10">
+                <div class="text-center mt-10" data-aos="zoom-in">
                     <a href="{{ route('public.schedules.index') }}"
                         class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Lihat
                         Semua Jadwal</a>
@@ -140,26 +153,26 @@
         </div>
     </section>
 
-    <section class="py-16 bg-white">
+    {{-- Galeri Terbaru --}}
+    <section class="py-16 bg-white" data-aos="fade-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10">Galeri Terbaru</h2>
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10" data-aos="fade-up">Galeri Terbaru</h2>
             @if ($latestAlbums->isEmpty())
-                <p class="text-center text-gray-600">Belum ada album galeri terbaru.</p>
+                <p class="text-center text-gray-600" data-aos="fade-up" data-aos-delay="100">Belum ada album galeri
+                    terbaru.</p>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    @foreach ($latestAlbums as $album)
-                        <div
-                            class="bg-gray-50 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-lg">
+                    @foreach ($latestAlbums as $index => $album)
+                        <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-lg"
+                            data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                             @if ($album->cover_image)
                                 <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $album->cover_image) }}"
                                     alt="{{ $album->name }}">
                             @else
                                 <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
                             @endif
@@ -175,7 +188,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="text-center mt-10">
+                <div class="text-center mt-10" data-aos="zoom-in">
                     <a href="{{ route('public.gallery.index') }}"
                         class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Lihat
                         Semua Galeri</a>
@@ -183,4 +196,5 @@
             @endif
         </div>
     </section>
+
 @endsection

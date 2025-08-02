@@ -1,11 +1,11 @@
-<nav class="bg-white shadow-md sticky top-0 z-50" x-data="{ open: false }"> {{-- Tambah x-data disini --}}
+<nav id="main-navbar"
+    class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm shadow-md hidden transition-opacity duration-500 opacity-0"
+    x-data="{ open: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div class="flex justify-between h-16 items-center">
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
-                    {{-- <img src="https://via.placeholder.com/40" alt="Logo Gereja" class="h-10 w-10 rounded-full"> --}}
                     <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="Flowbite Logo" />
-                    {{-- Ganti dengan logo gereja Anda --}}
                     <span class="text-xl font-bold text-gray-800 hover:text-blue-700 transition duration-300">GKS Jemaat
                         Reda Pada</span>
                 </a>
@@ -83,15 +83,24 @@
                 class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Galeri</a>
             <a href="{{ route('public.contact') }}"
                 class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
-            {{-- Tombol Login untuk Mobile --}}
-            {{-- @auth
-                <a href="{{ route('dashboard') }}"
-                    class="text-blue-700 bg-blue-50 block px-3 py-2 rounded-md text-base font-medium mt-2">Dashboard
-                    Admin</a>
-            @else
-                <a href="{{ route('login') }}"
-                    class="text-blue-700 bg-blue-50 block px-3 py-2 rounded-md text-base font-medium mt-2">Login</a>
-            @endauth --}}
         </div>
     </div>
 </nav>
+@push('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('main-navbar');
+            console.log(navbar);
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    navbar.classList.remove('hidden');
+                    navbar.classList.add('opacity-100');
+                } else {
+                    navbar.classList.add('hidden');
+                    navbar.classList.remove('opacity-100');
+                }
+            });
+        });
+    </script>
+@endpush
