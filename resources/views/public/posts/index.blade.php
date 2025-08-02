@@ -3,15 +3,17 @@
 @section('title', '| Berita & Artikel')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-10">Berita & Artikel Gereja</h1>
+    <div class="container mx-auto px-4 py-8" data-aos="fade-up" data-aos-duration="800">
+        <h1 class="text-4xl font-bold text-center mb-10" data-aos="fade-down" data-aos-delay="100">Berita & Artikel Gereja</h1>
+
         @if ($posts->isEmpty())
-            <p class="text-center text-gray-600">Belum ada berita atau artikel yang dipublikasikan.</p>
+            <p class="text-center text-gray-600" data-aos="fade-in" data-aos-delay="200">Belum ada berita atau artikel yang
+                dipublikasikan.</p>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach ($posts as $post)
-                    <div
-                        class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105">
+                @foreach ($posts as $index => $post)
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105"
+                        data-aos="zoom-in-up" data-aos-delay="{{ 100 * $index }}" data-aos-duration="600">
                         @if ($post->image)
                             <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $post->image) }}"
                                 alt="{{ $post->title }}">
@@ -37,7 +39,8 @@
                     </div>
                 @endforeach
             </div>
-            <div class="mt-8">
+
+            <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="200">
                 {{ $posts->links() }}
             </div>
         @endif

@@ -7,7 +7,9 @@ use App\Models\Post;    // Untuk berita/pengumuman
 use App\Models\Event;   // Untuk acara
 use App\Models\Schedule; // Untuk jadwal ibadah rutin (jika ada data yang berbeda dari Event)
 use App\Models\GalleryAlbum; // Untuk galeri
+use App\Services\UnsplashService;
 use Carbon\Carbon; // Untuk filter tanggal
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -44,10 +46,33 @@ class HomeController extends Controller
         // Ambil 3 album galeri terbaru
         $latestAlbums = GalleryAlbum::latest('event_date')->take(3)->get();
 
+        $churchImage = $this->getUnsplashChurchImage();
+        $unsplashImage = UnsplashService::getChurchImage();
 
-        return view('welcome', compact('latestPosts', 'upcomingEvents', 'upcomingSchedules', 'latestAlbums'));
+        return view('welcome', compact(
+            'latestPosts',
+            'upcomingEvents',
+            'upcomingSchedules',
+            'latestAlbums',
+            'churchImage',
+            'unsplashImage'
+        ));
     }
+    public function getUnsplashChurchImage()
+    {
+        $response = Http::get('https://api.unsplash.com/photos/random', [
+            'query' => 'church',
+            'client_id' => env('UNSPLASH_ACCESS_KEY'),
+            'orientation' => 'landscape',
+        ]);
 
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['urls']['regular'] ?? null;
+        }
+
+        return null;
+    }
     /**
      * Tampilkan halaman Berita/Artikel (Public Posts Index).
      */

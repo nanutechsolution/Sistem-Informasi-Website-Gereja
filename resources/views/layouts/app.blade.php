@@ -53,20 +53,32 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('main-navbar');
-            console.log(navbar);
+            document.getElementById('content-wrapper')?.classList.add('opacity-100');
 
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.remove('hidden');
-                    navbar.classList.add('opacity-100');
-                } else {
-                    navbar.classList.add('hidden');
-                    navbar.classList.remove('opacity-100');
-                }
-            });
+            const navbar = document.getElementById('main-navbar');
+            const isHome = window.location.pathname === '/' || window.location.pathname === '/index';
+            if (isHome) {
+                // Di halaman home, header disembunyikan sampai scroll
+                navbar.classList.add('hidden');
+                navbar.classList.remove('opacity-100');
+
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        navbar.classList.remove('hidden');
+                        navbar.classList.add('opacity-100');
+                    } else {
+                        navbar.classList.add('hidden');
+                        navbar.classList.remove('opacity-100');
+                    }
+                });
+            } else {
+                // Di halaman lain, header langsung muncul
+                navbar.classList.remove('hidden');
+                navbar.classList.add('opacity-100');
+            }
         });
     </script>
+
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
         AOS.init({

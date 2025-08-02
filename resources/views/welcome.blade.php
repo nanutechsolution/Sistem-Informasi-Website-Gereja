@@ -5,8 +5,7 @@
     <section class="relative h-screen  bg-gradient-to-r from-blue-700 to-blue-900 text-white overflow-hidden"
         data-aos-offset="0">
         <div class="absolute inset-0 z-0">
-            <img src="https://www.emporioarchitect.com/upload/portofolio/jasa-arsitek-tapanuli-sumatera-utara-desain-gereja-naipospos-tonga-22324815151020024717-0.jpg"
-                alt="Gereja Kristen Sumba" class="w-full h-full object-cover opacity-50">
+            <img src="{{ $churchImage }}" alt="Gereja" class="w-full h-full object-cover opacity-50">
         </div>
 
         <div
@@ -44,20 +43,16 @@
                     pengumuman terbaru.</p>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    @foreach ($latestPosts as $index => $post)
-                        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
-                            data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                    @foreach ($latestPosts as $post)
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
                             @if ($post->image)
                                 <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $post->image) }}"
                                     alt="{{ $post->title }}">
                             @else
-                                <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
+                                <img class="h-48 w-full object-cover" src="{{ $post->getImageUrl() }}"
+                                    alt="{{ $post->title }}">
                             @endif
+
                             <div class="p-6">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2 truncate">{{ $post->title }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{{ Str::limit(strip_tags($post->content), 100) }}</p>
@@ -70,6 +65,7 @@
                         </div>
                     @endforeach
                 </div>
+
                 <div class="text-center mt-10" data-aos="zoom-in">
                     <a href="{{ route('public.posts.index') }}"
                         class="bg-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Lihat
@@ -165,17 +161,9 @@
                     @foreach ($latestAlbums as $index => $album)
                         <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:shadow-lg"
                             data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-                            @if ($album->cover_image)
-                                <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $album->cover_image) }}"
-                                    alt="{{ $album->name }}">
-                            @else
-                                <div class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                            @endif
+                            <img class="h-48 w-full object-cover" src="{{ $album->getImageUrl() }}"
+                                alt="{{ $album->name }}">
+
                             <div class="p-4">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate">{{ $album->name }}</h3>
                                 <p class="text-gray-600 text-sm">

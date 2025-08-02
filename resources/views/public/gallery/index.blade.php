@@ -3,7 +3,7 @@
 @section('title', '| Galeri Foto & Video')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8" data-aos="fade-up" data-aos-duration="1000">
         <h1 class="text-4xl font-bold text-center mb-10">Galeri Foto & Video Gereja</h1>
         @if ($albums->isEmpty())
             <p class="text-center text-gray-600">Belum ada album galeri yang dipublikasikan.</p>

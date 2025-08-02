@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str; // Untuk slug
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class Post extends Model
 {
@@ -54,5 +55,28 @@ class Post extends Model
                 $post->published_at = null; // Set null jika tidak dipublikasikan
             }
         });
+    }
+
+
+    public function getImageUrl()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+
+        // Generate image based on title keyword
+        $response = Http::get('https://api.unsplash.com/photos/random', [
+            'query' => $this->title ?? 'church',
+            'orientation' => 'landscape',
+            'client_id' => config('services.unsplash.access_key'),
+            'unique' => Str::uuid(), // cache buster
+        ]);
+
+        if ($response->successful()) {
+            return $response->json()['urls']['regular'] ?? null;
+        }
+
+        // fallback
+        return 'https://source.unsplash.com/featured/?church';
     }
 }

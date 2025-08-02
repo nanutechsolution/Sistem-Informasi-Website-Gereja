@@ -86,21 +86,3 @@
         </div>
     </div>
 </nav>
-@push('script')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.getElementById('main-navbar');
-            console.log(navbar);
-
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    navbar.classList.remove('hidden');
-                    navbar.classList.add('opacity-100');
-                } else {
-                    navbar.classList.add('hidden');
-                    navbar.classList.remove('opacity-100');
-                }
-            });
-        });
-    </script>
-@endpush

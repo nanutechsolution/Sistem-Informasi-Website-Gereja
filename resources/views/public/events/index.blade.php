@@ -3,7 +3,7 @@
 @section('title', '| Acara Gereja')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8" data-aos="fade-up" data-aos-duration="1000">
         <h1 class="text-4xl font-bold text-center mb-10">Acara Gereja Mendatang & Terkini</h1>
         @if ($events->isEmpty())
             <p class="text-center text-gray-600">Belum ada acara gereja yang dipublikasikan.</p>
