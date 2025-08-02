@@ -39,7 +39,6 @@
             @yield('content')
         </main>
     </div>
-    @livewireScripts
     @stack('scripts')
 </body>
 
