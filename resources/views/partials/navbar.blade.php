@@ -83,6 +83,9 @@
                 class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Galeri</a>
             <a href="{{ route('public.contact') }}"
                 class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
+            <a href="{{ route('login') }}"
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Login
+                Admin</a>
         </div>
     </div>
 </nav>
