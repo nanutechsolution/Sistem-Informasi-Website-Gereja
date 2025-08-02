@@ -196,15 +196,24 @@ Setelah konfigurasi awal, Anda dapat mulai menggunakan sistem:
 ## 🤝 Kontribusi
 
 Kontribusi dalam bentuk *bug reports*, *feature requests*, atau *pull requests* sangat kami hargai. Silakan buka *issue* di repository ini atau kirim *pull request*.
-
 ## 📄 Lisensi
 
-Proyek ini dilisensikan di bawah [Lisensi MIT](https://opensource.org/licenses/MIT).
+Proyek ini **tidak open-source secara bebas** dan **tidak boleh digunakan untuk tujuan komersial tanpa izin tertulis**.
 
-Jika Anda memiliki pertanyaan atau ingin menghubungi kami, silakan kirim pesan langsung melalui Facebook.
+📌 Anda diperbolehkan:
+- Meng-clone atau fork repository ini untuk keperluan pembelajaran/pribadi saja.
 
-[![Facebook](https://img.shields.io/badge/Facebook-Contact-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://web.facebook.com/nanu.ranusate)  
-**Facebook:** [Ranus Ate](https://web.facebook.com/nanu.ranusate) (inbox langsung)
+🚫 Anda **tidak diperbolehkan**:
+- Mengubah dan menjual ulang source code ini.
+- Menggunakan sebagian/keseluruhan kode untuk proyek komersial.
+- Menghapus identitas pembuat atau menyamar sebagai pemilik asli.
+- Menyebarluaskan ulang secara publik dalam bentuk apapun tanpa izin.
 
+> Untuk lisensi komersial, silakan hubungi saya melalui:
+> 📧 ranus@example.com atau [Facebook Ranus Ate](https://web.facebook.com/nanu.ranusate)
+
+---
+
+© 2025 Nanu (Ranus). All rights reserved.
 
 ---
