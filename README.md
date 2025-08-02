@@ -210,7 +210,7 @@ Proyek ini **tidak open-source secara bebas** dan **tidak boleh digunakan untuk 
 - Menyebarluaskan ulang secara publik dalam bentuk apapun tanpa izin.
 
 > Untuk lisensi komersial, silakan hubungi saya melalui:
-> 📧 ranus@example.com atau [Facebook Ranus Ate](https://web.facebook.com/nanu.ranusate)
+> 📧 ranusate19@gmail.com atau [Facebook Ranus Ate](https://web.facebook.com/nanu.ranusate)
 
 ---
 
