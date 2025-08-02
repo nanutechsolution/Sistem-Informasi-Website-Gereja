@@ -19,7 +19,9 @@ use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\Admin\PksScheduleController;
+use App\Livewire\Admin\PksSchedules\PksScheduleList;
+use App\Livewire\Admin\PksSchedules\PksScheduleForm;
 // Rute Publik Website Gereja
 Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- PERBARUI INI
 
@@ -117,6 +119,11 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->pr
     // Modul Notifikasi <-- TAMBAHKAN INI
     Route::get('notifications', [DashboardController::class, 'allNotifications'])->name('notifications.index');
     Route::post('notifications/{notification}/mark-as-read', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
+
+
+    Route::get('pks-schedules', PksScheduleList::class)->name('pks-schedules.index');
+    Route::get('pks-schedules/create', PksScheduleForm::class)->name('pks-schedules.create');
+    Route::get('pks-schedules/{pksSchedule}/edit', PksScheduleForm::class)->name('pks-schedules.edit');
 });
 
 // Rute halaman publik lainnya (akan kita tambahkan nanti)

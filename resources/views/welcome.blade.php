@@ -4,7 +4,7 @@
 @section('content')
     <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20 overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="https://source.unsplash.com/1600x900/?church,sumba,community" alt="Gereja Kristen Sumba"
+            <img src="https://images.unsplash.com/photo-1417325384643-aac51acc9e5d" alt="Gereja Kristen Sumba"
                 class="w-full h-full object-cover opacity-50">
         </div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
