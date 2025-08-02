@@ -18,12 +18,12 @@ class PksScheduleList extends Component
     protected $queryString = ['search', 'perPage', 'sortField', 'sortDirection'];
     protected $listeners = ['pksScheduleAdded' => '$refresh', 'pksScheduleUpdated' => '$refresh'];
 
-    public function updatedSearch() // <-- PASTIKAN INI ADA
+    public function updatedSearch()
     {
         $this->resetPage();
     }
 
-    public function updatedPerPage() // <-- PASTIKAN INI ADA
+    public function updatedPerPage()
     {
         $this->resetPage();
     }

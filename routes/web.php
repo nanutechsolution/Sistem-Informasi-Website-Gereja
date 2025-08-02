@@ -38,7 +38,7 @@ Route::get('/galeri/{album}', [HomeController::class, 'galleryShow'])->name('pub
 
 Route::get('/tentang-kami', [HomeController::class, 'about'])->name('public.about');
 Route::get('/kontak', [HomeController::class, 'contact'])->name('public.contact');
-Route::post('/kontak', [ContactController::class, 'submit'])->name('public.contact.submit'); // <-- TAMBAHKAN INI UNTUK SUBMIT FORM
+Route::post('/kontak', [ContactController::class, 'submit'])->name('public.contact.submit'); //  UNTUK SUBMIT FORM
 
 
 // Rute Otentikasi Laravel Breeze
@@ -102,12 +102,12 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->pr
     Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
 
 
-    // Modul Manajemen Berita/Pengumuman <-- TAMBAHKAN INI
+    // Modul Manajemen Berita/Pengumuman 
     // Asumsikan admin dan sekretaris bisa mengelola berita/pengumuman
     Route::resource('posts', PostController::class);
 
 
-    // Modul Manajemen Keluarga Jemaat <-- TAMBAHKAN INI
+    // Modul Manajemen Keluarga Jemaat 
     Route::resource('families', FamilyController::class)->parameters([
         'families' => 'family' // Pastikan parameter wildcard-nya {family}
     ]);
@@ -116,14 +116,14 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->pr
     Route::get('families/{family}/members/{member}/edit-relationship', [FamilyController::class, 'editMemberRelationship'])->name('families.editMemberRelationship');
     Route::put('families/{family}/members/{member}/update-relationship', [FamilyController::class, 'updateMemberRelationship'])->name('families.updateMemberRelationship');
 
-    // Modul Notifikasi <-- TAMBAHKAN INI
+    // Modul Notifikasi 
     Route::get('notifications', [DashboardController::class, 'allNotifications'])->name('notifications.index');
     Route::post('notifications/{notification}/mark-as-read', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
 
 
-    Route::get('pks-schedules', PksScheduleList::class)->name('pks-schedules.index');
-    Route::get('pks-schedules/create', PksScheduleForm::class)->name('pks-schedules.create');
-    Route::get('pks-schedules/{pksSchedule}/edit', PksScheduleForm::class)->name('pks-schedules.edit');
+    // Route::get('pks-schedules', PksScheduleList::class)->name('pks-schedules.index');
+    // Route::get('pks-schedules/create', PksScheduleForm::class)->name('pks-schedules.create');
+    // Route::get('pks-schedules/{pksSchedule}/edit', PksScheduleForm::class)->name('pks-schedules.edit');
 });
 
 // Rute halaman publik lainnya (akan kita tambahkan nanti)

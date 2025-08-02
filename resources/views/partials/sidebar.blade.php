@@ -31,10 +31,8 @@
                     </svg>
                     Notifikasi
                     @if (auth()->check() && auth()->user()->unreadNotificationsCustom->count() > 0)
-                        {{-- PERBAIKI DI SINI --}}
                         <span
                             class="ml-auto px-2 py-0.5 text-xs font-bold bg-red-500 text-white rounded-full">{{ auth()->user()->unreadNotificationsCustom->count() }}</span>
-                        {{-- PERBAIKI DI SINI --}}
                     @endif
                 </a>
             </li>
