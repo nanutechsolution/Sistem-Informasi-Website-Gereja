@@ -65,13 +65,11 @@ class HomeController extends Controller
             'client_id' => env('UNSPLASH_ACCESS_KEY'),
             'orientation' => 'landscape',
         ]);
-
         if ($response->successful()) {
             $data = $response->json();
             return $data['urls']['regular'] ?? null;
         }
-
-        return null;
+        return "https://images.unsplash.com/photo-1491396023581-4344e51fec5c?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
     }
     /**
      * Tampilkan halaman Berita/Artikel (Public Posts Index).

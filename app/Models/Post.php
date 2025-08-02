@@ -63,20 +63,18 @@ class Post extends Model
         if ($this->image) {
             return asset('storage/' . $this->image);
         }
-
         // Generate image based on title keyword
         $response = Http::get('https://api.unsplash.com/photos/random', [
             'query' => $this->title ?? 'church',
             'orientation' => 'landscape',
             'client_id' => config('services.unsplash.access_key'),
-            'unique' => Str::uuid(), // cache buster
+            'unique' => Str::uuid(),
         ]);
 
         if ($response->successful()) {
             return $response->json()['urls']['regular'] ?? null;
         }
 
-        // fallback
-        return 'https://source.unsplash.com/featured/?church';
+        return 'https://plus.unsplash.com/premium_photo-1668198395291-d87bba7d5b16?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fGNodXJjaHxlbnwwfHwwfHx8MA%3D%3D';
     }
 }
