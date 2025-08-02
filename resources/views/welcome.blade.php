@@ -4,8 +4,8 @@
 @section('content')
     <section class="relative bg-gradient-to-r from-blue-700 to-blue-900 text-white py-20 overflow-hidden">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash..unsplash.com/1600x900/?church,sumba,community" alt="Gereja Kristen Sumba"
-                class="w-full h-full object-cover opacity-50">
+            <img src="https://www.emporioarchitect.com/upload/portofolio/jasa-arsitek-tapanuli-sumatera-utara-desain-gereja-naipospos-tonga-22324815151020024717-0.jpg"
+                alt="Gereja Kristen Sumba" class="w-full h-full object-cover opacity-50">
         </div>
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 animate-fade-in-down">

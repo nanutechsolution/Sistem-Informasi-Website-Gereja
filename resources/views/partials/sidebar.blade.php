@@ -1,6 +1,5 @@
 <aside id="sidebar"
     class="fixed z-40 top-0 left-0 w-64 bg-blue-800 dark:bg-gray-800 text-white h-full p-4 transform transition-transform duration-300 -translate-x-full md:relative md:translate-x-0">
-
     <div class="flex items-center justify-center h-20 border-b border-blue-700 mb-6">
         <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold text-white tracking-wide">
             GKS REDA ADMIN
@@ -37,7 +36,6 @@
                 </a>
             </li>
 
-            {{-- Modul Konten Website --}}
             <li class="mb-2">
                 <div class="p-3 text-sm font-semibold text-blue-300">Konten Website</div>
                 <ul>

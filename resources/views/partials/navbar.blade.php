@@ -4,11 +4,7 @@
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
                     {{-- <img src="https://via.placeholder.com/40" alt="Logo Gereja" class="h-10 w-10 rounded-full"> --}}
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
+                    <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="Flowbite Logo" />
                     {{-- Ganti dengan logo gereja Anda --}}
                     <span class="text-xl font-bold text-gray-800 hover:text-blue-700 transition duration-300">GKS Jemaat
                         Reda Pada</span>
