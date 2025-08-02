@@ -1,5 +1,3 @@
-{{-- resources/views/layouts/admin/navigation.blade.php --}}
-
 <nav class="bg-white dark:bg-gray-800 shadow-sm p-4 flex justify-between items-center z-40">
     <div class="flex items-center">
         <button @click="$store.sidebar.isOpen = true"
