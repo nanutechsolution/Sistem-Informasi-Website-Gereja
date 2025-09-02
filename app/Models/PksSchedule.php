@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,8 +23,18 @@ class PksSchedule extends Model
 
     protected $casts = [
         'date' => 'date',
-        'time' => 'datetime', // Cast sebagai datetime agar bisa diformat Carbon
+        'time' => 'string',
         'is_active' => 'boolean',
-        // 'involved_members' => 'array', // Jika Anda ingin menyimpan sebagai JSON
     ];
+
+
+    public function getStartDateTimeAttribute()
+    {
+        return Carbon::parse($this->date->format('Y-m-d') . ' ' . $this->time);
+    }
+
+    public function getEndDateTimeAttribute()
+    {
+        return $this->start_date_time->copy()->addHours(2);
+    }
 }

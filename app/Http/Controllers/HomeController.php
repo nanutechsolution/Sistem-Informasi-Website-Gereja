@@ -7,6 +7,7 @@ use App\Models\Post;    // Untuk berita/pengumuman
 use App\Models\Event;   // Untuk acara
 use App\Models\Schedule; // Untuk jadwal ibadah rutin (jika ada data yang berbeda dari Event)
 use App\Models\GalleryAlbum; // Untuk galeri
+use App\Models\PksSchedule;
 use App\Services\UnsplashService;
 use Carbon\Carbon; // Untuk filter tanggal
 use Illuminate\Support\Facades\Http;
@@ -31,12 +32,6 @@ class HomeController extends Controller
             ->orderBy('start_time')
             ->take(3)
             ->get();
-
-        // Ambil jadwal ibadah rutin (misal, yang berulang mingguan)
-        // Untuk jadwal mingguan, biasanya kita tidak simpan di tabel schedules per tanggal,
-        // melainkan jadwal berulang. Namun, jika Anda mencatat schedules seperti "ibadah minggu",
-        // kita bisa tampilkan yang terdekat.
-        // Untuk demo, kita ambil 3 schedules yang tanggalnya belum lewat
         $upcomingSchedules = Schedule::where('date', '>=', Carbon::now()->toDateString())
             ->orderBy('date')
             ->orderBy('time')
@@ -161,5 +156,40 @@ class HomeController extends Controller
     public function contact()
     {
         return view('public.contact');
+    }
+
+
+    public function calendar()
+    {
+        return view('public.pks_calendar');
+    }
+
+    public function calendarData(Request $request)
+    {
+        $query = PksSchedule::where('is_active', 1);
+
+        // Filter optional
+        if ($request->leader) {
+            $query->where('leader_name', $request->leader);
+        }
+        if ($request->location) {
+            $query->where('location', $request->location);
+        }
+
+        $events = $query->get()->map(fn($s) => [
+            'id'    => $s->id,
+            'title' => $s->activity_name,
+            'start' => $s->start_date_time->toDateTimeString(),
+            'end'   => $s->end_date_time->toDateTimeString(),
+            'url'   => null, // optional, publik biasanya nggak link ke admin
+            'extendedProps' => [
+                'location' => $s->location,
+                'leader'   => $s->leader_name,
+                'desc'     => $s->description,
+            ],
+            'color' => '#3788d8',
+        ]);
+
+        return response()->json($events);
     }
 }

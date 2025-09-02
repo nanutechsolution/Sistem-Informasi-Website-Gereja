@@ -16,6 +16,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@7.3.0/dist/turbo.min.js" defer></script>
 
 </head>
 
@@ -34,7 +35,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main class="flex-grow"> {{-- Menambahkan flex-grow agar main content mengisi ruang --}}
+        <main class="flex-grow" id="main-content">
             {{-- Ini adalah bagian yang akan menerima konten dari @section('content') --}}
             @yield('content')
 

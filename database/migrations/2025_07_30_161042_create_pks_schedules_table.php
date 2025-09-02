@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('pks_schedules', function (Blueprint $table) {
             $table->id();
             $table->string('activity_name'); // Nama kegiatan, cth: PKS Sektor A, Ibadah Rumah Tangga
-            $table->string('day_of_week');   // <-- PASTIKAN KOLOM INI ADA
-            $table->date('date');            // <-- PASTIKAN KOLOM INI ADA
+            $table->string('day_of_week');
+            $table->date('date');
             $table->time('time');
             $table->string('location'); // Lokasi rumah/tempat PKS
             $table->string('leader_name'); // Nama pemimpin PKS

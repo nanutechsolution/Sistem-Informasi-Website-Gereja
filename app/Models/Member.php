@@ -36,6 +36,7 @@ class Member extends Model
         'date_of_birth' => 'date',
         'baptism_date' => 'date',
         'sidi_date' => 'date',
+        'join_date' => 'date',
     ];
 
     public function user(): BelongsTo

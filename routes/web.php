@@ -40,6 +40,8 @@ Route::get('/tentang-kami', [HomeController::class, 'about'])->name('public.abou
 Route::get('/kontak', [HomeController::class, 'contact'])->name('public.contact');
 Route::post('/kontak', [ContactController::class, 'submit'])->name('public.contact.submit'); //  UNTUK SUBMIT FORM
 
+Route::get('/pks-calendar', [HomeController::class, 'calendar'])->name('public.pks_calendar');
+Route::get('/pks-calendar/data', [HomeController::class, 'calendarData'])->name('public.pks_calendar.data');
 
 // Rute Otentikasi Laravel Breeze
 require __DIR__ . '/auth.php';
@@ -56,19 +58,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard Admin yang sebenarnya
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::resource('announcements', AnnouncementController::class);
     // Modul Manajemen Jadwal Ibadah & Acara
     Route::resource('schedules', ScheduleController::class);
     // Modul Manajemen Berita & Artikel 
     Route::resource('news', NewsController::class);
-    // Modul Manajemen Galeri Foto & Video
-    // Route::resource('gallery-albums', GalleryAlbumController::class);
-    // // Custom routes untuk media di dalam album
-    // Route::post('gallery-albums/{album}/media', [GalleryAlbumController::class, 'uploadMedia'])->name('gallery.albums.uploadMedia');
-    // Route::delete('gallery-albums/{album}/media/{media}', [GalleryAlbumController::class, 'deleteMedia'])->name('gallery.albums.deleteMedia');
-
-    // Gunakan parameter() untuk memastikan wildcard-nya {album}
     Route::resource('gallery-albums', GalleryAlbumController::class)->parameters([
         'gallery-albums' => 'album' // Ini MENGGANTI default {gallery_album} menjadi {album}
     ]);
@@ -91,22 +85,15 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->pr
     Route::resource('expenses', ExpenseController::class);
     Route::resource('income-categories', IncomeCategoryController::class); // Akan dibuat nanti
     Route::resource('expense-categories', ExpenseCategoryController::class); // Akan dibuat nanti
-    // Modul Laporan Keuangan 
-    // Asumsikan admin dan bendahara bisa melihat laporan
     Route::get('finances/reports', [FinanceReportController::class, 'index'])->name('finances.reports');
     Route::middleware(['role:admin'])->group(function () {
         Route::resource('users', UserController::class);
     });
-
     // event routes resource
     Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
 
 
-    // Modul Manajemen Berita/Pengumuman 
-    // Asumsikan admin dan sekretaris bisa mengelola berita/pengumuman
     Route::resource('posts', PostController::class);
-
-
     // Modul Manajemen Keluarga Jemaat 
     Route::resource('families', FamilyController::class)->parameters([
         'families' => 'family' // Pastikan parameter wildcard-nya {family}
@@ -115,19 +102,19 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->pr
     Route::delete('families/{family}/members/{member}', [FamilyController::class, 'removeMemberFromFamily'])->name('families.removeMemberFromFamily');
     Route::get('families/{family}/members/{member}/edit-relationship', [FamilyController::class, 'editMemberRelationship'])->name('families.editMemberRelationship');
     Route::put('families/{family}/members/{member}/update-relationship', [FamilyController::class, 'updateMemberRelationship'])->name('families.updateMemberRelationship');
-
     // Modul Notifikasi 
     Route::get('notifications', [DashboardController::class, 'allNotifications'])->name('notifications.index');
     Route::post('notifications/{notification}/mark-as-read', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
 
-
-    // Route::get('pks-schedules', PksScheduleList::class)->name('pks-schedules.index');
-    // Route::get('pks-schedules/create', PksScheduleForm::class)->name('pks-schedules.create');
-    // Route::get('pks-schedules/{pksSchedule}/edit', PksScheduleForm::class)->name('pks-schedules.edit');
+    Route::get('pks_schedules/calendar', [PksScheduleController::class, 'calendar'])
+        ->where('any', '^(?!calendar).*$')
+        ->name('pks_schedules.calendar');
+    Route::get('pks_schedules/calendar/data', [PksScheduleController::class, 'calendarData'])
+        ->name('pks_schedules.calendar.data');
+    Route::resource('pks_schedules', PksScheduleController::class);
 });
 
 // Rute halaman publik lainnya (akan kita tambahkan nanti)
 Route::get('/about', function () {
     return view('public.about');
 })->name('about');
-// ... rute untuk jadwal, berita, galeri, kontak
