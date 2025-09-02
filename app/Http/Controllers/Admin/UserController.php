@@ -64,7 +64,7 @@ class UserController extends Controller
                 'password' => Hash::make($validatedData['password']),
             ]);
 
-            $user->syncRoles($validatedData['roles']); // Tetapkan peran ke pengguna
+            $user->syncRoles(array_map('intval', $validatedData['roles']));
 
             return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan!');
         } catch (ValidationException $e) {
@@ -105,7 +105,6 @@ class UserController extends Controller
                 'roles' => 'required|array', // Harus memilih setidaknya satu peran
                 'roles.*' => 'exists:roles,id', // Pastikan ID peran valid
             ]);
-
             $user->name = $validatedData['name'];
             $user->email = $validatedData['email'];
 
@@ -114,7 +113,7 @@ class UserController extends Controller
             }
             $user->save();
 
-            $user->syncRoles($validatedData['roles']); // Perbarui peran pengguna
+            $user->syncRoles(array_map('intval', $validatedData['roles']));
 
             return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui!');
         } catch (ValidationException $e) {

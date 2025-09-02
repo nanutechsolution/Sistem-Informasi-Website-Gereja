@@ -37,9 +37,32 @@
                     @endif
                 </a>
             </li>
+            @php
+                $kontenMenu = [
+                    [
+                        'route' => 'admin.announcements.index',
+                        'label' => 'Pengumuman',
+                        'pattern' => 'admin/announcements*',
+                    ],
+                    ['route' => 'admin.schedules.index', 'label' => 'Jadwal Ibadah', 'pattern' => 'admin/schedules*'],
+                    [
+                        'route' => 'admin.posts.index',
+                        'label' => 'Manajemen Berita/Pengumuman',
+                        'pattern' => 'admin/posts*',
+                    ],
+                    [
+                        'route' => 'admin.gallery-albums.index',
+                        'label' => 'Galeri',
+                        'pattern' => 'admin/gallery-albums*',
+                    ],
+                ];
+                $isActive = collect($kontenMenu)->contains(fn($item) => request()->is($item['pattern']));
+            @endphp
+
             <li>
                 <button type="button"
-                    class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group
+        {{ $isActive ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                     aria-controls="dropdown-pages" data-collapse-toggle="dropdown-pages">
                     <svg aria-hidden="true"
                         class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
@@ -56,32 +79,46 @@
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
-                <ul id="dropdown-pages" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="{{ route('admin.announcements.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pengumuman</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.schedules.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Jadwal
-                            Ibadah</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.posts.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Manajemen Berita/Pengumuman</a>
-                    </li>
 
-                    <li>
-                        <a href="{{ route('admin.gallery-albums.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Galeri</a>
-                    </li>
+                <ul id="dropdown-pages" class="{{ $isActive ? 'block' : 'hidden' }} py-2 space-y-2">
+                    @foreach ($kontenMenu as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}"
+                                class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg
+                    {{ request()->is($item['pattern']) ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                                {{ $item['label'] }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
+
+
+            @php
+                $jemaatMenu = [
+                    ['route' => 'admin.members.index', 'label' => 'Data Jemaat', 'pattern' => 'admin/members*'],
+                    [
+                        'route' => 'admin.families.index',
+                        'label' => 'Manajemen Keluarga',
+                        'pattern' => 'admin/families*',
+                    ],
+                    [
+                        'route' => 'admin.pks_schedules.index',
+                        'label' => 'Jadwal PKS',
+                        'pattern' => 'admin/pks_schedules*',
+                    ],
+                    ['route' => 'admin.ministries.index', 'label' => 'Pelayanan', 'pattern' => 'admin/ministries*'],
+                    ['route' => 'admin.events.index', 'label' => 'Acara Lainnya', 'pattern' => 'admin/events*'],
+                ];
+
+                // cek jika salah satu submenu aktif
+                $isActive = collect($jemaatMenu)->contains(fn($item) => request()->is($item['pattern']));
+            @endphp
+
             <li>
                 <button type="button"
-                    class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group
+        {{ $isActive ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                     aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
                     <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -96,37 +133,36 @@
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
-                <ul id="dropdown-sales" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="{{ route('admin.members.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Data
-                            Jemaat</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.families.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Manajemen Keluarga</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.pks_schedules.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Jadwal PKS </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.ministries.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pelayanan</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.events.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Acara Lainnya</a>
-                    </li>
+
+                <ul id="dropdown-sales" class="{{ $isActive ? 'block' : 'hidden' }} py-2 space-y-2">
+                    @foreach ($jemaatMenu as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}"
+                                class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg
+                    {{ request()->is($item['pattern']) ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                                {{ $item['label'] }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
 
+            @php
+                $keuanganMenu = [
+                    ['route' => 'admin.incomes.index', 'label' => 'Pemasukan'],
+                    ['route' => 'admin.income-categories.index', 'label' => 'Kategori Pemasukan'],
+                    ['route' => 'admin.expenses.index', 'label' => 'Pengeluaran'],
+                    ['route' => 'admin.expense-categories.index', 'label' => 'Kategori Pengeluaran'],
+                    ['route' => 'admin.finances.reports', 'label' => 'Laporan Keuangan'],
+                ];
+
+                // cek jika salah satu route aktif
+                $isActive = collect($keuanganMenu)->contains(fn($item) => request()->routeIs($item['route']));
+            @endphp
             <li>
                 <button type="button"
-                    class="flex items-center p-2 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group
+        {{ $isActive ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
                     aria-controls="dropdown-authentication" data-collapse-toggle="dropdown-authentication">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700 dark:text-gray-200"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -142,30 +178,17 @@
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
-                <ul id="dropdown-authentication" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="{{ route('admin.incomes.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pemasukan</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.income-categories.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
-                            Kategori Pemasukan</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.expenses.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Pengeluaran</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.expense-categories.index') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Kategori
-                            Pengeluaran</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.finances.reports') }}"
-                            class="flex items-center p-2 pl-11 w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Kategori
-                            Laporan Keuangan</a>
-                    </li>
+
+                <ul id="dropdown-authentication" class="{{ $isActive ? 'block' : 'hidden' }} py-2 space-y-2">
+                    @foreach ($keuanganMenu as $item)
+                        <li>
+                            <a href="{{ route($item['route']) }}"
+                                class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg
+                    {{ request()->routeIs($item['route']) ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                                {{ $item['label'] }}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
         </ul>

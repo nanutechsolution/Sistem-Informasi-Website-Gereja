@@ -53,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten|majelis'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard Admin yang sebenarnya
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('announcements', AnnouncementController::class);
@@ -110,6 +110,9 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten'])->pr
     Route::get('pks_schedules/calendar/data', [PksScheduleController::class, 'calendarData'])
         ->name('pks_schedules.calendar.data');
     Route::resource('pks_schedules', PksScheduleController::class);
+
+    Route::get('pks_schedules/{schedule}/families', [PksScheduleController::class, 'getFamilies']);
+    Route::post('pks_schedules/{schedule}/update-offering', [PksScheduleController::class, 'updateOffering']);
 });
 
 // Rute halaman publik lainnya (akan kita tambahkan nanti)

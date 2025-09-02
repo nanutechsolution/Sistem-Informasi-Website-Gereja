@@ -91,7 +91,7 @@
             <a href="{{ route('public.pks_calendar') }}"
                 class="block px-3 py-2 rounded-md text-base font-medium
         {{ request()->routeIs('public.pks_calendar') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Jadwal PKS
+                Kelender PKS
             </a>
 
             <a href="{{ route('public.posts.index') }}"

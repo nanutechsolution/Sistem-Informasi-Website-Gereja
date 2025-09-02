@@ -35,6 +35,13 @@ class PksSchedule extends Model
     {
         return $this->belongsTo(Family::class, 'family_id');
     }
+    public function families()
+    {
+        return $this->belongsToMany(Family::class, 'pks_schedule_family')
+            ->withPivot('offering')
+            ->withTimestamps();
+    }
+
 
 
     public function getStartDateTimeAttribute()
