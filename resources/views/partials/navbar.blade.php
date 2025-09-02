@@ -71,25 +71,59 @@
         style="display: none;">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="{{ route('home') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('home') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Beranda
+            </a>
+
             <a href="{{ route('public.about') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Tentang
-                Kami</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.about') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Tentang Kami
+            </a>
+
             <a href="{{ route('public.schedules.index') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Jadwal
-                Ibadah</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.schedules.index') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Jadwal Ibadah
+            </a>
+
+            <a href="{{ route('public.pks_calendar') }}"
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.pks_calendar') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Jadwal PKS
+            </a>
+
             <a href="{{ route('public.posts.index') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Berita
-                & Artikel</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.posts.index') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Berita & Artikel
+            </a>
+
             <a href="{{ route('public.events.index') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Acara</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.events.index') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Acara
+            </a>
+
             <a href="{{ route('public.gallery.index') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Galeri</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.gallery.index') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Galeri
+            </a>
+
             <a href="{{ route('public.contact') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('public.contact') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Kontak
+            </a>
+
             <a href="{{ route('login') }}"
-                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Login
-                Admin</a>
+                class="block px-3 py-2 rounded-md text-base font-medium
+        {{ request()->routeIs('login') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                Login Admin
+            </a>
         </div>
+
     </div>
 </nav>

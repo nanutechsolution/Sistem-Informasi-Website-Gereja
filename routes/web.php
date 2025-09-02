@@ -20,9 +20,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PksScheduleController;
-use App\Livewire\Admin\PksSchedules\PksScheduleList;
-use App\Livewire\Admin\PksSchedules\PksScheduleForm;
-// Rute Publik Website Gereja
+
 Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- PERBARUI INI
 
 Route::get('/berita', [HomeController::class, 'postsIndex'])->name('public.posts.index');
