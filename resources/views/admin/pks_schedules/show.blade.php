@@ -15,7 +15,10 @@
                 <div class="p-6 text-gray-900">
 
                     {{-- Judul --}}
-                    <h3 class="text-2xl font-bold mb-6">{{ $schedule->activity_name }}</h3>
+                    <h3 class="text-2xl font-bold mb-6">
+                        {{ $schedule->family ? 'PKS dirumah tangga: ' . $schedule->family->family_name : '-' }}
+                        </dd>
+                    </h3>
 
                     {{-- Detail Info --}}
                     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
@@ -26,8 +29,7 @@
 
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Tanggal</dt>
-                            <dd class="mt-1 text-gray-900">
-                                {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}
+                            <dd class="mt-1 text-gray-900">{{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}
                             </dd>
                         </div>
 
@@ -37,45 +39,40 @@
                         </div>
 
                         <div>
-                            <dt class="text-sm font-medium text-gray-500">Lokasi</dt>
-                            <dd class="mt-1 text-gray-900">{{ $schedule->location }}</dd>
+                            <dt class="text-sm font-medium text-gray-500">Lokasi / Family</dt>
+                            <dd class="mt-1 text-gray-900">{{ $schedule->family ? $schedule->family->family_name : '-' }}
+                            </dd>
                         </div>
 
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Pemimpin</dt>
-                            <dd class="mt-1 text-gray-900">{{ $schedule->leader_name }}</dd>
+                            <dd class="mt-1 text-gray-900">{{ $schedule->leader ? $schedule->leader->name : '-' }}</dd>
                         </div>
 
                         <div>
                             <dt class="text-sm font-medium text-gray-500">Status</dt>
                             <dd class="mt-1">
                                 @if ($schedule->is_active)
-                                    <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">
-                                        Aktif
-                                    </span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">Aktif</span>
                                 @else
-                                    <span class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-800 rounded-full">
-                                        Nonaktif
-                                    </span>
+                                    <span
+                                        class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-800 rounded-full">Nonaktif</span>
                                 @endif
                             </dd>
                         </div>
                     </dl>
 
-                    {{-- Deskripsi --}}
+                    {{-- Deskripsi / Firman --}}
                     <div class="mt-6">
-                        <dt class="text-sm font-medium text-gray-500">Deskripsi</dt>
-                        <dd class="mt-1 text-gray-900">
-                            {{ $schedule->description ?: '-' }}
-                        </dd>
+                        <dt class="text-sm font-medium text-gray-500">Firman Tuhan</dt>
+                        <dd class="mt-1 text-gray-900">{{ $schedule->scripture ?: '-' }}</dd>
                     </div>
 
                     {{-- Anggota Terlibat --}}
                     <div class="mt-6">
                         <dt class="text-sm font-medium text-gray-500">Anggota Terlibat</dt>
-                        <dd class="mt-1 text-gray-900">
-                            {{ $schedule->involved_members ?: '-' }}
-                        </dd>
+                        <dd class="mt-1 text-gray-900">{{ $schedule->involved_members ?: '-' }}</dd>
                     </div>
 
                     {{-- Tombol Aksi --}}

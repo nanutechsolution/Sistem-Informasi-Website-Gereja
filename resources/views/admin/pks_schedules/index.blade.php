@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', '| Manajemen PKS Schedule')
+@section('title', 'Manajemen PKS Schedule')
 
 @section('content')
     <x-slot name="header">
@@ -16,13 +16,8 @@
 
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold">Daftar Jadwal PKS</h3>
-                        <a href="{{ route('admin.pks_schedules.create') }}"
+                        <a href="{{ route('admin.families.index') }}"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
                             Tambah Jadwal Baru
                         </a>
                     </div>
@@ -43,10 +38,11 @@
                                 <tr>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nama Kegiatan</th>
+                                        Keluarga</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Hari</th>
+
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Tanggal</th>
@@ -55,10 +51,13 @@
                                         Jam</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Lokasi</th>
+                                        Pemimpin</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Pemimpin</th>
+                                        Firman Tuhan</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Anggota Terlibat</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Status</th>
@@ -68,41 +67,43 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($schedules as $item)
+                                @forelse($schedules as $schedule)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $item->activity_name }}
+                                            {{ $schedule->family->family_name ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $item->day_of_week }}
+                                            {{ $schedule->day_of_week ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($item->date)->format('d M Y') }}
+                                            {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($item->time)->format('H:i') }}
+                                            {{ \Carbon\Carbon::parse($schedule->time)->format('H:i') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $item->location }}
+                                            {{ $schedule->leader->name ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $item->leader_name }}
+                                            {{ $schedule->scripture ?? '-' }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {{ $schedule->involved_members ?? '-' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $item->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $schedule->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $schedule->is_active ? 'Aktif' : 'Nonaktif' }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-
-                                            <a href="{{ route('admin.pks_schedules.show', $item->id) }}"
-                                                class="text-blue-600 hover:text-blue-900 mr-3">Detail</a>
-                                            <a href="{{ route('admin.pks_schedules.edit', $item->id) }}"
-                                                class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-                                            <form action="{{ route('admin.pks_schedules.destroy', $item->id) }}"
+                                            <a href="{{ route('admin.pks_schedules.show', $schedule->id) }}"
+                                                class="text-blue-600 hover:text-blue-900 mr-2">Detail</a>
+                                            <a href="{{ route('admin.pks_schedules.edit', $schedule->id) }}"
+                                                class="text-blue-600 hover:text-blue-900 mr-2">Edit</a>
+                                            <form action="{{ route('admin.pks_schedules.destroy', $schedule->id) }}"
                                                 method="POST" class="inline-block"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus jadwal ini?');">
+                                                onsubmit="return confirm('Yakin ingin menghapus jadwal ini?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"

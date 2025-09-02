@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Family;
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
@@ -18,7 +19,8 @@ class FamilyController extends Controller
     {
         // Eager load headMember dan anggota keluarga
         $families = Family::with('headMember', 'members')->latest()->paginate(10);
-        return view('admin.families.index', compact('families'));
+        $users = User::all();
+        return view('admin.families.index', compact('families', 'users'));
     }
 
     /**

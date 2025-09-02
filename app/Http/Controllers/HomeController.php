@@ -159,37 +159,38 @@ class HomeController extends Controller
     }
 
 
-    public function calendar()
+    public function publicCalendar()
     {
         return view('public.pks_calendar');
     }
-
     public function calendarData(Request $request)
     {
-        $query = PksSchedule::where('is_active', 1);
+        $query = PksSchedule::with(['leader', 'family']);
 
-        // Filter optional
-        if ($request->leader) {
-            $query->where('leader_name', $request->leader);
-        }
-        if ($request->location) {
-            $query->where('location', $request->location);
+        if ($request->filled('leader')) {
+            $query->whereHas('leader', fn($q) => $q->where('name', $request->leader));
         }
 
-        $events = $query->get()->map(fn($s) => [
-            'id'    => $s->id,
-            'title' => $s->activity_name,
-            'start' => $s->start_date_time->toDateTimeString(),
-            'end'   => $s->end_date_time->toDateTimeString(),
-            'url'   => null, // optional, publik biasanya nggak link ke admin
-            'extendedProps' => [
-                'location' => $s->location,
-                'leader'   => $s->leader_name,
-                'desc'     => $s->description,
-            ],
-            'color' => '#3788d8',
-        ]);
-
+        if ($request->filled('location')) {
+            $query->whereHas('family', fn($q) => $q->where('family_name', $request->location));
+        }
+        $events = $query->where('is_active', 1)->get()->map(function ($s) {
+            $date = Carbon::parse($s->date);
+            $time = Carbon::parse($s->time);
+            return [
+                'id'    => $s->id,
+                'title' => $s->family ? $s->family->family_name : 'PKS',
+                'start' => $date->format('Y-m-d') . 'T' . $time->format('H:i:s'),
+                'end'   => $date->format('Y-m-d') . 'T' . $time->format('H:i:s'),
+                'url'   => route('admin.pks_schedules.show', $s->id),
+                'extendedProps' => [
+                    'leader'   => $s->leader ? $s->leader->name : '-',
+                    'location' => $s->family ? $s->family->family_name : '-',
+                    'desc'     => $s->scripture ?? '-',
+                ],
+                'color' => '#3788d8',
+            ];
+        });
         return response()->json($events);
     }
 }

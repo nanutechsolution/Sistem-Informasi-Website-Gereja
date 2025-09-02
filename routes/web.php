@@ -40,7 +40,7 @@ Route::get('/tentang-kami', [HomeController::class, 'about'])->name('public.abou
 Route::get('/kontak', [HomeController::class, 'contact'])->name('public.contact');
 Route::post('/kontak', [ContactController::class, 'submit'])->name('public.contact.submit');
 
-Route::get('/pks-calendar', [HomeController::class, 'calendar'])->name('public.pks_calendar');
+Route::get('/pks-calendar', [HomeController::class, 'publicCalendar'])->name('public.pks_calendar');
 Route::get('/pks-calendar/data', [HomeController::class, 'calendarData'])->name('public.pks_calendar.data');
 
 // Rute Otentikasi Laravel Breeze

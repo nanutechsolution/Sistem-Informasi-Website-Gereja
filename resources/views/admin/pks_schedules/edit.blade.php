@@ -13,24 +13,14 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
                     <h3 class="text-lg font-bold mb-4">Form Edit Jadwal PKS</h3>
-
                     <form action="{{ route('admin.pks_schedules.update', $schedule->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         @include('admin.pks_schedules.form', ['schedule' => $schedule])
-
-                        <div class="flex justify-end mt-4">
-                            <a href="{{ route('admin.pks_schedules.index') }}"
-                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md mr-2">
-                                Batal
-                            </a>
-                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
-                                Update
-                            </button>
-                        </div>
+                        <button type="submit">Update</button>
                     </form>
+
 
                 </div>
             </div>

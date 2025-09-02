@@ -11,14 +11,13 @@ class PksSchedule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'activity_name',
+        'family_id',
+        'leader_id',
         'date',
         'time',
-        'location',
-        'leader_name',
-        'description',
+        'scripture',
         'involved_members',
-        'is_active',
+        'day_of_week'
     ];
 
     protected $casts = [
@@ -26,6 +25,16 @@ class PksSchedule extends Model
         'time' => 'string',
         'is_active' => 'boolean',
     ];
+
+    public function leader()
+    {
+        return $this->belongsTo(User::class, 'leader_id');
+    }
+
+    public function family()
+    {
+        return $this->belongsTo(Family::class, 'family_id');
+    }
 
 
     public function getStartDateTimeAttribute()
@@ -36,5 +45,11 @@ class PksSchedule extends Model
     public function getEndDateTimeAttribute()
     {
         return $this->start_date_time->copy()->addHours(2);
+    }
+
+
+    public function members()
+    {
+        return $this->belongsToMany(Member::class, 'pks_schedule_member', 'pks_schedule_id', 'member_id');
     }
 }

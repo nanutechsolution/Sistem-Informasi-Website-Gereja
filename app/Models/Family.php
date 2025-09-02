@@ -26,4 +26,10 @@ class Family extends Model
         return $this->belongsToMany(Member::class, 'family_members')
             ->withPivot('relationship');
     }
+
+
+    public function pksSchedules()
+    {
+        return $this->hasMany(PksSchedule::class);
+    }
 }

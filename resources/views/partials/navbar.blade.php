@@ -27,11 +27,11 @@
                     class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.posts.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Berita
                     & Artikel</a>
                 <a href="{{ route('public.events.index') }}"
-                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.events.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Acara</a>
+                    class="hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.events.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Acara</a>
                 <a href="{{ route('public.gallery.index') }}"
-                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.gallery.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Galeri</a>
+                    class="hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.gallery.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Galeri</a>
                 <a href="{{ route('public.contact') }}"
-                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.contact') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Kontak</a>
+                    class="hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.contact') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Kontak</a>
                 {{-- Tombol Login untuk Admin --}}
                 {{-- @auth
                     <a href="{{ route('dashboard') }}"
