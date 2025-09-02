@@ -31,25 +31,6 @@
             </div>
         </div>
 
-        {{-- Legend --}}
-        <div class="mb-4 flex gap-4 justify-center flex-wrap">
-            @php
-                $colors = [
-                    'Gereja Utama' => '#3b82f6',
-                    'Balai Jemaat' => '#f97316',
-                    'Gedung Serbaguna' => '#10b981',
-                    'Lainnya' => '#8b5cf6',
-                ];
-            @endphp
-            @foreach ($colors as $loc => $color)
-                <div class="flex items-center gap-1">
-                    <span class="w-4 h-4 rounded" style="background-color: {{ $color }}"></span>
-                    <span class="text-sm">{{ $loc }}</span>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- Grid --}}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Calendar --}}
             <div class="lg:col-span-2 bg-white rounded-lg shadow p-4">
@@ -77,14 +58,8 @@
 
             {{-- Upcoming list --}}
             <div class="bg-white rounded-lg shadow p-4">
-                <div class="flex justify-between items-center mb-2 lg:hidden">
-                    <h3 class="text-xl font-semibold">Upcoming PKS</h3>
-                    <button id="toggleUpcoming" class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">☰</button>
-                </div>
-                <div id="upcomingContainer" class="lg:block hidden">
-                    <h3 class="text-xl font-semibold mb-4 hidden lg:block">Upcoming PKS</h3>
-                    <ul id="upcomingList" class="space-y-3"></ul>
-                </div>
+                <h3 class="text-xl font-semibold mb-4">Upcoming PKS</h3>
+                <ul id="upcomingList" class="space-y-3"></ul>
             </div>
         </div>
     </div>
@@ -100,9 +75,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const calendarEl = document.getElementById('calendar');
             const upcomingEl = document.getElementById('upcomingList');
-            const upcomingContainer = document.getElementById('upcomingContainer');
-            const toggleUpcoming = document.getElementById('toggleUpcoming');
-
             const locationColors = {
                 "Gereja Utama": "#3b82f6",
                 "Balai Jemaat": "#f97316",
@@ -110,45 +82,26 @@
                 "Lainnya": "#8b5cf6"
             };
 
-            toggleUpcoming?.addEventListener('click', () => {
-                upcomingContainer.classList.toggle('hidden');
-            });
-
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 headerToolbar: false,
                 height: 'auto',
                 dayMaxEvents: true,
-                events: function(fetchInfo, successCallback, failureCallback) {
-                    fetch("{{ route('public.pks_calendar.data') }}?leader=" + document.getElementById(
-                                'leader').value +
-                            "&location=" + document.getElementById('location').value)
-                        .then(res => res.json())
-                        .then(data => {
-                            const events = data.map(ev => ({
-                                id: ev.id,
-                                title: ev.title,
-                                start: ev.start,
-                                end: ev.end,
-                                extendedProps: {
-                                    leader: ev.leader,
-                                    location: ev.location,
-                                    desc: ev.desc
-                                },
-                                backgroundColor: locationColors[ev.location] ||
-                                    locationColors["Lainnya "],
-                                borderColor: locationColors[ev.location] ||
-                                    locationColors["Lainnya"],
-                                textColor: "#fff"
-                            }));
-                            successCallback(events);
-                            updateUpcomingList(
-                                events); // **langsung update upcoming saat pertama load**
-                        })
-                        .catch(err => {
-                            alert('Gagal load data jadwal!');
-                            failureCallback(err);
-                        });
+                events: {
+                    url: "{{ route('public.pks_calendar.data') }}",
+                    method: 'GET',
+                    extraParams: function() {
+                        return {
+                            leader: document.getElementById('leader').value,
+                            location: document.getElementById('location').value
+                        };
+                    },
+                    failure: function() {
+                        alert('Gagal load data jadwal!');
+                    },
+                    success: function(events) {
+                        updateUpcomingList(events);
+                    } // panggil setelah load pertama
                 },
                 eventClick: function(info) {
                     info.jsEvent.preventDefault();
@@ -156,24 +109,23 @@
                     Swal.fire({
                         title: e.title,
                         html: `
-                        <p><strong>Lokasi:</strong> ${e.extendedProps.location || '-'}</p>
-                        <p><strong>Dipimpin oleh:</strong> ${e.extendedProps.leader || '-'}</p>
-                        <p><strong>Deskripsi:</strong> ${e.extendedProps.desc || '-'}</p>
-                    `,
+                    <p><strong>Lokasi:</strong> ${e.extendedProps.location || '-'}</p>
+                    <p><strong>Dipimpin oleh:</strong> ${e.extendedProps.leader || '-'}</p>
+                    <p><strong>Deskripsi:</strong> ${e.extendedProps.desc || '-'}</p>
+                `,
                         icon: 'info',
                         confirmButtonText: 'Tutup'
                     });
                 },
-                eventMouseEnter: function(info) {
-                    info.el.setAttribute('title', info.event.extendedProps.leader + " - " + info.event
-                        .extendedProps.location);
-                },
                 datesSet: function() {
                     document.getElementById('calendarTitle').innerText = calendar.view.title;
+                    updateUpcomingList(); // update saat pindah bulan
                 }
             });
 
             calendar.render();
+
+            // Default title
             document.getElementById('calendarTitle').innerText = calendar.view.title;
 
             // Filter change
@@ -187,43 +139,34 @@
             document.getElementById('monthView').addEventListener('click', () => calendar.changeView(
                 'dayGridMonth'));
             document.getElementById('weekView').addEventListener('click', () => calendar.changeView(
-                'timeGridWeek'));
+            'timeGridWeek'));
             document.getElementById('dayView').addEventListener('click', () => calendar.changeView('timeGridDay'));
 
             // Function: update upcoming list
-            function updateUpcomingList(events = null) {
-                const allEvents = events || calendar.getEvents();
-                const upcoming = allEvents
-                    .filter(ev => ev.start >= new Date())
-                    .sort((a, b) => a.start - b.start)
+            function updateUpcomingList(loadedEvents = null) {
+                const events = loadedEvents || calendar.getEvents();
+                const upcoming = events
+                    .filter(ev => new Date(ev.start) >= new Date())
+                    .sort((a, b) => new Date(a.start) - new Date(b.start))
                     .slice(0, 5);
 
                 upcomingEl.innerHTML = '';
                 upcoming.forEach(ev => {
                     const li = document.createElement('li');
-                    li.className = "p-3 border rounded hover:bg-blue-50 transition
-                    cursor - pointer ";
-                    li.innerHTML = < div class = "font-semibold" > $ {
-                            ev.title
-                        } <
-                        /div> <div class="text-sm text-gray-600">${ev.extendedProps.leader} - ${ev.extendedProps.location}</div >
-                        <
-                        div class = "text-sm text-gray-500" > $ {
-                            ev.start.toLocaleDateString('id-ID', {
-                                weekday: 'short',
-                                day: 'numeric',
-                                month: 'short',
-                                year: 'numeric'
-                            })
-                        } < /div> ;
+                    li.className = "p-3 border rounded hover:bg-blue-50 transition cursor-pointer";
+                    li.innerHTML = `
+                <div class="font-semibold">${ev.title}</div>
+                <div class="text-sm text-gray-600">${ev.extendedProps.leader} - ${ev.extendedProps.location}</div>
+                <div class="text-sm text-gray-500">${new Date(ev.start).toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' })}</div>
+            `;
                     li.addEventListener('click', () => {
-                        calendar.gotoDate(ev.start); // scroll ke tanggal
+                        calendar.gotoDate(ev.start);
                         ev.setProp('backgroundColor', '#f43f5e'); // highlight sementara
                         setTimeout(() => {
                             ev.setProp('backgroundColor', locationColors[ev.extendedProps
                                 .location] || locationColors["Lainnya"]);
                         }, 1000);
-                        ev.click(); // buka detail
+                        ev.click();
                     });
                     upcomingEl.appendChild(li);
                 });
