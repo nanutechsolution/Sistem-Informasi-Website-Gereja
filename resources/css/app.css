@@ -10,11 +10,6 @@ html, body {
   height: 100%;
 }
 
-#calendar {
-    max-height: 800px; /* atau sesuai kebutuhan */
-    overflow-y: auto;
-}
-
 /* custom CSS di Blade */
 .fc .fc-button {
     @apply bg-blue-500 text-white font-semibold px-3 py-1 rounded shadow hover:bg-blue-600;

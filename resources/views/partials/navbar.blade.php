@@ -12,25 +12,26 @@
             </div>
             <div class="hidden md:flex space-x-8">
                 <a href="{{ route('home') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('home') ? 'text-blue-700 font-bold' : '' }}">Beranda</a>
+                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('home') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Beranda</a>
                 <a href="{{ route('public.about') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.about') ? 'text-blue-700 font-bold' : '' }}">Tentang
+                    class="hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.about') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Tentang
                     Kami</a>
                 <a href="{{ route('public.schedules.index') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.schedules.*') ? 'text-blue-700 font-bold' : '' }}">Jadwal
+                    class="px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.schedules.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }} hover:text-blue-700 transition duration-300 ease-in-out">Jadwal
                     Ibadah</a>
-                <a href="{{ route('public.pks_calendar') }}" data-turbo-frame="main-content"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.pks_calendar') ? 'text-blue-700 font-bold' : '' }}">
-                    PKS</a>
+                <a href="{{ route('public.pks_calendar') }}"
+                    class="px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.pks_calendar') ? 'text-blue-700 font-bold' : 'text-gray-600' }} hover:text-blue-700 transition duration-300 ease-in-out">
+                    PKS
+                </a>
                 <a href="{{ route('public.posts.index') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.posts.*') ? 'text-blue-700 font-bold' : '' }}">Berita
+                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.posts.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Berita
                     & Artikel</a>
                 <a href="{{ route('public.events.index') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.events.*') ? 'text-blue-700 font-bold' : '' }}">Acara</a>
+                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.events.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Acara</a>
                 <a href="{{ route('public.gallery.index') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.gallery.*') ? 'text-blue-700 font-bold' : '' }}">Galeri</a>
+                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.gallery.*') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Galeri</a>
                 <a href="{{ route('public.contact') }}"
-                    class="text-gray-600 hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.contact') ? 'text-blue-700 font-bold' : '' }}">Kontak</a>
+                    class=" hover:text-blue-700 transition duration-300 ease-in-out px-3 py-2 rounded-md font-medium {{ request()->routeIs('public.contact') ? 'text-blue-700 font-bold' : 'text-gray-600' }}">Kontak</a>
                 {{-- Tombol Login untuk Admin --}}
                 {{-- @auth
                     <a href="{{ route('dashboard') }}"
@@ -70,59 +71,25 @@
         style="display: none;">
         <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="{{ route('home') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('home') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Beranda
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Beranda</a>
             <a href="{{ route('public.about') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.about') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Tentang Kami
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Tentang
+                Kami</a>
             <a href="{{ route('public.schedules.index') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.schedules.*') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Jadwal Ibadah
-            </a>
-
-            <a href="{{ route('public.pks_calendar') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.pks_calendar') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Jadwal PKS
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Jadwal
+                Ibadah</a>
             <a href="{{ route('public.posts.index') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.posts.*') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Berita & Artikel
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Berita
+                & Artikel</a>
             <a href="{{ route('public.events.index') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.events.*') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Acara
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Acara</a>
             <a href="{{ route('public.gallery.index') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.gallery.*') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Galeri
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Galeri</a>
             <a href="{{ route('public.contact') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('public.contact') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Kontak
-            </a>
-
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
             <a href="{{ route('login') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium transition 
-              {{ request()->routeIs('login') ? 'text-blue-700 font-bold bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Login Admin
-            </a>
+                class="text-gray-700 hover:bg-blue-50 hover:text-blue-700 block px-3 py-2 rounded-md text-base font-medium">Login
+                Admin</a>
         </div>
-
     </div>
 </nav>

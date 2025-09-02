@@ -34,11 +34,11 @@ Route::get('/acara', [HomeController::class, 'eventsIndex'])->name('public.event
 Route::get('/acara/{slug}', [HomeController::class, 'eventShow'])->name('public.events.show');
 
 Route::get('/galeri', [HomeController::class, 'galleryIndex'])->name('public.gallery.index');
-Route::get('/galeri/{album}', [HomeController::class, 'galleryShow'])->name('public.gallery.show'); // Menggunakan implicit model binding untuk Album
+Route::get('/galeri/{album}', [HomeController::class, 'galleryShow'])->name('public.gallery.show');
 
 Route::get('/tentang-kami', [HomeController::class, 'about'])->name('public.about');
 Route::get('/kontak', [HomeController::class, 'contact'])->name('public.contact');
-Route::post('/kontak', [ContactController::class, 'submit'])->name('public.contact.submit'); //  UNTUK SUBMIT FORM
+Route::post('/kontak', [ContactController::class, 'submit'])->name('public.contact.submit');
 
 Route::get('/pks-calendar', [HomeController::class, 'calendar'])->name('public.pks_calendar');
 Route::get('/pks-calendar/data', [HomeController::class, 'calendarData'])->name('public.pks_calendar.data');
