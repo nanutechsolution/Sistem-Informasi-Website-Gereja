@@ -57,6 +57,11 @@
                             <h4 class="text-lg font-semibold text-blue-800 mb-2">Saldo Akhir</h4>
                             <p class="text-3xl font-bold text-blue-900">Rp {{ number_format($balance, 0, ',', '.') }}</p>
                         </div>
+                        <div class="bg-indigo-100 p-6 rounded-lg shadow-md hover:shadow-xl">
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">Total Persembahan PKS</h4>
+                            <p class="text-3xl font-bold text-indigo-900">Rp
+                                {{ number_format($currentMonthOffering, 0, ',', '.') }}</p>
+                        </div>
                     </div>
 
 
@@ -68,7 +73,6 @@
                                 <canvas id="incomePieChart"></canvas>
                             </div>
                             @if (empty($incomeChartData))
-                                {{-- PERBAIKI DI SINI --}}
                                 <p class="text-center text-gray-600 mt-4">Tidak ada data pemasukan untuk periode ini.</p>
                             @endif
                         </div>
@@ -78,7 +82,6 @@
                                 <canvas id="expensePieChart"></canvas>
                             </div>
                             @if (empty($expenseChartData))
-                                {{-- PERBAIKI DI SINI --}}
                                 <p class="text-center text-gray-600 mt-4">Tidak ada data pengeluaran untuk periode ini.</p>
                             @endif
                         </div>
@@ -90,7 +93,6 @@
                             <canvas id="monthlyTrendChart"></canvas>
                         </div>
                         @if (empty($monthlyIncomeData) && empty($monthlyExpenseData))
-                            {{-- PERBAIKI DI SINI --}}
                             <p class="text-center text-gray-600 mt-4">Tidak ada data bulanan untuk periode ini.</p>
                         @endif
                     </div>

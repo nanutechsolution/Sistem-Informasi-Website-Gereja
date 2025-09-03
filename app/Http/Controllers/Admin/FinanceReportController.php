@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Income;
 use App\Models\Expense;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class FinanceReportController extends Controller
 {
@@ -27,29 +28,24 @@ class FinanceReportController extends Controller
         $expenses = Expense::whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'desc')
             ->get();
-
-        // Hitung total pemasukan dan pengeluaran
         $totalIncome = $incomes->sum('amount');
         $totalExpense = $expenses->sum('amount');
         $balance = $totalIncome - $totalExpense;
-
-
-        // Data untuk ringkasan per kategori (tetap sama)
         $incomeCategoriesSummary = Income::selectRaw('income_category_id, SUM(amount) as total_amount')
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->groupBy('income_category_id')
             ->with('category')
             ->get();
-
         $expenseCategoriesSummary = Expense::selectRaw('expense_category_id, SUM(amount) as total_amount')
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->groupBy('expense_category_id')
             ->with('category')
             ->get();
+        $currentMonthOffering = DB::table('pks_schedule_family')
+            ->join('pks_schedules', 'pks_schedule_family.pks_schedule_id', '=', 'pks_schedules.id')
+            ->whereBetween('pks_schedules.date', [$startDate, $endDate])
+            ->sum('pks_schedule_family.offering');
 
-        // --- Data untuk Chart.js ---
-
-        // Grafik Pemasukan per Kategori (Pie Chart)
         $incomeChartLabels = $incomeCategoriesSummary->map(function ($item) {
             return $item->category->name ?? 'Tidak Diketahui';
         })->all();
@@ -72,9 +68,6 @@ class FinanceReportController extends Controller
         $monthlyChartLabels = $monthlyData->keys()->all();
         $monthlyIncomeData = $monthlyData->map(fn($data) => $data['income'])->values()->all();
         $monthlyExpenseData = $monthlyData->map(fn($data) => $data['expense'])->values()->all();
-
-
-
         return view('admin.finances.reports.index', compact(
             'incomes',
             'expenses',
@@ -85,15 +78,16 @@ class FinanceReportController extends Controller
             'endDate',
             'incomeCategoriesSummary',
             'expenseCategoriesSummary',
-            'incomeChartLabels',    // Data untuk Chart.js
+            'incomeChartLabels',
             'incomeChartData',
             'incomeChartColors',
             'expenseChartLabels',
             'expenseChartData',
             'expenseChartColors',
-            'monthlyChartLabels',   // Data untuk grafik bulanan
+            'monthlyChartLabels',
             'monthlyIncomeData',
-            'monthlyExpenseData'
+            'monthlyExpenseData',
+            'currentMonthOffering'
         ));
     }
 
@@ -127,7 +121,6 @@ class FinanceReportController extends Controller
             $monthlyIncome = Income::whereYear('transaction_date', $currentDate->year)
                 ->whereMonth('transaction_date', $currentDate->month)
                 ->sum('amount');
-
             $monthlyExpense = Expense::whereYear('transaction_date', $currentDate->year)
                 ->whereMonth('transaction_date', $currentDate->month)
                 ->sum('amount');

@@ -11,7 +11,9 @@ use App\Models\Event;   // Import Model Event
 use App\Models\Income;  // Import Model Income
 use App\Models\Expense; // Import Model Expense
 use App\Models\Notification;
+use App\Models\PksSchedule;
 use Carbon\Carbon;     // Import Carbon
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -55,7 +57,7 @@ class DashboardController extends Controller
             'currentMonthIncome',
             'currentMonthExpense',
             'currentMonthBalance',
-            'notifications'
+            'notifications',
         ));
     }
 
