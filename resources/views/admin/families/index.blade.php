@@ -42,10 +42,11 @@
 
                     {{-- Tabel Keluarga --}}
                     <div x-data="pksModal(@json($families))" class="overflow-x-auto rounded-lg border dark:border-gray-700">
-                        <div class="mb-4">
-                            <input type="text" placeholder="Cari Nama Keluarga..." x-model="searchTerm"
-                                class="w-full border rounded-md p-2">
-                        </div>
+                        <form method="GET" action="{{ route('admin.pks_schedules.index') }}">
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Cari Nama Keluarga..." class="border p-2 rounded w-1/3">
+                            <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Cari</button>
+                        </form>
 
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">

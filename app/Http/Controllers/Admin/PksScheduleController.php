@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Auth;
 class PksScheduleController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $search = $request->query('search');
 
         $query = PksSchedule::with(['leader', 'families'])
             ->where('is_active', 1)
@@ -25,10 +26,17 @@ class PksScheduleController extends Controller
             $query->where('leader_id', $user->id);
         }
 
-        $schedules = $query->paginate(10);
+        if ($search) {
+            $query->whereHas('families', function ($q) use ($search) {
+                $q->where('family_name', 'like', "%{$search}%");
+            });
+        }
+
+        $schedules = $query->paginate(10)->withQueryString();
 
         return view('admin.pks_schedules.index', compact('schedules'));
     }
+
 
 
     public function create()
