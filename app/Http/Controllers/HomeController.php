@@ -179,14 +179,15 @@ class HomeController extends Controller
             $time = Carbon::parse($s->time);
             return [
                 'id'    => $s->id,
-                'title' => $s->family ? $s->family->family_name : 'PKS',
+                'title' => $s->families->pluck('family_name')->implode(', '),
                 'start' => $date->format('Y-m-d') . 'T' . $time->format('H:i:s'),
                 'end'   => $date->format('Y-m-d') . 'T' . $time->format('H:i:s'),
                 'url'   => route('admin.pks_schedules.show', $s->id),
                 'extendedProps' => [
                     'leader'   => $s->leader ? $s->leader->name : '-',
-                    'location' => $s->family ? $s->family->family_name : '-',
+                    'location' => $s->families->pluck('family_name')->implode(', '),
                     'desc'     => $s->scripture ?? '-',
+                    'involved_members' => $s->involved_members ?? '-',
                 ],
                 'color' => '#3788d8',
             ];

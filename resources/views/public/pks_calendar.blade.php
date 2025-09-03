@@ -88,9 +88,10 @@
                     const e = info.event;
                     Swal.fire({
                         title: e.title,
-                        html: `<p><strong>Lokasi:</strong> ${e.extendedProps.location || '-'}</p>
+                        html: `<p><strong> PKS dirumah tangga:</strong> ${e.extendedProps.location || '-'}</p>
                        <p><strong>Pemimpin:</strong> ${e.extendedProps.leader || '-'}</p>
-                       <p><strong>Deskripsi:</strong> ${e.extendedProps.desc || '-'}</p>`,
+                       <p><strong>Firman Tuhan:</strong> ${e.extendedProps.desc || '-'}</p>
+                       <p><strong>Anggota Terlibat:</strong> ${e.extendedProps.involved_members || '-'}</p>`,
                         icon: 'info',
                         confirmButtonText: 'Tutup'
                     });
@@ -112,7 +113,7 @@
             document.getElementById('monthView').addEventListener('click', () => calendar.changeView(
                 'dayGridMonth'));
             document.getElementById('weekView').addEventListener('click', () => calendar.changeView(
-            'timeGridWeek'));
+                'timeGridWeek'));
             document.getElementById('dayView').addEventListener('click', () => calendar.changeView('timeGridDay'));
 
             function updateUpcomingList(loadedEvents = null) {
@@ -126,9 +127,10 @@
                     const li = document.createElement('li');
                     li.className = "p-3 border rounded hover:bg-blue-50 cursor-pointer";
                     li.innerHTML = `
-                <div class="font-semibold">${ev.title}</div>
+                <div class="font-semibold"> ${ev.title}</div>
                 <div class="text-sm text-gray-600">Pemimpin: ${ev.extendedProps.leader}</div>
                 <div class="text-sm text-gray-500">${new Date(ev.start).toLocaleDateString('id-ID', { weekday:'short', day:'numeric', month:'short', year:'numeric' })}</div>
+                <div class="text-sm text-gray-500">Anggota Terlibat: ${ev.extendedProps.involved_members}</div>
             `;
                     li.addEventListener('click', () => {
                         calendar.gotoDate(ev.start);

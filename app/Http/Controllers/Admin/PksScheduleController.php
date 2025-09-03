@@ -16,17 +16,20 @@ class PksScheduleController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if ($user->hasAnyRole(['admin', 'pendeta', 'bendahara'])) {
-            $schedules = PksSchedule::orderBy('date', 'asc')
-                ->where('is_active', 1)->paginate(10);
-        } else {
-            $schedules = PksSchedule::where('leader_id', $user->id)
-                ->where('is_active', 1)
-                ->orderBy('date', 'asc')
-                ->paginate(10);
+
+        $query = PksSchedule::with(['leader', 'families'])
+            ->where('is_active', 1)
+            ->orderBy('date', 'asc');
+
+        if (!$user->hasAnyRole(['admin', 'pendeta', 'bendahara'])) {
+            $query->where('leader_id', $user->id);
         }
+
+        $schedules = $query->paginate(10);
+
         return view('admin.pks_schedules.index', compact('schedules'));
     }
+
 
     public function create()
     {
@@ -36,18 +39,28 @@ class PksScheduleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'family_id'        => 'required|exists:families,id', // ini bisa diganti array kalau bisa pilih lebih dari satu
+            'family_id'        => 'required|exists:families,id',
             'date'             => 'required|date',
             'time'             => 'required',
-            'leader_id'        => 'required|exists:users,id',
+            'leader_id'        => [
+                'required',
+                'exists:users,id',
+                function ($attribute, $value, $fail) use ($request) {
+                    $exists = PksSchedule::where('leader_id', $value)
+                        ->where('date', $request->date)
+                        ->exists();
+                    if ($exists) {
+                        $fail('Pemimpin yang sama sudah dijadwalkan pada tanggal ini.');
+                    }
+                }
+            ],
             'scripture'        => 'nullable|string|max:255',
             'involved_members' => 'nullable|string',
-            'offering'         => 'nullable|numeric', // kalau mau simpan persembahan langsung
+            'offering'         => 'nullable|numeric',
         ]);
 
         $day_of_week = \Carbon\Carbon::parse($request->date)->format('l');
 
-        // Buat jadwal PKS
         $schedule = PksSchedule::create([
             'date'             => $request->date,
             'time'             => $request->time,
@@ -57,7 +70,7 @@ class PksScheduleController extends Controller
             'is_active'        => 1,
             'day_of_week'      => $day_of_week,
         ]);
-        // Attach keluarga ke pivot table
+
         $schedule->families()->attach($request->family_id, [
             'offering' => $request->offering ?? null,
         ]);
@@ -84,23 +97,40 @@ class PksScheduleController extends Controller
         ]);
     }
 
-
     public function update(Request $request, PksSchedule $pksSchedule)
     {
         $request->validate([
-            'activity_name' => 'required|string|max:255',
-            'day_of_week'   => 'required|string|max:50',
-            'date'          => 'required|date',
-            'time'          => 'required',
-            'location'      => 'required|string|max:255',
-            'leader_name'   => 'required|string|max:255',
+            'family_id' => 'required|exists:families,id',
+            'date' => 'required|date',
+            'time' => 'required',
+            'leader_id' => 'required|exists:users,id',
+            'scripture' => 'nullable|string|max:255',
+            'involved_members' => 'nullable|string',
+            'offering' => 'nullable|numeric',
         ]);
 
-        $pksSchedule->update($request->all());
+        $day_of_week = \Carbon\Carbon::parse($request->date)->format('l');
+
+        // Update main table
+        $pksSchedule->update([
+            'date' => $request->date,
+            'time' => $request->time,
+            'leader_id' => $request->leader_id,
+            'scripture' => $request->scripture,
+            'involved_members' => $request->involved_members,
+            'day_of_week' => $day_of_week,
+        ]);
+
+        // Sync pivot dengan offering
+        $pksSchedule->families()->sync([
+            $request->family_id => ['offering' => $request->offering ?? null]
+        ]);
 
         return redirect()->route('admin.pks_schedules.index')
             ->with('success', 'Jadwal PKS berhasil diperbarui!');
     }
+
+
 
     public function destroy(PksSchedule $pksSchedule)
     {
@@ -116,14 +146,14 @@ class PksScheduleController extends Controller
 
     public function calendarData(Request $request)
     {
-        $query = PksSchedule::with(['leader', 'family']); // relasi
+        $query = PksSchedule::with(['leader', 'families']);
 
         if ($request->filled('leader')) {
             $query->whereHas('leader', fn($q) => $q->where('name', $request->leader));
         }
 
-        if ($request->filled('family')) { // kalau family dianggap lokasi
-            $query->whereHas('family', fn($q) => $q->where('name', $request->family));
+        if ($request->filled('families')) {
+            $query->whereHas('families', fn($q) => $q->where('name', $request->family));
         }
 
         $events = $query->where('is_active', 1)->get()->map(fn($s) => [
@@ -134,11 +164,12 @@ class PksScheduleController extends Controller
             'url'   => route('admin.pks_schedules.show', $s->id),
             'extendedProps' => [
                 'leader'   => $s->leader ? $s->leader->name : '-',
-                'location' => $s->family ? $s->family->name : '-',
+                'location' => $s->families->pluck('family_name')->implode(', ') ?: '-',
                 'desc'     => $s->scripture ?? '-',
             ],
             'color' => '#3788d8',
         ]);
+
 
         return response()->json($events);
     }

@@ -40,7 +40,8 @@
                                     <option value="{{ $member->id }}"
                                         {{ old('head_member_id', $family->head_member_id) == $member->id ? 'selected' : '' }}>
                                         {{ $member->full_name }}
-                                        ({{ $member->email ?? ($member->phone_number ?? 'No Contact') }})</option>
+                                        ({{ $member->email ?? ($member->phone_number ?? 'No Contact') }})
+                                    </option>
                                 @endforeach
                             </select>
                             @error('head_member_id')

@@ -69,10 +69,9 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($schedules as $schedule)
                                     <tr>
-                                        @foreach ($schedule->families as $family)
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                {{ $family->family_name ?? 'N/A' }}
-                                        @endforeach
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            {{ $schedule->families->pluck('family_name')->implode(', ') ?: 'N/A' }}
+                                        </td>
 
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $schedule->day_of_week ?? '-' }}</td>
@@ -119,29 +118,45 @@
                             </tbody>
                         </table>
 
-                        {{-- Modal Persembahan --}}
+                        {{-- Modal Persembahan Keren + Total Rp --}}
                         <div x-show="isOpen" x-transition.opacity x-cloak
-                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                            <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6">
-                                <h3 class="text-xl font-bold mb-4">Persembahan Keluarga</h3>
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                            <div x-data="{ total: 0 }" x-init="total = families.reduce((sum, f) => sum + Number(f.offering || 0), 0)"
+                                class="bg-white rounded-2xl shadow-2xl w-full max-w-xl p-6 transform transition-transform duration-300 scale-90"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-200"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-90">
+
+                                <h3 class="text-2xl font-bold mb-4 text-center">Persembahan Keluarga</h3>
+
                                 <form @submit.prevent="submitOffering">
-                                    <template x-for="(family, index) in families" :key="index">
-                                        <div class="mb-2">
-                                            <label class="block text-sm font-medium" x-text="family.family_name"></label>
-                                            <input type="number" x-model="family.offering" min="0"
-                                                class="border rounded p-1 w-full">
-                                        </div>
-                                    </template>
-                                    <div class="flex justify-end gap-2 mt-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <template x-for="(family, index) in families" :key="index">
+                                            <div class="bg-gray-50 rounded-lg p-4 shadow hover:shadow-md transition">
+                                                <p class="font-semibold mb-2" x-text="family.family_name"></p>
+                                                <input type="number" x-model="family.offering" min="0"
+                                                    @input="total = families.reduce((sum,f)=>sum+Number(f.offering||0),0)"
+                                                    class="border rounded p-2 w-full focus:ring-blue-500 focus:border-blue-500">
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    {{-- Total Persembahan --}}
+                                    <div class="mt-4 text-right font-semibold text-lg">
+                                        Total: <span x-text="'Rp ' + total.toLocaleString('id-ID')"></span>
+                                    </div>
+
+                                    <div class="flex justify-end gap-3 mt-6">
                                         <button type="button" @click="close()"
-                                            class="px-4 py-2 bg-gray-300 rounded">Batal</button>
+                                            class="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">Batal</button>
                                         <button type="submit"
-                                            class="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+                                            class="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Simpan</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
-
                     </div>
 
                     {{-- Pagination --}}

@@ -37,8 +37,7 @@
             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
             <option value="">-- Pilih Lokasi --</option>
             @foreach ($families as $family)
-                <option value="{{ $family->id }}"
-                    {{ old('family_id', $schedule->family_id ?? '') == $family->id ? 'selected' : '' }}>
+                <option value="{{ $family->id }}" {{ $schedule->families->contains($family->id) ? 'selected' : '' }}>
                     {{ $family->family_name }}
                 </option>
             @endforeach

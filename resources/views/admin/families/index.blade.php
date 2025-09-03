@@ -41,7 +41,12 @@
                     @endif
 
                     {{-- Tabel Keluarga --}}
-                    <div class="overflow-x-auto rounded-lg border dark:border-gray-700">
+                    <div x-data="pksModal(@json($families))" class="overflow-x-auto rounded-lg border dark:border-gray-700">
+                        <div class="mb-4">
+                            <input type="text" placeholder="Cari Nama Keluarga..." x-model="searchTerm"
+                                class="w-full border rounded-md p-2">
+                        </div>
+
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
@@ -194,6 +199,7 @@
                 scripture: '',
                 involved_members: '',
 
+
                 openModal(familyId, familyName) {
                     this.family_id = familyId;
                     this.family_name = familyName || 'Family';
@@ -241,9 +247,20 @@
                             location.reload();
                         }
                     } catch (error) {
-                        console.error(error);
-                        alert('Terjadi kesalahan, silakan coba lagi.');
+                        if (error.response && error.response.status === 422) {
+                            // Ambil semua pesan error
+                            const messages = Object.values(error.response.data.errors)
+                                .flat()
+                                .join("\n");
+                            alert(messages);
+                        } else if (error.response && error.response.data.message) {
+                            // Custom validation dari controller
+                            alert(error.response.data.message);
+                        } else {
+                            alert('Terjadi kesalahan, silakan coba lagi.');
+                        }
                     }
+
                 }
             }
         }
