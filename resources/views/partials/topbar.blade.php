@@ -19,7 +19,7 @@
                      </svg>
                      <span class="sr-only">Toggle sidebar</span>
                  </button>
-                 <a href="https://flowbite.com" class="flex items-center justify-between mr-4">
+                 <a href="#" class="flex items-center justify-between mr-4">
                      <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GKS Reda
                          Pada</span>
                  </a>
@@ -67,7 +67,7 @@
                                      <div class="flex-shrink-0">
                                          {{-- Anda bisa tambahkan avatar/icon sesuai 'type' notifikasi --}}
                                          <img class="w-10 h-10 rounded-full"
-                                             src="{{ Auth::user()->profile_photo_url ?? 'https://via.placeholder.com/150/0000FF/FFFFFF?text=A' }}"
+                                             src="{{ Auth::user()->profile_photo_path ?? 'https://via.placeholder.com/150/0000FF/FFFFFF?text=A' }}"
                                              alt="User Avatar" />
                                          <div
                                              class="flex absolute justify-center items-center ml-5 -mt-5 w-4 h-4 rounded-full border border-white bg-blue-500 dark:border-gray-700">
@@ -132,12 +132,14 @@
                      id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                      <span class="sr-only">Open user menu</span>
                      <img class="w-8 h-8 rounded-full"
-                         src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
+                         src="{{ Auth::user()->profile_photo_path ? Storage::url(Auth::user()->profile_photo_path) : 'https://via.placeholder.com/150/0000FF/FFFFFF?text=A' }}"
                          alt="user photo" />
-                 </button>
-                 <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
-                     id="dropdown">
 
+                 </button>
+
+                 <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded-xl divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                     id="dropdown">
+                     <!-- Info User -->
                      <div class="py-3 px-4">
                          <span class="block text-sm font-semibold text-gray-900 dark:text-white">
                              {{ Auth::user()->name }}
@@ -146,34 +148,35 @@
                              {{ Auth::user()->email }}
                          </span>
                      </div>
-
+                     <!-- Menu Atas -->
                      <ul class="py-1 text-gray-700 dark:text-gray-300" aria-labelledby="dropdown">
                          <li>
-                             <a href="#"
+                             <a href="{{ route('profile.edit') }}"
                                  class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
-                                 My Profile
+                                 Profil Saya
                              </a>
                          </li>
                          <li>
                              <a href="#"
                                  class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
-                                 Account Settings
+                                 Pengaturan Akun
                              </a>
                          </li>
                      </ul>
+
+                     <!-- Menu Logout -->
                      <ul class="py-1 text-gray-700 dark:text-gray-300">
                          <li>
                              <form method="POST" action="{{ route('logout') }}">
                                  @csrf
                                  <button type="submit"
                                      class="w-full text-left block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-                                     Sign Out
+                                     Keluar
                                  </button>
                              </form>
                          </li>
                      </ul>
                  </div>
-
 
              </div>
          </div>

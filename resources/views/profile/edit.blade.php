@@ -1,4 +1,8 @@
-<x-app-layout>
+@extends('layouts.admin.app')
+
+@section('title', '| Edit User')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Profile') }}
@@ -26,4 +30,47 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+    <script>
+        function profilePhotoCrop() {
+            return {
+                preview: '{{ $user->profile_photo_path ? Storage::url($user->profile_photo_path) : '' }}',
+                cropper: null,
+                croppedImage: null,
+
+                loadImage(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    this.preview = URL.createObjectURL(file);
+
+                    this.$nextTick(() => {
+                        const image = document.getElementById('cropper-image');
+                        if (this.cropper) this.cropper.destroy();
+
+                        this.cropper = new Cropper(image, {
+                            aspectRatio: 1, // kotak / bulat
+                            viewMode: 1,
+                            autoCropArea: 0.8,
+                            background: false,
+                            movable: true,
+                            zoomable: true,
+                            rotatable: false,
+                            scalable: false,
+                            crop: () => {
+                                // update hidden input setiap user geser crop
+                                const canvas = this.cropper.getCroppedCanvas({
+                                    width: 200,
+                                    height: 200,
+                                });
+                                this.croppedImage = canvas.toDataURL('image/jpeg');
+                            }
+                        });
+                    });
+                }
+            }
+        }
+    </script>
+
+
+
+@endsection

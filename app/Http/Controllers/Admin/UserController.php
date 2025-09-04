@@ -54,16 +54,21 @@ class UserController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email',
                 'password' => 'required|string|min:8|confirmed',
-                'roles' => 'required|array', // Harus memilih setidaknya satu peran
-                'roles.*' => 'exists:roles,id', // Pastikan ID peran valid
+                'roles' => 'required|array',
+                'roles.*' => 'exists:roles,id',
+                'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
-
+            $photoPath = null;
+            if ($request->hasFile('profile_photo')) {
+                $photoPath = $request->file('profile_photo')->store('profile_photos', 'public');
+            }
+            // Buat user baru
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
+                'profile_photo_path' => $photoPath,
             ]);
-
             $user->syncRoles(array_map('intval', $validatedData['roles']));
 
             return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan!');

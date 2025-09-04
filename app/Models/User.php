@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_photo_path',
     ];
 
     /**
@@ -76,4 +77,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Expense::class, 'recorded_by_user_id');
     }
+
+
+    // public function getProfilePhotoUrlAttribute()
+    // {
+    //     return $this->profile_photo_path
+    //         ? asset('storage/' . $this->profile_photo_path)
+    //         : asset('images/default-avatar.png');
+    // }
 }
