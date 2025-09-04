@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
             ExpenseSeeder::class,
             FamilySeeder::class,
             PksScheduleSeeder::class,
-            // ChurchSettingSeeder::class,
+            ChurchSettingSeeder::class,
             // AuctionSeeder::class,
         ]);
     }
