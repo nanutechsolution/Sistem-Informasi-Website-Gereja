@@ -11,9 +11,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
                     <h3 class="text-2xl font-bold mb-6">Laporan Keuangan Gereja</h3>
-
                     {{-- Filter Tanggal --}}
                     <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-sm">
                         <form action="{{ route('admin.finances.reports') }}" method="GET"
