@@ -92,8 +92,6 @@
                     @endforeach
                 </ul>
             </li>
-
-
             @php
                 $jemaatMenu = [
                     ['route' => 'admin.members.index', 'label' => 'Data Jemaat', 'pattern' => 'admin/members*'],
@@ -111,7 +109,7 @@
                     ['route' => 'admin.events.index', 'label' => 'Acara Lainnya', 'pattern' => 'admin/events*'],
                 ];
 
-                // cek jika salah satu submenu aktif
+                // cek jika salah satu submenu aktif (wildcard)
                 $isActive = collect($jemaatMenu)->contains(fn($item) => request()->is($item['pattern']));
             @endphp
 
@@ -119,33 +117,36 @@
                 <button type="button"
                     class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group
         {{ $isActive ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}"
-                    aria-controls="dropdown-sales" data-collapse-toggle="dropdown-sales">
+                    aria-controls="dropdown-jemaat" data-collapse-toggle="dropdown-jemaat">
                     <svg class="w-6 h-6 text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z" />
                     </svg>
 
                     <span class="flex-1 ml-3 text-left whitespace-nowrap">Jemaat & Pelayanan</span>
-                    <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
+                    <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
 
-                <ul id="dropdown-sales" class="{{ $isActive ? 'block' : 'hidden' }} py-2 space-y-2">
+                <ul id="dropdown-jemaat" class="{{ $isActive ? 'block' : 'hidden' }} py-2 space-y-2">
                     @foreach ($jemaatMenu as $item)
+                        @php
+                            $isItemActive = request()->is($item['pattern']);
+                        @endphp
                         <li>
                             <a href="{{ route($item['route']) }}"
                                 class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg
-                    {{ request()->is($item['pattern']) ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    {{ $isItemActive ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                                 {{ $item['label'] }}
                             </a>
                         </li>
                     @endforeach
                 </ul>
             </li>
+
 
             @php
                 $keuanganMenu = [
@@ -156,9 +157,12 @@
                     ['route' => 'admin.finances.reports', 'label' => 'Laporan Keuangan'],
                 ];
 
-                // cek jika salah satu route aktif
-                $isActive = collect($keuanganMenu)->contains(fn($item) => request()->routeIs($item['route']));
+                // cek jika salah satu route resource aktif (wildcard)
+                $isActive = collect($keuanganMenu)->contains(function ($item) {
+                    return request()->routeIs(str_replace('.index', '.*', $item['route']));
+                });
             @endphp
+
             <li>
                 <button type="button"
                     class="flex items-center p-2 w-full text-base font-medium rounded-lg transition duration-75 group
@@ -169,7 +173,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3m0 0c1.657 0 3-1.343 3-3s-1.343-3-3-3m0 6v2m0-8v2m9 3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-
                     <span class="flex-1 ml-3 text-left whitespace-nowrap">Keuangan</span>
                     <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
@@ -178,13 +181,15 @@
                             clip-rule="evenodd"></path>
                     </svg>
                 </button>
-
                 <ul id="dropdown-authentication" class="{{ $isActive ? 'block' : 'hidden' }} py-2 space-y-2">
                     @foreach ($keuanganMenu as $item)
+                        @php
+                            $isItemActive = request()->routeIs(str_replace('.index', '.*', $item['route']));
+                        @endphp
                         <li>
                             <a href="{{ route($item['route']) }}"
                                 class="flex items-center p-2 pl-11 w-full text-base font-medium rounded-lg
-                    {{ request()->routeIs($item['route']) ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                {{ $isItemActive ? 'bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                                 {{ $item['label'] }}
                             </a>
                         </li>
