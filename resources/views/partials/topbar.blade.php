@@ -111,22 +111,6 @@
                          </div>
                      </a>
                  </div>
-                 <button type="button" onclick="toggleDarkMode()"
-                     class="p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 transition">
-                     <span class="sr-only">Toggle dark mode</span>
-                     <!-- 🌞 Light Mode Icon -->
-                     <svg id="icon-sun" class="w-6 h-6 hidden text-gray-600 " fill="currentColor" viewBox="0 0 20 20">
-                         <path
-                             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm0 13a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm7-5a1 1 0 100 2h1a1 1 0 100-2h-1zM3 10a1 1 0 100 2H2a1 1 0 100-2h1zm11.657-5.657a1 1 0 011.414 0L17.414 5a1 1 0 01-1.414 1.414L14.243 5.757a1 1 0 010-1.414zM5.757 14.243a1 1 0 011.414 0L8.172 17a1 1 0 01-1.414 1.414L5.757 15.657a1 1 0 010-1.414zm0-8.486a1 1 0 010 1.414L4.343 6.414A1 1 0 015.757 5zM14.243 14.243a1 1 0 010 1.414l1.414 1.414A1 1 0 0114.243 14.243zM10 5a5 5 0 100 10A5 5 0 0010 5z">
-                         </path>
-                     </svg>
-
-                     <!-- 🌙 Dark Mode Icon -->
-                     <svg id="icon-moon" class="w-6 h-6 hidden text-white" fill="currentColor" viewBox="0 0 20 20">
-                         <path fill-rule="evenodd" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 0010.586 10.586z"
-                             clip-rule="evenodd" />
-                     </svg>
-                 </button>
                  <button type="button"
                      class="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                      id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
