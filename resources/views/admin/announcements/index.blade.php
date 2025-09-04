@@ -26,7 +26,6 @@
                             <span>Tambah Pengumuman</span>
                         </a>
                     </div>
-
                     {{-- Flash Success --}}
                     @if (session('success'))
                         <div class="bg-green-100 dark:bg-green-700 border border-green-400 dark:border-green-500 text-green-700 dark:text-white px-4 py-3 rounded relative mb-4"
