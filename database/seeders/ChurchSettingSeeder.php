@@ -24,10 +24,10 @@ class ChurchSettingSeeder extends Seeder
                     untuk menjadi terang bagi komunitas kami.',
             'visi' => 'Menjadi gereja yang hidup, dinamis, dan relevan, yang memancarkan kasih Kristus kepada semua orang di
                     Sumba dan sekitarnya.',
-            'misi' => '1. Memberitakan Injil Yesus Kristus kepada semua orang di Sumba.
-                    2. Membangun komunitas iman yang kuat dan saling mendukung.
-                    3. Melayani kebutuhan rohani, sosial, dan fisik masyarakat di sekitar gereja.
-                    4. Mengembangkan kepemimpinan gereja yang efektif dan berkelanjutan.',
+            'misi' => 'Memberitakan Injil Yesus Kristus kepada semua orang di Sumba.
+                    Membangun komunitas iman yang kuat dan saling mendukung.
+                    Melayani kebutuhan rohani, sosial, dan fisik masyarakat di sekitar gereja.
+                    Mengembangkan kepemimpinan gereja yang efektif dan berkelanjutan.',
             'ayat_firman_sumber' => 'Yohanes 13:34-35',
             'ayat_firman' => 'Aku memberikan perintah baru kepada kamu, yaitu supaya kamu saling mengasihi; sama seperti Aku telah
                     mengasihi kamu, demikian pula kamu harus saling mengasihi. Dengan demikian semua orang akan tahu bahwa kamu adalah
