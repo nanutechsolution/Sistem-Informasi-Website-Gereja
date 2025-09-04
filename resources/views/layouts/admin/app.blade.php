@@ -11,7 +11,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
-
+    {{-- <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script> --}}
     @livewireStyles
     <script>
         function toggleDarkMode() {
@@ -43,7 +44,6 @@
         </main>
     </div>
     @stack('scripts')
-
 </body>
 
 </html>

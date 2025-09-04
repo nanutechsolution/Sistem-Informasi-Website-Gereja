@@ -6,8 +6,8 @@
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center space-x-2">
                     <img src="https://flowbite.s3.amazonaws.com/logo.svg" class="mr-3 h-8" alt="Flowbite Logo" />
-                    <span class="text-xl font-bold text-gray-800 hover:text-blue-700 transition duration-300">GKS Jemaat
-                        Reda Pada</span>
+                    <span
+                        class="text-xl font-bold text-gray-800 hover:text-blue-700 transition duration-300">{{ $churchName }}</span>
                 </a>
             </div>
             <div class="hidden md:flex space-x-8">
@@ -117,12 +117,20 @@
         {{ request()->routeIs('public.contact') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
                 Kontak
             </a>
+            @auth('web')
+                <a href="{{ route('dashboard') }}"
+                    class="block px-3 py-2 rounded-md text-base font-medium
+       {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                    Dashboard
+                </a>
+            @else
+                <a href="{{ route('login') }}"
+                    class="block px-3 py-2 rounded-md text-base font-medium
+       {{ request()->routeIs('login') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                    Login Admin
+                </a>
+            @endauth
 
-            <a href="{{ route('login') }}"
-                class="block px-3 py-2 rounded-md text-base font-medium
-        {{ request()->routeIs('login') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                Login Admin
-            </a>
         </div>
 
     </div>

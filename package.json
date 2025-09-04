@@ -11,7 +11,7 @@
         "@tailwindcss/vite": "^4.1.11",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
-        "axios": "^1.8.2",
+        "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.31",
@@ -19,6 +19,7 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
+        "aos": "^2.3.4",
         "chart.js": "^4.5.0",
         "flowbite": "^3.1.2"
     }

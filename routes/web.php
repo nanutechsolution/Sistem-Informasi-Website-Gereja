@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PksScheduleController;
+use App\Http\Controllers\Admin\SettingController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- PERBARUI INI
 
@@ -53,7 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten|majelis'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin|sekretarais|bendahara|editor_konten|majelis'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard Admin yang sebenarnya
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('announcements', AnnouncementController::class);
@@ -113,6 +114,10 @@ Route::middleware(['auth', 'role:admin|sekretaris|bendahara|editor_konten|majeli
 
     Route::get('pks_schedules/{schedule}/families', [PksScheduleController::class, 'getFamilies']);
     Route::post('pks_schedules/{schedule}/update-offering', [PksScheduleController::class, 'updateOffering']);
+
+
+    Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 // Rute halaman publik lainnya (akan kita tambahkan nanti)

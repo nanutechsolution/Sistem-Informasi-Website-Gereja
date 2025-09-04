@@ -91,6 +91,7 @@ class DatabaseSeeder extends Seeder
             ExpenseSeeder::class, // Membutuhkan User, ExpenseCategory
             FamilySeeder::class,
             PksScheduleSeeder::class, // Membutuhkan User, ExpenseCategory
+            ChurchSettingSeeder::class, // Membutuhkan User
         ]);
     }
 }

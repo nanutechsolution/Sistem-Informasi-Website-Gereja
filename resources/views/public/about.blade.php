@@ -3,42 +3,70 @@
 @section('title', '| Tentang Kami')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8" data-aos="fade-up" data-aos-duration="800">
-        <h1 class="text-4xl font-bold text-center mb-10" data-aos="fade-down" data-aos-delay="100">
-            Tentang Gereja Kristen Sumba Jemaat Reda Pada
-        </h1>
-        <div class="bg-white rounded-lg shadow-lg p-6 lg:p-8" data-aos="zoom-in" data-aos-delay="200">
-            <p class="text-lg text-gray-700 leading-relaxed mb-4" data-aos="fade-up" data-aos-delay="300">
-                Selamat datang di Gereja Kristen Sumba Jemaat Reda Pada. Kami adalah komunitas iman yang berakar kuat pada
-                nilai-nilai kasih, pelayanan, dan kebersamaan, yang melayani Tuhan dan sesama di tanah Sumba.
-            </p>
+    <div class="bg-gradient-to-b from-blue-50 to-white min-h-screen py-16">
+        <div class="container mx-auto px-4">
+            <!-- Header -->
+            <div class="text-center mb-16" data-aos="fade-down" data-aos-duration="800">
+                <h1 class="text-5xl sm:text-6xl font-extrabold text-blue-900 mb-4">
+                    Tentang {{ $churchName }}
+                </h1>
+                <p class="text-xl sm:text-2xl text-blue-700 opacity-80">
+                    Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan
+                </p>
+            </div>
 
-            <h2 class="text-2xl font-semibold text-gray-800 mb-3" data-aos="fade-right" data-aos-delay="400">Visi Kami</h2>
-            <p class="text-gray-700 leading-relaxed mb-4" data-aos="fade-left" data-aos-delay="500">
-                Menjadi gereja yang bertumbuh dalam iman, menjadi berkat bagi sesama, dan memuliakan nama Tuhan di Sumba dan
-                seluruh dunia.
-            </p>
+            <!-- Content Card -->
+            <div class="bg-white shadow-2xl rounded-3xl p-10 lg:p-16 space-y-12">
+                <!-- Intro -->
+                <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+                    <p class="text-gray-700 text-lg sm:text-xl leading-relaxed">
+                        Selamat datang di <span class="font-semibold">{{ $churchName }}</span>.
+                        Kami adalah komunitas iman yang berakar kuat pada nilai-nilai kasih, pelayanan, dan kebersamaan,
+                        yang melayani Tuhan dan sesama di tanah Sumba.
+                    </p>
+                </div>
 
-            <h2 class="text-2xl font-semibold text-gray-800 mb-3" data-aos="fade-right" data-aos-delay="600">Misi Kami</h2>
-            <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4" data-aos="fade-up" data-aos-delay="700">
-                <li>Menyelenggarakan ibadah yang hidup dan bermakna.</li>
-                <li>Membina jemaat untuk bertumbuh dalam pengenalan akan Kristus.</li>
-                <li>Melaksanakan pelayanan diakonia untuk kesejahteraan masyarakat.</li>
-                <li>Mewartakan Injil Kristus melalui kesaksian hidup dan perkataan.</li>
-            </ul>
+                <!-- Visi -->
+                <div class="space-y-4" data-aos="fade-right" data-aos-delay="200">
+                    <h2 class="text-3xl font-bold text-blue-900 border-l-4 border-yellow-400 pl-4">
+                        Visi Kami
+                    </h2>
+                    <p class="text-gray-700 text-lg leading-relaxed">
+                        {{ $visi }}
+                    </p>
+                </div>
 
-            <h2 class="text-2xl font-semibold text-gray-800 mb-3" data-aos="fade-right" data-aos-delay="800">Sejarah Singkat
-            </h2>
-            <p class="text-gray-700 leading-relaxed" data-aos="fade-up" data-aos-delay="900">
-                Didirikan pada tahun [Tahun Pendirian], Gereja Kristen Sumba Jemaat Reda Pada telah menjadi pilar spiritual
-                bagi banyak keluarga di wilayah ini. Kami terus berkomitmen untuk menjadi terang dan garam di tengah-tengah
-                komunitas kami.
-            </p>
+                <!-- Misi -->
+                <div class="space-y-4" data-aos="fade-left" data-aos-delay="300">
+                    <h2 class="text-3xl font-bold text-blue-900 border-l-4 border-yellow-400 pl-4">
+                        Misi Kami
+                    </h2>
+                    <ul class="list-decimal list-inside text-gray-700 text-lg leading-relaxed space-y-2">
+                        @foreach (explode("\n", $misi) as $misiItem)
+                            <li>{{ $misiItem }}</li>
+                        @endforeach
+                    </ul>
+                </div>
 
-            <div class="mt-8 text-center" data-aos="zoom-in" data-aos-delay="1000">
-                <p class="text-xl font-semibold text-blue-700">"Sebab di mana dua atau tiga orang berkumpul dalam Nama-Ku,
-                    di situ Aku ada di tengah-tengah mereka."</p>
-                <p class="text-lg text-gray-600">- Matius 18:20</p>
+                <!-- Sejarah Singkat -->
+                <div class="space-y-4" data-aos="fade-up" data-aos-delay="400">
+                    <h2 class="text-3xl font-bold text-blue-900 border-l-4 border-yellow-400 pl-4">
+                        Sejarah Singkat
+                    </h2>
+                    <p class="text-gray-700 text-lg leading-relaxed">
+                        {{ $sejarah_singkat }}
+                    </p>
+                </div>
+
+                <!-- Ayat Firman -->
+                <div class="mt-12 text-center bg-blue-50 rounded-2xl py-10 px-6" data-aos="zoom-in" data-aos-delay="500">
+                    <p class="text-2xl sm:text-3xl font-semibold text-blue-800 italic mb-4">
+                        "{{ $ayat_firman }}"
+                    </p>
+                    <p class="text-lg sm:text-xl text-blue-700 font-medium">
+                        - {{ $ayat_firman_sumber }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>

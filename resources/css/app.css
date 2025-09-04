@@ -21,3 +21,22 @@ html, body {
 .fc .fc-button-active {
     @apply bg-blue-700;
 }
+
+
+.ql-toolbar.ql-snow {
+    background-color: #2196F3; /* biru toolbar */
+    color: white;
+    border-radius: 0.375rem 0.375rem 0 0; /* rounded top */
+}
+.ql-container.ql-snow {
+    border-top: none;
+    background-color: #E3F2FD; /* biru muda isi editor */
+}
+
+   .relative iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }

@@ -11,14 +11,20 @@
         <div
             class="relative z-10 flex items-center justify-center h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div>
+                @php
+                    $displayName = $churchName
+                        ? str_replace('GKS', 'Gereja Kristen Sumba', $churchName)
+                        : 'Gereja Kristen Sumba Jemaat Reda Pada';
+                @endphp
+
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4" data-aos="fade-up">
                     Selamat Datang di <br>
-                    <span class="text-yellow-300">Gereja Kristen Sumba Jemaat Reda Pada</span>
+                    <span class="text-yellow-300">{{ $displayName }}</span>
                 </h1>
-
                 <p class="text-lg sm:text-xl mb-8 opacity-90" data-aos="fade-up" data-aos-delay="200">
-                    Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan.
+                    {{ $churchSettings->motto ?? 'Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan.' }}
                 </p>
+
                 <div class="space-x-4" data-aos="fade-up" data-aos-delay="400">
                     <a href="{{ route('public.about') }}"
                         class="inline-block bg-yellow-400 text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
