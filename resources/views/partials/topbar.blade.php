@@ -60,15 +60,14 @@
                          class="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-600 dark:text-gray-300">
                          Notifications
                      </div>
+
                      <div>
                          @if (auth()->check() && auth()->user()->unreadNotificationsCustom->isNotEmpty())
                              @foreach (auth()->user()->unreadNotificationsCustom->take(5) as $notification)
-                                 {{-- Tampilkan 5 notifikasi belum dibaca --}}
                                  <a href="{{ $notification->link ?? route('admin.notifications.index') }}"
                                      class="flex py-3 px-4 border-b hover:bg-gray-100 dark:hover:bg-gray-600 dark:border-gray-600
                                       {{ $notification->is_read ? 'opacity-75' : 'bg-blue-50 dark:bg-gray-600' }}"
-                                     @if (!$notification->is_read) {{-- Saat diklik, tandai sudah dibaca lalu redirect. event.preventDefault() mencegah navigasi langsung --}}
-                                   @click.prevent="markNotificationAsReadAndRedirect('{{ $notification->id }}', '{{ $notification->link ?? route('admin.notifications.index') }}')" @endif>
+                                     @if (!$notification->is_read) @click.prevent="markNotificationAsReadAndRedirect('{{ $notification->id }}', '{{ $notification->link ?? route('admin.notifications.index') }}')" @endif>
                                      <div class="flex-shrink-0">
                                          <img class="w-10 h-10 rounded-full"
                                              src="{{ Storage::url(Auth::user()->profile_photo_path) ?? 'https://via.placeholder.com/150/0000FF/FFFFFF?text=A' }}"
@@ -120,7 +119,7 @@
                      id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                      <span class="sr-only">Open user menu</span>
                      <img class="w-8 h-8 rounded-full"
-                         src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
+                         src="{{ !empty(Auth::user()->profile_photo_path) ? Storage::url(Auth::user()->profile_photo_path) : 'https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png' }}"
                          alt="user photo" />
                  </button>
                  <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded-xl divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -142,14 +141,7 @@
                                  Profil Saya
                              </a>
                          </li>
-                         <li>
-                             <a href="#"
-                                 class="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
-                                 Pengaturan Akun
-                             </a>
-                         </li>
                      </ul>
-
                      <!-- Menu Logout -->
                      <ul class="py-1 text-gray-700 dark:text-gray-300">
                          <li>
