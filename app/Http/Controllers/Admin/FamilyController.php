@@ -15,11 +15,26 @@ class FamilyController extends Controller
     /**
      * Tampilkan daftar semua keluarga.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Eager load headMember dan anggota keluarga
-        $families = Family::with('headMember', 'members')->latest()->paginate(10);
+        $search = $request->input('search');
+
+        $families = Family::with('headMember', 'members')
+            ->when($search, function ($query, $search) {
+                $query->where('family_name', 'like', "%{$search}%")
+                    ->orWhereHas('headMember', function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('members', function ($q) use ($search) {
+                        $q->where('full_name', 'like', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString(); // <-- penting biar pagination bawa query search
+
         $users = User::all();
+
         return view('admin.families.index', compact('families', 'users'));
     }
 

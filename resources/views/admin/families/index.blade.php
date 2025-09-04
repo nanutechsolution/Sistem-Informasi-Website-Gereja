@@ -17,7 +17,7 @@
                     <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
                         <h3 class="text-2xl font-extrabold text-gray-800 dark:text-white">Daftar Keluarga</h3>
                         <a href="{{ route('admin.families.create') }}"
-                            class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all">
+                            class="inline-flex items-center gap-2 text-xs bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -25,7 +25,6 @@
                             Tambah Keluarga Baru
                         </a>
                     </div>
-
                     {{-- Flash Messages --}}
                     @if (session('success'))
                         <div
@@ -40,14 +39,34 @@
                         </div>
                     @endif
 
-                    {{-- Tabel Keluarga --}}
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                            <form method="GET" action="{{ route('admin.families.index') }}" class="flex w-full md:w-auto">
+                                {{-- Input Search --}}
+                                <input type="text" name="search" value="{{ request('search') }}"
+                                    placeholder="Cari keluarga..."
+                                    class="flex-grow md:w-64 px-4 py-2 text-sm rounded-l-lg border border-gray-300 dark:border-gray-600 
+                   bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" />
+                                {{-- Tombol Cari --}}
+                                <button type="submit"
+                                    class="px-4 py-2 text-sm font-medium rounded-r-lg bg-blue-600 text-white hover:bg-blue-700 
+                   focus:ring-2 focus:ring-blue-500 transition-all">
+                                    Cari
+                                </button>
+                                {{-- Tombol Reset --}}
+                                @if (request('search'))
+                                    <a href="{{ route('admin.families.index') }}"
+                                        class="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-gray-200 text-gray-700 
+                       hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 
+                       focus:ring-2 focus:ring-gray-400 transition-all">
+                                        Reset
+                                    </a>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
                     <div x-data="pksModal(@json($families))" class="overflow-x-auto rounded-lg border dark:border-gray-700">
-                        <form method="GET" action="{{ route('admin.pks_schedules.index') }}">
-                            <input type="text" name="search" value="{{ request('search') }}"
-                                placeholder="Cari Nama Keluarga..." class="border p-2 rounded w-1/3">
-                            <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">Cari</button>
-                        </form>
-
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-50 dark:bg-gray-700">
                                 <tr>
