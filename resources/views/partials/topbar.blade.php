@@ -69,11 +69,9 @@
                                       {{ $notification->is_read ? 'opacity-75' : 'bg-blue-50 dark:bg-gray-600' }}"
                                      @if (!$notification->is_read) {{-- Saat diklik, tandai sudah dibaca lalu redirect. event.preventDefault() mencegah navigasi langsung --}}
                                    @click.prevent="markNotificationAsReadAndRedirect('{{ $notification->id }}', '{{ $notification->link ?? route('admin.notifications.index') }}')" @endif>
-                                     {{-- Konten Notifikasi (disesuaikan agar lebih relevan dengan data kita) --}}
                                      <div class="flex-shrink-0">
-                                         {{-- Anda bisa tambahkan avatar/icon sesuai 'type' notifikasi --}}
                                          <img class="w-10 h-10 rounded-full"
-                                             src="{{ Auth::user()->profile_photo_url ?? 'https://via.placeholder.com/150/0000FF/FFFFFF?text=A' }}"
+                                             src="{{ Storage::url(Auth::user()->profile_photo_url) ?? 'https://via.placeholder.com/150/0000FF/FFFFFF?text=A' }}"
                                              alt="User Avatar" />
                                          <div
                                              class="flex absolute justify-center items-center ml-5 -mt-5 w-4 h-4 rounded-full border border-white bg-blue-500 dark:border-gray-700">
