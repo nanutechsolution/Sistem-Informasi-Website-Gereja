@@ -64,4 +64,12 @@ class Member extends Model
     {
         return $this->hasMany(EventAttendance::class);
     }
+
+    /**
+     * Get the auction transactions for the member.
+     */
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(AuctionTransaction::class);
+    }
 }

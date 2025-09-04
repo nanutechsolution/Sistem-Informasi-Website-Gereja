@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AnnouncementController;
+use App\Http\Controllers\Admin\AuctionItemController;
+use App\Http\Controllers\Admin\AuctionTransactionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
@@ -115,11 +117,19 @@ Route::middleware(['auth', 'role:admin|sekretarais|bendahara|editor_konten|majel
     Route::get('pks_schedules/{schedule}/families', [PksScheduleController::class, 'getFamilies']);
     Route::post('pks_schedules/{schedule}/update-offering', [PksScheduleController::class, 'updateOffering']);
 
-
     Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+    // Rute untuk Manajemen Barang Lelang
+    Route::resource('auction_items', AuctionItemController::class);
+    // Rute untuk Pencatatan dan Laporan Transaksi
+    Route::get('auction-transactions', [AuctionTransactionController::class, 'index'])->name('auction-transactions.index');
+    Route::post('auction-transactions', [AuctionTransactionController::class, 'store'])->name('auction-transactions.store');
+    Route::post('auction-transactions/{transaction}/payments', [AuctionTransactionController::class, 'recordPayment'])->name('auction-transactions.recordPayment');
+    Route::get('auction-transactions/report', [AuctionTransactionController::class, 'getReport'])->name('auction-transactions.report');
+    Route::get('auction-transactions/{transaction}/history', [AuctionTransactionController::class, 'showPaymentHistory']);
+    // Route untuk Laporan Keuangan Mingguan
+    Route::get('financial-report', [FinanceReportController::class, 'weeklyReport'])->name('financial-report');
 });
-
 // Rute halaman publik lainnya (akan kita tambahkan nanti)
 Route::get('/about', function () {
     return view('public.about');

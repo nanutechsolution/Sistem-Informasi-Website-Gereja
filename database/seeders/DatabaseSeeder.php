@@ -87,11 +87,12 @@ class DatabaseSeeder extends Seeder
             GalleryAlbumSeeder::class, // Membuat album dan media di dalamnya
 
             // Transaksi (Membutuhkan User, Categories)
-            IncomeSeeder::class, // Membutuhkan User, IncomeCategory
-            ExpenseSeeder::class, // Membutuhkan User, ExpenseCategory
+            IncomeSeeder::class,
+            ExpenseSeeder::class,
             FamilySeeder::class,
-            PksScheduleSeeder::class, // Membutuhkan User, ExpenseCategory
-            ChurchSettingSeeder::class, // Membutuhkan User
+            PksScheduleSeeder::class,
+            // ChurchSettingSeeder::class,
+            // AuctionSeeder::class,
         ]);
     }
 }

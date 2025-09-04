@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AuctionPayment;
 use Illuminate\Http\Request;
 use App\Models\Income;
 use App\Models\Expense;
+use App\Models\IncomeCategory;
+use App\Models\PksSchedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -134,5 +137,56 @@ class FinanceReportController extends Controller
         }
 
         return $data;
+    }
+
+    public function weeklyReport()
+    {
+        // --- Tanggal ---
+        $thisWeekStart = Carbon::now()->startOfWeek(Carbon::MONDAY);
+        $thisWeekEnd = Carbon::now()->endOfWeek(Carbon::SUNDAY);
+        $lastWeekStart = Carbon::now()->subWeek()->startOfWeek(Carbon::MONDAY);
+        $lastWeekEnd = Carbon::now()->subWeek()->endOfWeek(Carbon::SUNDAY);
+
+        // --- Persembahan ASM Minggu Ini ---
+        $asmCategoryId = Income::whereHas('category', fn($q) => $q->where('name', 'Anak Sekolah Minggu'))->pluck('income_category_id')->first();
+        $asmThisWeek = $asmCategoryId
+            ? Income::where('income_category_id', $asmCategoryId)
+            ->whereBetween('transaction_date', [$thisWeekStart, $thisWeekEnd])
+            ->get()
+            : collect();
+
+        // --- Persembahan Orang Dewasa Minggu Lalu ---
+        $adultCategoryId = Income::whereHas('category', fn($q) => $q->where('name', 'Persembahan Mingguan'))->pluck('income_category_id')->first();
+        $adultLastWeek = $adultCategoryId
+            ? Income::where('income_category_id', $adultCategoryId)
+            ->whereBetween('transaction_date', [$lastWeekStart, $lastWeekEnd])
+            ->get()
+            : collect();
+
+        // --- Persembahan PKS Minggu Lalu ---
+        $pksLastWeek = PksSchedule::with('families')
+            ->whereBetween('date', [$lastWeekStart, $lastWeekEnd])
+            ->get();
+        // --- Pengeluaran (opsional) ---
+        // $expensesLastWeek = Expense::whereBetween('transaction_date', [$lastWeekStart, $lastWeekEnd])->get();
+        // --- Total pembayaran lelang minggu lalu ---
+        $auctionPaymentsLastWeek = AuctionPayment::whereBetween('payment_date', [$lastWeekStart, $lastWeekEnd])
+            ->sum('amount_paid');
+
+        // --- Ambil detail pembayaran lelang minggu lalu ---
+        $auctionPaymentsDetailLastWeek = AuctionPayment::with('transaction') // pastikan model AuctionPayment punya relasi 'transaction'
+            ->whereBetween('payment_date', [$lastWeekStart, $lastWeekEnd])
+            ->get();
+        return view('admin.finances.reports.weekly-financial', compact(
+            'asmThisWeek',
+            'adultLastWeek',
+            'pksLastWeek',
+            'thisWeekStart',
+            'thisWeekEnd',
+            'lastWeekStart',
+            'lastWeekEnd',
+            'auctionPaymentsLastWeek',
+            'auctionPaymentsDetailLastWeek'
+        ));
     }
 }

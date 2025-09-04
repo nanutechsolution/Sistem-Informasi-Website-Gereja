@@ -197,34 +197,71 @@
                 </ul>
             </li>
         </ul>
-        <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
-            <li>
-                <a href="{{ route('admin.users.index') }}"
-                    class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group {{ request()->is('admin/users*') ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-grey-600" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
+        @php
+            $menuItems = [
+                [
+                    'route' => 'admin.auction_items.index',
+                    'label' => 'Manajemen Lelang',
+                    'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-grey-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6h6m-6 0v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h6m6-6a4 4 0 100-8 4 4 0 000 8z" />
-                    </svg>
+                              d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6h6m-6 0v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h6m6-6a4 4 0 100-8 4 4 0 000 8z"/>
+                    </svg>',
+                ],
+                [
+                    'route' => 'admin.auction-transactions.index',
+                    'label' => 'Manajemen Transaksi Lelang',
+                    'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-grey-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6h6m-6 0v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h6m6-6a4 4 0 100-8 4 4 0 000 8z"/>
+                    </svg>',
+                ],
+                [
+                    'route' => 'admin.auction-transactions.report',
+                    'label' => 'Laporan Pembayaran Mingguan',
+                    'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-grey-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6h6m-6 0v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h6m6-6a4 4 0 100-8 4 4 0 000 8z"/>
+                    </svg>',
+                ],
+                [
+                    'route' => 'admin.financial-report',
+                    'label' => 'Laporan Mingguan',
+                    'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-grey-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6h6m-6 0v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h6m6-6a4 4 0 100-8 4 4 0 000 8z"/>
+                    </svg>',
+                ],
+                [
+                    'route' => 'admin.users.index',
+                    'label' => 'Manajemen Pengguna',
+                    'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-grey-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M17 20h5v-2a4 4 0 00-4-4h-1m-6 6h6m-6 0v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2h6m6-6a4 4 0 100-8 4 4 0 000 8z"/>
+                    </svg>',
+                ],
+                [
+                    'route' => 'admin.settings.edit',
+                    'label' => 'Pengaturan Sistem',
+                    'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-500 group-hover:text-gray-900" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
+                    </svg>',
+                ],
+            ];
+        @endphp
 
-                    <span class="ml-3"> Manajemen Pengguna</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.settings.edit') }}"
-                    class="{{ request()->is('admin/settings*') ? 'bg-gray-100 dark:bg-gray-700' : '' }} flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                    <svg aria-hidden="true"
-                        class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
-                        </path>
-                    </svg>
-                    <span class="ml-3">Pengaturan Sistem</span>
-                </a>
-            </li>
-
+        <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
+            @foreach ($menuItems as $item)
+                <li>
+                    <a href="{{ route($item['route']) }}"
+                        class="{{ request()->is(str_replace('.', '-', $item['route']) . '*') ? 'bg-gray-100 dark:bg-gray-700' : '' }}
+                      flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
+                        {!! $item['icon'] !!}
+                        <span class="ml-3">{{ $item['label'] }}</span>
+                    </a>
+                </li>
+            @endforeach
         </ul>
+
     </div>
     <div
         class="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-800 z-20">
