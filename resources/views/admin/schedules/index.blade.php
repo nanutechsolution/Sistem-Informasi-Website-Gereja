@@ -15,7 +15,6 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-3">
                         <h3 class="text-2xl font-bold">Daftar Jadwal</h3>
-
                         <a href="{{ route('admin.schedules.create') }}"
                             class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition transform hover:scale-95">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
