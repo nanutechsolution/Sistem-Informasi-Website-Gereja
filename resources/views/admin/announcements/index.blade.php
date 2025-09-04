@@ -11,25 +11,21 @@
 
     <div class="py-4">
         <div class="w-full px-0">
-
             <div class="bg-white dark:bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold sm:text-base">Daftar Pengumuman</h3>
-                            <a href="{{ route('admin.announcements.create') }}"
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center 
-                  text-sm sm:text-xs sm:px-2 sm:py-1 transition hover:scale-95">
-                                <svg class="w-5 h-5 mr-2 sm:mr-1 sm:w-4 sm:h-4" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                <span class="sm:text-[10px]">Tambah Pengumuman</span>
-                            </a>
-                        </div>
-                    </div>
+                    <div class="flex flex-col md:flex-row md:justify-between items-start md:items-center mb-6 gap-2">
+                        <h3 class="text-xl font-bold">Daftar Pengumuman</h3>
 
+                        <a href="{{ route('admin.announcements.create') }}"
+                            class="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md text-sm transition transform hover:scale-95">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Tambah Pengumuman</span>
+                        </a>
+                    </div>
 
                     {{-- Flash Success --}}
                     @if (session('success'))
