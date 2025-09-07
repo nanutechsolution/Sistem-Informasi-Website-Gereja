@@ -17,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->latest()->paginate(10); // Eager load user, urutkan terbaru
+        $posts = Post::with('user')->latest('published_at')->paginate(10);
         return view('admin.posts.index', compact('posts'));
     }
 

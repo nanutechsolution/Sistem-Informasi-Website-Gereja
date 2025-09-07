@@ -145,7 +145,7 @@ class AuctionTransactionController extends Controller
 
         foreach ($payments as $payment) {
             if ($payment->transaction) {
-                $memberName = $payment->transaction->member->name ?? 'N/A';
+                $memberName = $payment->transaction->member->full_name ?? 'N/A';
                 $reportData[$memberName][] = [
                     'item_name' => $payment->transaction->item->name ?? 'N/A',
                     'amount_paid' => $payment->amount_paid,

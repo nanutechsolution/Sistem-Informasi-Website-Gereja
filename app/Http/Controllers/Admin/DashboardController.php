@@ -25,6 +25,8 @@ class DashboardController extends Controller
         // Statistik Umum
         $totalMembers = Member::count();
         $totalActiveMembers = Member::where('status', 'Aktif')->count(); // Jika ada kolom status di Member
+        $totalPindahMembers = Member::where('status', 'Pindah')->count(); // Jika ada kolom status di Member
+        $totalDeadMembers = Member::where('status', 'Non-aktif')->count(); // Jika ada kolom status di Member
 
         // Statistik Konten
         $totalPublishedPosts = Post::where('is_published', true)->count();
@@ -58,6 +60,8 @@ class DashboardController extends Controller
             'currentMonthExpense',
             'currentMonthBalance',
             'notifications',
+            'totalPindahMembers',
+            'totalDeadMembers',
         ));
     }
 

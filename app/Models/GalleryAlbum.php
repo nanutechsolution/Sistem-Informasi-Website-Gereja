@@ -37,25 +37,24 @@ class GalleryAlbum extends Model
         if ($this->unsplash_image_url) {
             return $this->unsplash_image_url;
         }
+        // // Fetch image once from Unsplash
+        // $response = Http::get('https://api.unsplash.com/photos/random', [
+        //     'query' =>  'church',
+        //     'orientation' => 'landscape',
+        //     'client_id' => config('services.unsplash.access_key'),
+        //     'unique' => Str::uuid(), // prevent duplicates from cache
+        // ]);
 
-        // Fetch image once from Unsplash
-        $response = Http::get('https://api.unsplash.com/photos/random', [
-            'query' =>  'church',
-            'orientation' => 'landscape',
-            'client_id' => config('services.unsplash.access_key'),
-            'unique' => Str::uuid(), // prevent duplicates from cache
-        ]);
+        // if ($response->successful()) {
+        //     $url = $response->json()['urls']['regular'] ?? null;
+        //     // Save to model, so next time it's used from DB
+        //     $this->unsplash_image_url = $url;
+        //     $this->save();
 
-        if ($response->successful()) {
-            $url = $response->json()['urls']['regular'] ?? null;
-            // Save to model, so next time it's used from DB
-            $this->unsplash_image_url = $url;
-            $this->save();
+        //     return $url;
+        // }
 
-            return $url;
-        }
-
-        // Fallback super aman
-        return 'https://source.unsplash.com/featured/?church';
+        // // Fallback super aman
+        // return 'https://source.unsplash.com/featured/?church';
     }
 }

@@ -5,9 +5,8 @@
     <section class="relative h-screen  bg-gradient-to-r from-blue-700 to-blue-900 text-white overflow-hidden"
         data-aos-offset="0">
         <div class="absolute inset-0 z-0">
-            <img src="{{ $churchImage }}" alt="Gereja" class="w-full h-full object-cover opacity-50">
+            <img src="{{ asset('images/cover/cover1.jpg') }}" alt="Gereja" class="w-full h-full object-cover opacity-50">
         </div>
-
         <div
             class="relative z-10 flex items-center justify-center h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div>
@@ -52,13 +51,18 @@
                     @foreach ($latestPosts as $post)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden">
                             @if ($post->image)
-                                <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $post->image) }}"
+                                <img class="h-48 w-full object-cover" src="{{ Storage::url($post->image) }}"
                                     alt="{{ $post->title }}">
                             @else
-                                <img class="h-48 w-full object-cover" src="{{ $post->getImageUrl() }}"
-                                    alt="{{ $post->title }}">
+                                <div class="h-56 w-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                    <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                </div>
                             @endif
-
                             <div class="p-6">
                                 <h3 class="text-xl font-semibold text-gray-900 mb-2 truncate">{{ $post->title }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{{ Str::limit(strip_tags($post->content), 100) }}</p>
@@ -169,7 +173,6 @@
                             data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                             <img class="h-48 w-full object-cover" src="{{ $album->getImageUrl() }}"
                                 alt="{{ $album->name }}">
-
                             <div class="p-4">
                                 <h3 class="text-lg font-semibold text-gray-900 mb-2 truncate">{{ $album->name }}</h3>
                                 <p class="text-gray-600 text-sm">

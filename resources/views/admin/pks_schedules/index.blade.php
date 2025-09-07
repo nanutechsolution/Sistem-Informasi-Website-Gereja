@@ -163,7 +163,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        {{-- Modal Persembahan Keren + Total Rp --}}
                         <div x-show="isOpen" x-transition.opacity x-cloak
                             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
                             <div x-data="{ total: 0 }" x-init="total = families.reduce((sum, f) => sum + Number(f.offering || 0), 0)"

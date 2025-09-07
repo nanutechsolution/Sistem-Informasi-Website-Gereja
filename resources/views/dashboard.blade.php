@@ -25,6 +25,30 @@
                         </div>
                     </div>
                     <div
+                        class="bg-blue-100 p-6 rounded-lg shadow-lg border-l-4 border-blue-500 hover:shadow-xl transition-all">
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-800 mb-1">Total Jemaat Aktif</h3>
+                            <p class="text-3xl font-bold text-blue-900">
+                                {{ number_format($totalActiveMembers, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-blue-100 p-6 rounded-lg shadow-lg border-l-4 border-blue-500 hover:shadow-xl transition-all">
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-800 mb-1">Total Jemaat Pindah</h3>
+                            <p class="text-3xl font-bold text-blue-900">
+                                {{ number_format($totalPindahMembers, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-blue-100 p-6 rounded-lg shadow-lg border-l-4 border-blue-500 hover:shadow-xl transition-all">
+                        <div>
+                            <h3 class="text-lg font-semibold text-blue-800 mb-1">Total Jemaat Meninggal</h3>
+                            <p class="text-3xl font-bold text-blue-900">
+                                {{ number_format($totalDeadMembers, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <div
                         class="bg-green-100 p-6 rounded-lg shadow-lg border-l-4 border-green-500 hover:shadow-xl transition-all">
                         <div>
                             <h3 class="text-lg font-semibold text-green-800 mb-1">Pengumuman Aktif</h3>
@@ -38,6 +62,22 @@
                             <h3 class="text-lg font-semibold text-purple-800 mb-1">Acara Mendatang</h3>
                             <p class="text-3xl font-bold text-purple-900">
                                 {{ number_format($totalUpcomingEvents, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-yellow-100 p-6 rounded-lg shadow-lg border-l-4 border-yellow-500 hover:shadow-xl transition-all">
+                        <div>
+                            <h3 class="text-lg font-semibold text-yellow-800 mb-1">Pemasukan</h3>
+                            <p class="text-3xl font-bold text-yellow-900">Rp
+                                {{ number_format($currentMonthIncome, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-yellow-100 p-6 rounded-lg shadow-lg border-l-4 border-yellow-500 hover:shadow-xl transition-all">
+                        <div>
+                            <h3 class="text-lg font-semibold text-yellow-800 mb-1">Pengeluaran</h3>
+                            <p class="text-3xl font-bold text-yellow-900">Rp
+                                {{ number_format($currentMonthExpense, 0, ',', '.') }}</p>
                         </div>
                     </div>
                     <div
@@ -68,7 +108,8 @@
                                     class="bg-blue-50 dark:bg-gray-700 border-l-4 border-blue-400 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
                                     <div>
                                         <h5 class="font-bold text-blue-800 dark:text-white">{{ $notification->title }}</h5>
-                                        <p class="text-sm text-blue-700 dark:text-gray-300">{{ $notification->message }}</p>
+                                        <p class="text-sm text-blue-700 dark:text-gray-300">{{ $notification->message }}
+                                        </p>
                                         <span
                                             class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</span>
                                     </div>

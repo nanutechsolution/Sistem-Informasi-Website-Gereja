@@ -45,62 +45,97 @@
 
                     {{-- Tabel Kategori --}}
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nama Kategori
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Deskripsi
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Jumlah Pemasukan Terkait
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($categories as $category)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $category->name }}
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-gray-500">
-                                            {{ Str::limit($category->description, 70) ?? '-' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div class="space-y-4 md:hidden">
+                            @foreach ($categories as $category)
+                                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-bold text-lg text-gray-800">
+                                            {{ $category->name }}</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-semibold rounded-full {{ $category->incomes ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                             {{ $category->incomes->count() }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('admin.income-categories.edit', $category->id) }}"
-                                                class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-                                            <form action="{{ route('admin.income-categories.destroy', $category->id) }}"
-                                                method="POST" class="inline-block"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Semua pemasukan yang terkait dengan kategori ini harus dipindahkan atau dihapus terlebih dahulu.');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-red-600 hover:text-red-900">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
+                                        </span>
+                                    </div>
+
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <p><strong>Deskripsi:</strong>
+                                            {{ Str::limit($category->description, 70) }}</p>
+                                        <p><strong>Jumlah Pemasukan Terkait:</strong> {{ $category->incomes->count() }}</p>
+                                    </div>
+                                    <div class="mt-4 flex flex-wrap justify-start gap-3 text-sm font-medium">
+                                        <a href="{{ route('admin.income-categories.edit', $category->id) }}"
+                                            class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                        <form action="{{ route('admin.income-categories.destroy', $category->id) }}"
+                                            method="POST" class="inline-block"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Semua pemasukan yang terkait dengan kategori ini harus dipindahkan atau dihapus terlebih dahulu.');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td colspan="4"
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                            Belum ada kategori pemasukan yang terdaftar.
-                                        </td>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Nama Kategori
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Deskripsi
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Jumlah Pemasukan Terkait
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Aksi
+                                        </th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse ($categories as $category)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $category->name }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-500">
+                                                {{ Str::limit($category->description, 70) ?? '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $category->incomes->count() }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="{{ route('admin.income-categories.edit', $category->id) }}"
+                                                    class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                                <form
+                                                    action="{{ route('admin.income-categories.destroy', $category->id) }}"
+                                                    method="POST" class="inline-block"
+                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus kategori ini? Semua pemasukan yang terkait dengan kategori ini harus dipindahkan atau dihapus terlebih dahulu.');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="text-red-600 hover:text-red-900">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4"
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                Belum ada kategori pemasukan yang terdaftar.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
 
                     {{-- Pagination --}}

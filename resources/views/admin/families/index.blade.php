@@ -38,7 +38,6 @@
                             <strong>Error!</strong> {{ session('error') }}
                         </div>
                     @endif
-
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                             <form method="GET" action="{{ route('admin.families.index') }}" class="flex w-full md:w-auto">
@@ -66,64 +65,110 @@
                             </form>
                         </div>
                     </div>
+
+
                     <div x-data="pksModal(@json($families))" class="overflow-x-auto rounded-lg border dark:border-gray-700">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
-                                        Nama Keluarga</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
-                                        Kepala Keluarga</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
-                                        Jumlah Anggota</th>
-                                    <th
-                                        class="px-6 py-3 text-right text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
-                                        Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                @forelse ($families as $family)
-                                    <tr>
-                                        <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                                            {{ $family->family_name ?? $family->headMember->full_name . ' Family' }}
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
-                                            {{ $family->headMember->full_name ?? 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                        <div class="space-y-4 md:hidden">
+                            @forelse ($families as $family)
+                                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-bold text-lg text-gray-800">
+                                            {{ $family->family_name ?? $family->headMember->full_name . ' Family' }}</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-semibold rounded-full {{ $family->members ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                             {{ $family->members->count() }}
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-right space-x-2">
-                                            <a href="{{ route('admin.families.show', $family->id) }}"
-                                                class="text-green-600 hover:text-green-800 dark:hover:text-green-400">Kelola</a>
-                                            <a href="{{ route('admin.families.edit', $family->id) }}"
-                                                class="text-blue-600 hover:text-blue-800 dark:hover:text-blue-400">Edit</a>
-                                            <a href="#"
-                                                @click.prevent="openModal({{ $family->id }}, '{{ $family->headMember->full_name }}')"
-                                                class="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Tambah
-                                                Jadwal PKS</a>
-                                            <form action="{{ route('admin.families.destroy', $family->id) }}"
-                                                method="POST" class="inline-block"
-                                                onsubmit="return confirm('Yakin ingin hapus keluarga ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-red-600 hover:text-red-800 dark:hover:text-red-400">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
+                                        </span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 space-y-1">
+
+                                        <p><strong> Kepala Keluarga:</strong> {{ $family->headMember->full_name ?? 'N/A' }}
+
+                                    </div>
+
+                                    <div class="mt-4 flex flex-wrap justify-start gap-3 text-sm font-medium">
+                                        <a href="{{ route('admin.families.show', $family->id) }}"
+                                            class="text-green-600 hover:text-green-800 dark:hover:text-green-400">Kelola</a>
+                                        <a href="{{ route('admin.families.edit', $family->id) }}"
+                                            class="text-blue-600 hover:text-blue-800 dark:hover:text-blue-400">Edit</a>
+                                        <a href="#"
+                                            @click.prevent="openModal({{ $family->id }}, '{{ $family->headMember->full_name }}')"
+                                            class="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Tambah
+                                            Jadwal PKS</a>
+                                        <form action="{{ route('admin.families.destroy', $family->id) }}" method="POST"
+                                            class="inline-block"
+                                            onsubmit="return confirm('Yakin ingin hapus keluarga ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="text-red-600 hover:text-red-800 dark:hover:text-red-400">Hapus</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
-                                        <td colspan="4"
-                                            class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-300">Belum ada
-                                            keluarga terdaftar.</td>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
+                                            Nama Keluarga</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
+                                            Kepala Keluarga</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
+                                            Jumlah Anggota</th>
+                                        <th
+                                            class="px-6 py-3 text-right text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase">
+                                            Aksi</th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    @forelse ($families as $family)
+                                        <tr>
+                                            <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                                                {{ $family->family_name ?? $family->headMember->full_name . ' Family' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                                                {{ $family->headMember->full_name ?? 'N/A' }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-300">
+                                                {{ $family->members->count() }}
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-right space-x-2">
+                                                <a href="{{ route('admin.families.show', $family->id) }}"
+                                                    class="text-green-600 hover:text-green-800 dark:hover:text-green-400">Kelola</a>
+                                                <a href="{{ route('admin.families.edit', $family->id) }}"
+                                                    class="text-blue-600 hover:text-blue-800 dark:hover:text-blue-400">Edit</a>
+                                                <a href="#"
+                                                    @click.prevent="openModal({{ $family->id }}, '{{ $family->headMember->full_name }}')"
+                                                    class="text-indigo-600 hover:text-indigo-800 dark:hover:text-indigo-400">Tambah
+                                                    Jadwal PKS</a>
+                                                <form action="{{ route('admin.families.destroy', $family->id) }}"
+                                                    method="POST" class="inline-block"
+                                                    onsubmit="return confirm('Yakin ingin hapus keluarga ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="text-red-600 hover:text-red-800 dark:hover:text-red-400">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4"
+                                                class="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-300">
+                                                Belum
+                                                ada
+                                                keluarga terdaftar.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {{-- Modal PKS --}}

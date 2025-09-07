@@ -45,108 +45,150 @@
 
                     {{-- Tabel Acara --}}
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Gambar
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Judul Acara
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Waktu Mulai
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Lokasi
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Publikasi
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($events as $event)
+                        <div class="space-y-4 md:hidden">
+                            @forelse ($events as $event)
+                                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-bold text-lg text-gray-800">
+                                            {{ $event->title }}</h4>
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $event->status == 'scheduled'
+                                                ? 'bg-blue-100 text-blue-800'
+                                                : ($event->status == 'completed'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-red-100 text-red-800') }}">
+                                            {{ ucfirst($event->status) }}
+                                        </span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <p><strong></strong>
+                                            {{ $event->start_time->format('d M Y, H:i') }} ,
+                                            {{ Str::limit($event->location, 30) ?? '-' }}</p>
+
+                                    </div>
+                                    <div class="mt-4 flex flex-wrap justify-start gap-3 text-sm font-medium">
+                                        <a href="{{ route('admin.events.edit', $event->id) }}"
+                                            class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                        <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
+                                            class="inline-block"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus acara ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                    Belum ada acara yang terdaftar.
+                                </div>
+                            @endforelse
+                        </div>
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if ($event->image)
-                                                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}"
-                                                    class="h-12 w-12 object-cover rounded-md">
-                                            @else
-                                                <div
-                                                    class="h-12 w-12 bg-gray-200 flex items-center justify-center rounded-md text-gray-500 text-xs">
-                                                    No Img</div>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $event->title }}
-                                            <div class="text-xs text-gray-500">{{ $event->organizer ?? '' }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $event->start_time->format('d M Y, H:i') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ Str::limit($event->location, 30) ?? '-' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $event->status == 'scheduled'
-                                                    ? 'bg-blue-100 text-blue-800'
-                                                    : ($event->status == 'completed'
-                                                        ? 'bg-green-100 text-green-800'
-                                                        : 'bg-red-100 text-red-800') }}">
-                                                {{ ucfirst($event->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            @if ($event->is_published)
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                    Ya
-                                                </span>
-                                            @else
-                                                <span
-                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                    Tidak
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('admin.events.edit', $event->id) }}"
-                                                class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-                                            <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST"
-                                                class="inline-block"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus acara ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-red-600 hover:text-red-900">Hapus</button>
-                                            </form>
-                                        </td>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Gambar
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Judul Acara
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Waktu Mulai
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Lokasi
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Publikasi
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Aksi
+                                        </th>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7"
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                            Belum ada acara yang terdaftar.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse ($events as $event)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                @if ($event->image)
+                                                    <img src="{{ asset('storage/' . $event->image) }}"
+                                                        alt="{{ $event->title }}"
+                                                        class="h-12 w-12 object-cover rounded-md">
+                                                @else
+                                                    <div
+                                                        class="h-12 w-12 bg-gray-200 flex items-center justify-center rounded-md text-gray-500 text-xs">
+                                                        No Img</div>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $event->title }}
+                                                <div class="text-xs text-gray-500">{{ $event->organizer ?? '' }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $event->start_time->format('d M Y, H:i') }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ Str::limit($event->location, 30) ?? '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $event->status == 'scheduled'
+                                                        ? 'bg-blue-100 text-blue-800'
+                                                        : ($event->status == 'completed'
+                                                            ? 'bg-green-100 text-green-800'
+                                                            : 'bg-red-100 text-red-800') }}">
+                                                    {{ ucfirst($event->status) }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                @if ($event->is_published)
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        Ya
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                        Tidak
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="{{ route('admin.events.edit', $event->id) }}"
+                                                    class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                                <form action="{{ route('admin.events.destroy', $event->id) }}"
+                                                    method="POST" class="inline-block"
+                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus acara ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="text-red-600 hover:text-red-900">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="7"
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                Belum ada acara yang terdaftar.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {{-- Pagination --}}

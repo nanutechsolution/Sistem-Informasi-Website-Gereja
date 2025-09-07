@@ -65,9 +65,48 @@
                             </select>
                         </form>
                     </div>
+                    {{-- Tampilan Kartu untuk Mobile (md:hidden) --}}
+                    <div class="space-y-4 md:hidden">
+                        @forelse ($users as $user)
+                            <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-bold text-lg text-gray-800">
+                                        {{ $user->name }}</h4>
+                                    @forelse ($user->getRoleNames() as $role)
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300">
+                                            {{ $role }}
+                                        </span>
+                                    @empty
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                            Tidak Ada Peran
+                                        </span>
+                                    @endforelse
 
+                                </div>
+                                <div class="mt-4 flex flex-wrap justify-start gap-3 text-sm font-medium">
+                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                        class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition font-medium mr-3">Edit</a>
+
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                        class="inline-block"
+                                        onsubmit="return confirm('Yakin ingin menghapus pengguna ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition font-medium">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="text-center text-gray-500 py-4">Belum ada jadwal PKS.</div>
+                        @endforelse
+                    </div>
                     {{-- Table --}}
-                    <div class="overflow-x-auto rounded-md">
+                    <div class="hidden md:block overflow-x-auto rounded-md">
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead class="bg-gray-100 dark:bg-gray-700">
                                 <tr>

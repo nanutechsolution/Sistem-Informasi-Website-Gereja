@@ -26,7 +26,6 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
-        // Ambil 3 acara mendatang yang sudah dipublikasi
         $upcomingEvents = Event::where('is_published', true)
             ->where('start_time', '>=', Carbon::now())
             ->orderBy('start_time')
@@ -41,16 +40,16 @@ class HomeController extends Controller
         // Ambil 3 album galeri terbaru
         $latestAlbums = GalleryAlbum::latest('event_date')->take(3)->get();
 
-        $churchImage = $this->getUnsplashChurchImage() ?? '';
-        $unsplashImage = UnsplashService::getChurchImage();
+        // $churchImage = $this->getUnsplashChurchImage() ?? '';
+        // $unsplashImage = UnsplashService::getChurchImage();
 
         return view('welcome', compact(
             'latestPosts',
             'upcomingEvents',
             'upcomingSchedules',
             'latestAlbums',
-            'churchImage',
-            'unsplashImage'
+            // 'churchImage',
+            // 'unsplashImage'
         ));
     }
     public function getUnsplashChurchImage()
@@ -95,8 +94,8 @@ class HomeController extends Controller
      */
     public function schedulesIndex()
     {
-        $schedules = Schedule::orderBy('date', 'asc')
-            ->orderBy('time', 'asc')
+        $schedules = Schedule::orderBy('date', 'desc')
+            ->orderBy('time', 'desc')
             ->paginate(10);
         return view('public.schedules.index', compact('schedules'));
     }

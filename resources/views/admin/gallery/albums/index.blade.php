@@ -38,78 +38,111 @@
 
                     {{-- Tabel Album --}}
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Cover
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nama Album
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tanggal Kegiatan
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Jumlah Media
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Aksi
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($albums as $album)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if ($album->cover_image)
-                                                <img src="{{ asset('storage/' . $album->cover_image) }}"
-                                                    alt="{{ $album->name }}" class="h-16 w-16 object-cover rounded-md">
-                                            @else
-                                                <div
-                                                    class="h-16 w-16 bg-gray-200 flex items-center justify-center rounded-md text-gray-500 text-xs text-center">
-                                                    No Cover</div>
-                                            @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $album->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div class="space-y-4 md:hidden">
+                            @forelse ($albums as $album)
+                                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-bold text-lg text-gray-800">
+                                            {{ $album->name }}</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-semibold rounded-full {{ $album->event_date ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                             {{ $album->event_date ? $album->event_date->format('d M Y') : '-' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $album->media->count() }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('admin.gallery-albums.show', $album->id) }}"
-                                                class="text-green-600 hover:text-green-900 mr-3">Kelola Media</a>
-                                            <a href="{{ route('admin.gallery-albums.edit', $album->id) }}"
-                                                class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
-                                            <form action="{{ route('admin.gallery-albums.destroy', $album->id) }}"
-                                                method="POST" class="inline-block"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus album ini dan SEMUA isinya?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-red-600 hover:text-red-900">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
+                                        </span>
+
+                                    </div>
+                                    <div class="mt-4 flex flex-wrap justify-start gap-3 text-sm font-medium">
+                                        <a href="{{ route('admin.gallery-albums.show', $album->id) }}"
+                                            class="text-green-600 hover:text-green-900 mr-3">Kelola Media</a>
+                                        <a href="{{ route('admin.gallery-albums.edit', $album->id) }}"
+                                            class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                        <form action="{{ route('admin.gallery-albums.destroy', $album->id) }}"
+                                            method="POST" class="inline-block"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus album ini dan SEMUA isinya?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center text-gray-500 py-4">Belum Album.</div>
+                            @endforelse
+                        </div>
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td colspan="5"
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                            Belum ada album galeri.
-                                        </td>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Cover
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Nama Album
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Tanggal Kegiatan
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Jumlah Media
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Aksi
+                                        </th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse ($albums as $album)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                @if ($album->cover_image)
+                                                    <img src="{{ asset('storage/' . $album->cover_image) }}"
+                                                        alt="{{ $album->name }}"
+                                                        class="h-16 w-16 object-cover rounded-md">
+                                                @else
+                                                    <div
+                                                        class="h-16 w-16 bg-gray-200 flex items-center justify-center rounded-md text-gray-500 text-xs text-center">
+                                                        No Cover</div>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $album->name }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $album->event_date ? $album->event_date->format('d M Y') : '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $album->media->count() }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="{{ route('admin.gallery-albums.show', $album->id) }}"
+                                                    class="text-green-600 hover:text-green-900 mr-3">Kelola Media</a>
+                                                <a href="{{ route('admin.gallery-albums.edit', $album->id) }}"
+                                                    class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                                                <form action="{{ route('admin.gallery-albums.destroy', $album->id) }}"
+                                                    method="POST" class="inline-block"
+                                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus album ini dan SEMUA isinya?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="text-red-600 hover:text-red-900">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5"
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                Belum ada album galeri.
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     {{-- Pagination --}}

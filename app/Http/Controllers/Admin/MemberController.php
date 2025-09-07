@@ -17,7 +17,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::latest()->paginate(10); // Urutkan berdasarkan yang terbaru ditambahkan
+        $members = Member::latest()->where('status', 'Aktif')->paginate(10);
 
         return view('admin.members.index', compact('members'));
     }

@@ -6,12 +6,10 @@
 
     <div class="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-10">
         <div class="container mx-auto max-w-7xl">
-
             {{-- Header --}}
             <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">Pencatatan Transaksi & Pembayaran</h1>
             <p class="text-center text-sm sm:text-base text-gray-600 mb-6 sm:mb-10">Kelola riwayat lelang, status pembayaran,
                 dan cicilan.</p>
-
             {{-- Flash Message --}}
             @if (session('success'))
                 <div
@@ -19,9 +17,13 @@
                     {{ session('success') }}
                 </div>
             @endif
-
             {{-- Form Catat Transaksi Baru (Optimasi Mobile) --}}
-            <div class="bg-white shadow-lg rounded-2xl p-6 mb-8 sm:mb-10 border border-gray-200">
+            <button onclick="toggleFormTransaksi()"
+                class="py-2 px-3 my-2 rounded-full border border-indigo-400 text-indigo-600 font-medium text-xs hover:bg-indigo-50 transition-colors">
+                Transaksi Baru
+            </button>
+            <div id="formTransaksiBaru"
+                class="hidden bg-white shadow-lg rounded-2xl p-6 mb-8 sm:mb-10 border border-gray-200">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Catat Transaksi Baru</h2>
                 <form action="{{ route('admin.auction-transactions.store') }}" method="POST" class="space-y-6">
                     @csrf
@@ -121,7 +123,8 @@
                             <option value="">Semua Status</option>
                             <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Belum
                                 Bayar</option>
-                            <option value="installment" {{ request('payment_status') == 'installment' ? 'selected' : '' }}>
+                            <option value="installment"
+                                {{ request('payment_status') == 'installment' ? 'selected' : '' }}>
                                 Cicilan</option>
                             <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Lunas
                             </option>
@@ -154,7 +157,6 @@
                     </div>
                 </form>
             </div>
-
             {{-- Riwayat Transaksi --}}
             <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Riwayat Transaksi &
@@ -432,6 +434,15 @@
             if (formDesktop) {
                 formDesktop.classList.toggle('hidden');
             }
+        }
+
+        function toggleFormTransaksi() {
+            // Toggle form for mobile
+            const isShow = document.getElementById('formTransaksiBaru');
+            if (isShow) {
+                isShow.classList.toggle('hidden');
+            }
+
         }
 
         function closeModal() {

@@ -75,7 +75,10 @@ class EventController extends Controller
         }
     }
 
-    // ... (fungsi show sama seperti sebelumnya, tanpa perubahan di controller ini)
+    function edit(Event $event)
+    {
+        return view('admin.events.edit', compact('event'));
+    }
 
     /**
      * Perbarui acara di database.
