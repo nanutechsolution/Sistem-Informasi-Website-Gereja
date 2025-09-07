@@ -47,7 +47,7 @@ class Member extends Model
     public function families(): BelongsToMany
     {
         return $this->belongsToMany(Family::class, 'family_members')
-            ->withPivot('relationship'); // Jika ingin menyimpan relasi di pivot table
+            ->withPivot('relationship');
     }
 
     public function headOfFamily(): HasMany

@@ -41,7 +41,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div>
                             <label for="transactionMember" class="block text-sm font-medium text-gray-700">Nama
                                 Jemaat</label>
@@ -53,7 +52,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div>
                             <label for="transactionQuantity" class="block text-sm font-medium text-gray-700">Jumlah
                                 Dibeli</label>

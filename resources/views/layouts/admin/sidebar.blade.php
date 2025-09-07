@@ -150,8 +150,8 @@
 
             @php
                 $keuanganMenu = [
-                    ['route' => 'admin.incomes.index', 'label' => 'Pemasukan'],
-                    ['route' => 'admin.income-categories.index', 'label' => 'Kategori Pemasukan'],
+                    ['route' => 'admin.incomes.index', 'label' => 'Persembahan'],
+                    ['route' => 'admin.income-categories.index', 'label' => 'Kategori Persembahan'],
                     ['route' => 'admin.expenses.index', 'label' => 'Pengeluaran'],
                     ['route' => 'admin.expense-categories.index', 'label' => 'Kategori Pengeluaran'],
                     [

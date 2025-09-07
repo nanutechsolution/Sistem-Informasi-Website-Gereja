@@ -20,4 +20,8 @@ class AuctionPayment extends Model
     {
         return $this->belongsTo(AuctionTransaction::class, 'auction_transaction_id');
     }
+    public function getIsInstallmentAttribute()
+    {
+        return $this->transaction->payment_status === 'installment';
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\Family;
 use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
 
@@ -56,9 +57,8 @@ class FamilyController extends Controller
         try {
             $validatedData = $request->validate([
                 'family_name' => 'nullable|string|max:255',
-                'head_member_id' => 'required|exists:members,id|unique:families,head_member_id', // Kepala keluarga harus unik per keluarga
+                'head_member_id' => 'required|exists:members,id|unique:families,head_member_id',
             ]);
-
             $family = Family::create($validatedData);
 
             // Otomatis tambahkan kepala keluarga sebagai anggota keluarga
@@ -167,6 +167,11 @@ class FamilyController extends Controller
         // Cek apakah anggota yang ditambahkan adalah kepala keluarga yang sudah ada
         if ($request->member_id == $family->head_member_id) {
             return redirect()->back()->with('error', 'Anggota ini adalah kepala keluarga dan sudah otomatis terdaftar.');
+        }
+
+        $existingFamilyMember = DB::table('family_members')->where('member_id', $request->member_id)->where('family_id', '!=', $family->id)->first();
+        if ($existingFamilyMember) {
+            return redirect()->back()->with('error', 'Anggota ini sudah terdaftar dikeluarga lain.');
         }
 
         $family->members()->attach($request->member_id, ['relationship' => $request->relationship]);

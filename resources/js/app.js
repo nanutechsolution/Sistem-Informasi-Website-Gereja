@@ -10,3 +10,4 @@ window.Alpine = Alpine;
 window.Chart = Chart;
 Alpine.start();
 AOS.init();
+

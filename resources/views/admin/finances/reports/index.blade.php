@@ -87,7 +87,7 @@
                         {{-- Tabel Pemasukan --}}
                         {{-- Tabel Pemasukan --}}
                         <div>
-                            <h4 class="text-xl font-bold mb-4 text-green-700">Detail Pemasukan</h4>
+                            <h4 class="text-xl font-bold mb-4 text-green-700">Detail Persembahan</h4>
 
                             {{-- Mobile View (Card) --}}
                             <div class="space-y-4 md:hidden">

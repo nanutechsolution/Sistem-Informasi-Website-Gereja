@@ -16,7 +16,6 @@
 
                     <form action="{{ route('admin.families.store') }}" method="POST">
                         @csrf
-
                         <div class="mb-4">
                             <label for="family_name" class="block text-sm font-medium text-gray-700">Nama Keluarga (Opsional,
                                 misal: Keluarga Bpk. Yanto)</label>
@@ -39,7 +38,7 @@
                                     <option value="{{ $member->id }}"
                                         {{ old('head_member_id') == $member->id ? 'selected' : '' }}>
                                         {{ $member->full_name }}
-                                        ({{ $member->email ?? ($member->phone_number ?? 'No Contact') }})</option>
+                                    </option>
                                 @endforeach
                             </select>
                             @error('head_member_id')
@@ -47,6 +46,18 @@
                             @enderror
                         </div>
 
+                        {{-- <div x-data="selectComponent()">
+                            <input type="text" x-model="search" @input="searchMembers" placeholder="Cari anggota...">
+                            <ul x-show="members.length > 0">
+                                <template x-for="member in filteredMembers" :key="member.id">
+                                    <li @click="selectMember(member)">
+                                        <span x-text="member.full_name"></span>
+                                    </li>
+                                </template>
+                            </ul>
+                            <input type="hidden" name="head_member_ids"
+                                x-bind:value="selectedMember ? selectedMember.id : ''">
+                        </div> --}}
                         <div class="flex items-center justify-end mt-6">
                             <a href="{{ route('admin.families.index') }}"
                                 class="text-gray-600 hover:text-gray-900 mr-4">Batal</a>
@@ -61,4 +72,36 @@
             </div>
         </div>
     </div>
+    <script>
+        function selectComponent() {
+            return {
+                search = '',
+                members: {!! json_encode($members) !!},
+                selectedMember: null,
+                filteredMembers: [],
+                searchMembers() {
+                    this.filteredMembers = this.members.filter(member => {
+                        return member.full_name.tolowerCase().include(this.search.tolowerCase())
+                    });
+                },
+                selectedMember(member) {
+                    this.selectedMember = member;
+                    this.search = member.full_name;
+                    this.filteredMembers = [];
+                }
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const headMemberId = document.getElementById('head_member_id');
+
+            headMemberId.addEventListener('change', function() {
+                const selectedOption = headMemberId.options[headMemberId.selectedIndex].text;
+                const familyName = 'Keluarga ' + selectedOption.split('()')[0].trim();
+                document.getElementById('family_name').value = familyName;
+            });
+
+        });
+    </script>
 @endsection

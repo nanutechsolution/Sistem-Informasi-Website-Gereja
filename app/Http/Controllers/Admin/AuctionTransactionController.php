@@ -46,8 +46,7 @@ class AuctionTransactionController extends Controller
 
         // Ambil hasil query yang sudah difilter
         $transactions = $query->latest()->get();
-
-        $items = AuctionItem::all();
+        $items = AuctionItem::where('total_quantity', '>', 0)->get();
         $members = Member::where('status', 'Aktif')->get();
 
         return view('admin.auctions.transactions', compact('transactions', 'items', 'members'));
@@ -60,47 +59,59 @@ class AuctionTransactionController extends Controller
             'member_id' => 'required|exists:members,id',
             'quantity_bought' => 'required|integer|min:1',
             'final_price' => 'required|numeric|min:0',
-            'payment_status' => ['required', Rule::in(['pending', 'installment', 'paid'])],
             'initial_payment' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
         ]);
 
         try {
             DB::beginTransaction();
+
+            // tentukan status awal transaksi
+            $initialPayment = $validated['initial_payment'] ?? 0;
+            if ($initialPayment == 0) {
+                $status = 'pending';
+            } elseif ($initialPayment < $validated['final_price']) {
+                $status = 'installment';
+            } else {
+                $status = 'paid';
+            }
             $transaction = AuctionTransaction::create([
                 'auction_item_id' => $validated['auction_item_id'],
                 'member_id' => $validated['member_id'],
                 'quantity_bought' => $validated['quantity_bought'],
                 'final_price' => $validated['final_price'],
-                'payment_status' => $validated['payment_status'],
+                'payment_status' => $status,
                 'notes' => $validated['notes'],
             ]);
-
             // Jika ada pembayaran awal, catat sebagai cicilan pertama
-            if ($request->filled('initial_payment') && $validated['initial_payment'] > 0) {
+            if ($validated['quantity_bought'] > $transaction->item->total_quantity) {
+                return back()->with('error', 'Stok tidak cukup!');
+            }
+            if ($initialPayment > 0) {
                 $payment = new AuctionPayment([
-                    'amount_paid' => $validated['initial_payment'],
+                    'amount_paid' => $initialPayment,
                     'payment_date' => Carbon::today(),
+                    'notes' => $status === 'paid' ? 'Pelunasan awal' : 'Panjar Lelang'
                 ]);
                 $transaction->payments()->save($payment);
-                // Perbarui status jika total pembayaran sudah lunas
-                $totalPaid = $transaction->payments()->sum('amount_paid');
-                if ($totalPaid >= $transaction->final_price) {
-                    $transaction->payment_status = 'paid';
-                    $transaction->save();
-                }
+                // update saldo kas
                 $kas = $transaction->item->kas;
-                $kas->ks_saldo += $validated['initial_payment'];
+                $kas->ks_saldo += $initialPayment;
                 $kas->save();
             }
+            // kurangi stok barang
+            $item = $transaction->item;
+            $item->total_quantity -= $validated['quantity_bought'];
+            $item->save();
             DB::commit();
-
-            return redirect()->route('admin.auction-transactions.index')->with('success', 'Transaksi berhasil dicatat!');
+            return redirect()->route('admin.auction-transactions.index')
+                ->with('success', 'Transaksi berhasil dicatat!');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal mencatat transaksi: ' . $e->getMessage());
         }
     }
+
     /**
      * Record a new payment for a transaction.
      *
@@ -112,25 +123,41 @@ class AuctionTransactionController extends Controller
     {
         $validated = $request->validate([
             'amount_paid' => 'required|numeric|min:0',
-            'payment_date' => 'required|date'
+            'payment_date' => 'required|date',
+            'notes' => 'nullable|string'
         ]);
+
+        $totalPaid = $transaction->payments()->sum('amount_paid') + $validated['amount_paid'];
+
+        // tentukan status
+        if ($totalPaid == 0) {
+            $status = 'pending';
+        } elseif ($totalPaid < $transaction->final_price) {
+            $status = 'installment';
+        } else {
+            $status = 'paid';
+        }
+
+        // simpan detail pembayaran
         AuctionPayment::create([
             'auction_transaction_id' => $transaction->id,
             'amount_paid' => $validated['amount_paid'],
             'payment_date' => $validated['payment_date'],
-            'notes' => 'Pembayaran cicilan.'
+            'notes' => $validated['notes'] ?? ($status == 'paid' ? 'Pelunasan' : 'Panjar Lelang')
         ]);
 
+        // update saldo kas
         $kas = $transaction->item->kas;
         $kas->ks_saldo += $validated['amount_paid'];
         $kas->save();
 
-
-        $totalPaid = $transaction->payments()->sum('amount_paid');
-        $transaction->payment_status = $totalPaid >= $transaction->final_price ? 'paid' : 'installment';
+        // update status transaksi
+        $transaction->payment_status = $status;
         $transaction->save();
+
         return redirect()->back()->with('success', 'Pembayaran berhasil dicatat!');
     }
+
     public function getReport(Request $request)
     {
         $startDate = $request->input('start_date');
@@ -152,7 +179,7 @@ class AuctionTransactionController extends Controller
                 $reportData[$memberName][] = [
                     'item_name' => $payment->transaction->item->name ?? 'N/A',
                     'amount_paid' => $payment->amount_paid,
-                    'payment_date' => $payment->payment_date, // Menambahkan tanggal pembayaran
+                    'payment_date' => $payment->payment_date,
                     'is_lunas' => ($payment->transaction->payment_status === 'paid'),
                 ];
             }
