@@ -46,8 +46,22 @@ class FinanceReportController extends Controller
             ->get();
         $currentMonthOffering = DB::table('pks_schedule_family')
             ->join('pks_schedules', 'pks_schedule_family.pks_schedule_id', '=', 'pks_schedules.id')
-            ->whereBetween('pks_schedules.date', [$startDate, $endDate])
+            ->whereBetween('pks_schedules.created_at', [$startDate, $endDate])
+            ->where('pks_schedules.is_active', 0)
             ->sum('pks_schedule_family.offering');
+        $detailOfferings = DB::table('pks_schedule_family')
+            ->join('pks_schedules', 'pks_schedule_family.pks_schedule_id', '=', 'pks_schedules.id')
+            ->join('families', 'pks_schedule_family.family_id', '=', 'families.id') // kalau ada tabel families
+            ->where('pks_schedules.is_active', 0)
+            ->whereBetween('pks_schedule_family.updated_at', [$startDate, $endDate])
+            ->select(
+                'pks_schedule_family.offering',
+                'pks_schedule_family.updated_at',
+                'families.family_name'
+            )
+            ->orderBy('pks_schedule_family.updated_at', 'asc')
+            ->get();
+
 
         $incomeChartLabels = $incomeCategoriesSummary->map(function ($item) {
             return $item->category->name ?? 'Tidak Diketahui';
@@ -90,7 +104,8 @@ class FinanceReportController extends Controller
             'monthlyChartLabels',
             'monthlyIncomeData',
             'monthlyExpenseData',
-            'currentMonthOffering'
+            'currentMonthOffering',
+            'detailOfferings'
         ));
     }
 

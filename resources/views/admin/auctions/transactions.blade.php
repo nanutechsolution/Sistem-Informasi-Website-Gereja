@@ -162,7 +162,6 @@
             {{-- Tabel Riwayat Transaksi --}}
             <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Riwayat Transaksi & Pembayaran</h2>
-
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 table-auto">
                         <thead class="bg-gray-50">
@@ -251,7 +250,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
 
         {{-- Modal Riwayat Pembayaran --}}

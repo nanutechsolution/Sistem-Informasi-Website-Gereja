@@ -18,7 +18,7 @@ class Media extends Model
         'thumbnail_path',
         'caption',
         'mediable_id',
-        'mediable_type' // Kolom untuk relasi polimorfik
+        'mediable_type'
     ];
 
     public function galleryAlbum(): BelongsTo

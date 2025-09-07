@@ -15,8 +15,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // --- Pembersihan Data Lama (Opsional, sangat disarankan untuk dev) ---
-        // Hapus semua folder di public/storage
         $foldersToClear = [
             'news_images',
             'event_images',
@@ -33,11 +31,8 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Nonaktifkan Foreign Key Checks sementara untuk memungkinkan TRUNCATE pada tabel yang direferensikan
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // Urutan TRUNCATE HARUS: tabel anak (yang memiliki foreign key) duluan
-        // baru tabel induk (yang dirujuk oleh foreign key).
 
         // Transaksi Keuangan (anak) sebelum Kategori (induk)
         \App\Models\Income::truncate();
@@ -45,12 +40,9 @@ class DatabaseSeeder extends Seeder
         \App\Models\IncomeCategory::truncate(); // Sekarang boleh di-truncate
         \App\Models\ExpenseCategory::truncate(); // Sekarang boleh di-truncate
 
-        // Anggota Pelayanan (pivot) sebelum Anggota (induk) atau Pelayanan (induk)
         \App\Models\MinistryMember::truncate(); // Pivot table
         \App\Models\Ministry::truncate(); // Sekarang boleh di-truncate
         \App\Models\Member::truncate(); // Memerlukan user_id, tapi bisa di-truncate sebelum User jika user juga di-truncate.
-        // Atau, jika user tidak di-truncate, cukup pastikan members_user_id foreign key nullable.
-
         // Media (anak) sebelum GalleryAlbum (induk)
         \App\Models\Media::truncate();
         \App\Models\GalleryAlbum::truncate(); // Sekarang boleh di-truncate
@@ -68,25 +60,19 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
 
-        // --- Panggil Seeder ---
         $this->call([
-            // User & Role Seeder (Pastikan ini yang pertama untuk admin user)
             RoleSeeder::class,
-            AdminUserSeeder::class, // Ini akan membuat user admin@gereja.com
+            AdminUserSeeder::class,
 
-            // Master Data (Tanpa relasi kompleks ke yang lain, atau relasi ke User saja)
-            MemberSeeder::class, // Membutuhkan User
-            MinistrySeeder::class, // Membutuhkan Member
+            MemberSeeder::class,
+            MinistrySeeder::class,
             IncomeCategorySeeder::class,
             ExpenseCategorySeeder::class,
-
-            // Konten (Membutuhkan User, mungkin juga Category)
-            PostSeeder::class, // Membutuhkan User
-            EventSeeder::class, // Membutuhkan User
+            PostSeeder::class,
+            EventSeeder::class,
             ScheduleSeeder::class,
-            GalleryAlbumSeeder::class, // Membuat album dan media di dalamnya
+            GalleryAlbumSeeder::class,
 
-            // Transaksi (Membutuhkan User, Categories)
             IncomeSeeder::class,
             ExpenseSeeder::class,
             FamilySeeder::class,

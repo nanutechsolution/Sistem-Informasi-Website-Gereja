@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PksScheduleController extends Controller
 {
@@ -199,13 +201,18 @@ class PksScheduleController extends Controller
     public function updateOffering(Request $request, PksSchedule $schedule)
     {
         $data = $request->input('families', []);
-
         foreach ($data as $familyId => $offering) {
-            $schedule->families()->updateExistingPivot($familyId, ['offering' => $offering]);
+            $schedule->families()->updateExistingPivot(
+                $familyId,
+                [
+                    'offering'   => $offering,
+                    'updated_at' => now(),
+                ],
+                false
+            );
         }
         $schedule->is_active = 0;
-        $schedule->save(); // jangan lupa save()
-
+        $schedule->save();
         return response()->json(['success' => true]);
     }
 }

@@ -130,7 +130,6 @@
                                 x-transition:leave-end="opacity-0 scale-90">
 
                                 <h3 class="text-2xl font-bold mb-4 text-center">Persembahan Keluarga</h3>
-
                                 <form @submit.prevent="submitOffering">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <template x-for="(family, index) in families" :key="index">

@@ -99,51 +99,68 @@
                     {{-- Detail Transaksi (Tabel) --}}
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {{-- Tabel Pemasukan --}}
+                        {{-- Tabel Pemasukan --}}
                         <div>
                             <h4 class="text-xl font-bold mb-4 text-green-700">Detail Pemasukan</h4>
-                            <div class="overflow-x-auto">
+
+                            {{-- Mobile View (Card) --}}
+                            <div class="space-y-4 md:hidden">
+                                @forelse ($incomes as $income)
+                                    <div class="p-4 border rounded-lg shadow-sm bg-white">
+                                        <p class="text-xs text-gray-500">
+                                            {{ $income->transaction_date->format('d M Y') }}
+                                        </p>
+                                        <p class="font-semibold text-gray-900">
+                                            {{ Str::limit($income->description, 40) }}
+                                        </p>
+                                        <p class="text-sm text-gray-500">
+                                            {{ $income->category->name ?? 'N/A' }}
+                                        </p>
+                                        <p class="text-right font-bold text-green-700">
+                                            Rp {{ number_format($income->amount, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                @empty
+                                    <p class="text-sm text-gray-500 text-center">
+                                        Tidak ada data pemasukan dalam rentang tanggal ini.
+                                    </p>
+                                @endforelse
+                            </div>
+
+                            {{-- Desktop View (Table) --}}
+                            <div class="hidden md:block overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Tanggal
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Deskripsi
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Kategori
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Jumlah
-                                            </th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Tanggal</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Deskripsi</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Kategori</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                                Jumlah</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                         @forelse ($incomes as $income)
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <td class="px-6 py-4 text-sm text-gray-900">
                                                     {{ $income->transaction_date->format('d M Y') }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <td class="px-6 py-4 text-sm text-gray-500">
                                                     {{ Str::limit($income->description, 40) }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <td class="px-6 py-4 text-sm text-gray-500">
                                                     {{ $income->category->name ?? 'N/A' }}
                                                 </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-semibold">
+                                                <td class="px-6 py-4 text-sm text-gray-900 text-right font-semibold">
                                                     Rp {{ number_format($income->amount, 0, ',', '.') }}
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="4"
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                <td colspan="4" class="px-6 py-4 text-sm text-gray-500 text-center">
                                                     Tidak ada data pemasukan dalam rentang tanggal ini.
                                                 </td>
                                             </tr>
@@ -153,52 +170,68 @@
                             </div>
                         </div>
 
-                        {{-- Tabel Pengeluaran --}}
+                        {{-- Detail Pengeluaran --}}
                         <div>
                             <h4 class="text-xl font-bold mb-4 text-red-700">Detail Pengeluaran</h4>
-                            <div class="overflow-x-auto">
+
+                            {{-- Mobile View (Card) --}}
+                            <div class="space-y-4 md:hidden">
+                                @forelse ($expenses as $expense)
+                                    <div class="p-4 border rounded-lg shadow-sm bg-white">
+                                        <p class="text-xs text-gray-500">
+                                            {{ $expense->transaction_date->format('d M Y') }}
+                                        </p>
+                                        <p class="font-semibold text-gray-900">
+                                            {{ Str::limit($expense->description, 40) }}
+                                        </p>
+                                        <p class="text-sm text-gray-500">
+                                            {{ $expense->category->name ?? 'N/A' }}
+                                        </p>
+                                        <p class="text-right font-bold text-red-700">
+                                            Rp {{ number_format($expense->amount, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                @empty
+                                    <p class="text-sm text-gray-500 text-center">
+                                        Tidak ada data pengeluaran dalam rentang tanggal ini.
+                                    </p>
+                                @endforelse
+                            </div>
+
+                            {{-- Desktop View (Table) --}}
+                            <div class="hidden md:block overflow-x-auto">
                                 <table class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-50">
                                         <tr>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Tanggal
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Deskripsi
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Kategori
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Jumlah
-                                            </th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Tanggal</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Deskripsi</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Kategori</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                                Jumlah</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                         @forelse ($expenses as $expense)
                                             <tr>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <td class="px-6 py-4 text-sm text-gray-900">
                                                     {{ $expense->transaction_date->format('d M Y') }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <td class="px-6 py-4 text-sm text-gray-500">
                                                     {{ Str::limit($expense->description, 40) }}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <td class="px-6 py-4 text-sm text-gray-500">
                                                     {{ $expense->category->name ?? 'N/A' }}
                                                 </td>
-                                                <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-semibold">
+                                                <td class="px-6 py-4 text-sm text-gray-900 text-right font-semibold">
                                                     Rp {{ number_format($expense->amount, 0, ',', '.') }}
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="4"
-                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                                <td colspan="4" class="px-6 py-4 text-sm text-gray-500 text-center">
                                                     Tidak ada data pengeluaran dalam rentang tanggal ini.
                                                 </td>
                                             </tr>
@@ -207,6 +240,61 @@
                                 </table>
                             </div>
                         </div>
+
+
+                        {{-- Tabel Persembahan PKS --}}
+                        <div class="mt-8">
+                            <h4 class="text-xl font-bold mb-4 text-indigo-700">Detail Persembahan PKS</h4>
+                            {{-- Mobile Card View --}}
+                            <div class="block md:hidden space-y-4">
+                                @forelse ($detailOfferings as $offering)
+                                    <div class="p-4 border rounded-lg shadow-sm bg-white">
+                                        <p class="text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($offering->updated_at)->format('d M Y H:i') }}
+                                        </p>
+                                        <p class="font-semibold text-gray-900">
+                                            {{ $offering->family_name ?? 'N/A' }}
+                                        </p>
+                                        <p class="text-right font-bold text-indigo-600">
+                                            Rp {{ number_format($offering->offering, 0, ',', '.') }}
+                                        </p>
+                                    </div>
+                                @empty
+                                    <p class="text-sm text-gray-500 text-center">Tidak ada data persembahan PKS.</p>
+                                @endforelse
+                            </div>
+
+                            {{-- Desktop Table View --}}
+                            <div class="hidden md:block overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Tanggal Update</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Keluarga</th>
+                                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
+                                                Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($detailOfferings as $offering)
+                                            <tr>
+                                                <td class="px-6 py-4 text-sm text-gray-900">
+                                                    {{ \Carbon\Carbon::parse($offering->updated_at)->format('d M Y H:i') }}
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-gray-500">
+                                                    {{ $offering->family_name ?? 'N/A' }}</td>
+                                                <td class="px-6 py-4 text-sm text-gray-900 text-right font-semibold">Rp
+                                                    {{ number_format($offering->offering, 0, ',', '.') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>

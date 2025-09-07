@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Post;    // Untuk berita/pengumuman
-use App\Models\Event;   // Untuk acara
-use App\Models\Schedule; // Untuk jadwal ibadah rutin (jika ada data yang berbeda dari Event)
-use App\Models\GalleryAlbum; // Untuk galeri
+use App\Models\Post;
+use App\Models\Event;
+use App\Models\Schedule;
+use App\Models\GalleryAlbum;
 use App\Models\PksSchedule;
 use App\Services\UnsplashService;
-use Carbon\Carbon; // Untuk filter tanggal
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
@@ -41,7 +41,7 @@ class HomeController extends Controller
         // Ambil 3 album galeri terbaru
         $latestAlbums = GalleryAlbum::latest('event_date')->take(3)->get();
 
-        $churchImage = $this->getUnsplashChurchImage();
+        $churchImage = $this->getUnsplashChurchImage() ?? '';
         $unsplashImage = UnsplashService::getChurchImage();
 
         return view('welcome', compact(
@@ -118,7 +118,7 @@ class HomeController extends Controller
      */
     public function eventShow(string $slug)
     {
-        $event = Event::where('slug', $slug) // Pastikan Model Event punya kolom slug
+        $event = Event::where('slug', $slug)
             ->where('is_published', true)
             ->firstOrFail();
         return view('public.events.show', compact('event'));

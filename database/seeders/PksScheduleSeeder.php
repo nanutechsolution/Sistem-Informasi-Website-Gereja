@@ -52,7 +52,7 @@ class PksScheduleSeeder extends Seeder
             // Pilih keluarga acak (boleh terulang)
             $family = $families->random();
             $schedule->families()->attach($family->id, [
-                'offering' => rand(50000, 200000),
+                // 'offering' => rand(50000, 200000),
             ]);
         }
 
