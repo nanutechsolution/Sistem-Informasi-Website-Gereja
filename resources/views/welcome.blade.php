@@ -5,7 +5,7 @@
     <section class="relative h-screen  bg-gradient-to-r from-blue-700 to-blue-900 text-white overflow-hidden"
         data-aos-offset="0">
         <div class="absolute inset-0 z-0">
-            <img src="{{ asset('images/cover/cover1.jpg') }}" alt="Gereja" class="w-full h-full object-cover opacity-50">
+            <img src="{{ asset('images/cover/cover.jpg') }}" alt="Gereja" class="w-full h-full object-cover opacity-50">
         </div>
         <div
             class="relative z-10 flex items-center justify-center h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
