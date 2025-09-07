@@ -10,6 +10,7 @@ use App\Models\Schedule; // Import Model Schedule
 use App\Models\Event;   // Import Model Event
 use App\Models\Income;  // Import Model Income
 use App\Models\Expense; // Import Model Expense
+use App\Models\Kas;
 use App\Models\Notification;
 use App\Models\PksSchedule;
 use Carbon\Carbon;     // Import Carbon
@@ -35,13 +36,25 @@ class DashboardController extends Controller
         // Statistik Jadwal & Acara
         $totalUpcomingSchedules = Schedule::where('date', '>=', Carbon::today())->count();
         $totalUpcomingEvents = Event::where('start_time', '>=', Carbon::now())->where('is_published', true)->count();
-
         // Statistik Keuangan (Bulan Ini)
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
         $currentMonthIncome = Income::whereBetween('transaction_date', [$startOfMonth, $endOfMonth])->sum('amount');
         $currentMonthExpense = Expense::whereBetween('transaction_date', [$startOfMonth, $endOfMonth])->sum('amount');
         $currentMonthBalance = $currentMonthIncome - $currentMonthExpense;
+        $kasUtama = Kas::where('ks_nama', 'Kas Utama')->sum('ks_saldo');
+        $kasPembangunan = Kas::where('ks_nama', 'Pembangunan')->sum('ks_saldo');
+        $idPembangunan = DB::table('kas')->where('ks_nama', 'Pembangunan')->value('id');
+        $idUtama = DB::table('kas')->where('ks_nama', 'Kas Utama')->value('id');
+        $totalPengeluaranPembangunan = Expense::join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
+            ->join('kas', 'expense_categories.ks_id', '=', 'kas.id')
+            ->where('kas.ks_nama', 'Pembangunan')
+            ->sum('expenses.amount');
+        $totalPengeluaranUtama = Expense::join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
+            ->join('kas', 'expense_categories.ks_id', '=', 'kas.id')
+            ->where('kas.ks_nama', 'Kas Utama')
+            ->sum('expenses.amount');
+
         // Ambil notifikasi untuk user yang sedang login, yang belum dibaca, terbaru
         $notifications = Notification::where('user_id', auth()->id())
             ->where('is_read', false)
@@ -62,6 +75,11 @@ class DashboardController extends Controller
             'notifications',
             'totalPindahMembers',
             'totalDeadMembers',
+            'kasUtama',
+            'totalPengeluaranUtama',
+            'kasPembangunan',
+            'totalPengeluaranPembangunan'
+
         ));
     }
 

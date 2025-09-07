@@ -42,7 +42,6 @@
                             <span class="block sm:inline">{{ session('error') }}</span>
                         </div>
                     @endif
-
                     {{-- Tabel Kategori --}}
                     <div class="overflow-x-auto">
                         <div class="space-y-4 md:hidden">
@@ -86,6 +85,10 @@
                                         </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Kas
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Deskripsi
                                         </th>
                                         <th scope="col"
@@ -103,6 +106,9 @@
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 {{ $category->name }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $category->kas->ks_nama }}
                                             </td>
                                             <td class="px-6 py-4 text-sm text-gray-500">
                                                 {{ Str::limit($category->description, 70) ?? '-' }}

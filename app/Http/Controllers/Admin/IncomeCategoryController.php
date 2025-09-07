@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\IncomeCategory; // Pastikan model IncomeCategory di-import
+use App\Models\Kas;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,7 @@ class IncomeCategoryController extends Controller
      */
     public function index()
     {
-        $categories = IncomeCategory::latest()->paginate(10);
+        $categories = IncomeCategory::with('kas')->latest()->paginate(10);
         return view('admin.finances.income_categories.index', compact('categories'));
     }
 
@@ -24,7 +25,8 @@ class IncomeCategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.finances.income_categories.create');
+        $kas = Kas::all();
+        return view('admin.finances.income_categories.create', compact('kas'));
     }
 
     /**
@@ -36,6 +38,7 @@ class IncomeCategoryController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255|unique:income_categories,name',
                 'description' => 'nullable|string',
+                'ks_id' => 'required|exists:kas,id',
             ]);
 
             IncomeCategory::create($validatedData);

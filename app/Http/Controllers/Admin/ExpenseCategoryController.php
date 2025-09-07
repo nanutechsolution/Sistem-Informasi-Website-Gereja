@@ -15,7 +15,7 @@ class ExpenseCategoryController extends Controller
      */
     public function index()
     {
-        $categories = ExpenseCategory::latest()->paginate(10);
+        $categories = ExpenseCategory::with('kas')->latest()->paginate(10);
         return view('admin.finances.expense_categories.index', compact('categories'));
     }
 

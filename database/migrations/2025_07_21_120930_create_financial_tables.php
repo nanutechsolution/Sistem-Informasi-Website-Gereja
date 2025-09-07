@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('income_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // Misal: Persembahan Mingguan, Perpuluhan, Donasi Umum
-            $table->text('description')->nullable(); // <-- TAMBAHKAN BARIS INI
+            $table->string('name')->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
 
         Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // Misal: Listrik, Gaji Pegawai, Pemeliharaan Gedung
-            $table->text('description')->nullable(); // <-- TAMBAHKAN BARIS INI
+            $table->string('name')->unique();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 

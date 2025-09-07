@@ -3,7 +3,7 @@
 @section('title', '| Presentasi Persembahan Mingguan Gereja')
 
 @section('content')
-    <div class="container mx-auto p-6" x-data="{ slide: 0 }" x-init="setInterval(() => { slide = slide < 3 ? slide + 1 : 0 }, 10000)">
+    <div class="container mx-auto p-6" x-data="{ slide: 0 }">
 
         {{-- Slide ASM --}}
         <template x-if="slide === 0">
@@ -153,10 +153,10 @@
 
         {{-- Navigasi --}}
         <div class="mt-6 flex justify-between">
-            <button @click="slide = slide > 0 ? slide - 1 : 0"
-                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Previous</button>
+            <button class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                @click="slide = slide > 0 ? slide - 1 : 0">Kembali</button>
             <button @click="slide = slide < 3 ? slide + 1 : 3"
-                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Next</button>
+                class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Selanjutnya</button>
         </div>
     </div>
 @endsection

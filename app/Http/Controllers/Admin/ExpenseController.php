@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Expense; // Pastikan model Expense di-import
 use App\Models\ExpenseCategory; // Pastikan model ExpenseCategory di-import
+use App\Models\Kas;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage; // Untuk upload file
@@ -39,25 +40,28 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
         try {
+            $expenseCategory = ExpenseCategory::find($request->expense_category_id);
+            $kas = Kas::find($expenseCategory->ks_id);
             $validatedData = $request->validate([
                 'expense_category_id' => 'required|exists:expense_categories,id',
                 'amount' => 'required|numeric|min:0',
                 'description' => 'nullable|string',
                 'transaction_date' => 'required|date',
                 'recipient' => 'nullable|string|max:255',
-                'proof_of_transaction' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120', // Max 5MB
+                'proof_of_transaction' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
             ]);
-
+            if ($validatedData['amount'] > $kas->ks_saldo) {
+                return redirect()->back()->withErrors(['amount' => 'Saldo tidak mencukupi untuk melakukan pengeluaran ini.']);
+            }
             // Handle proof of transaction upload
             if ($request->hasFile('proof_of_transaction')) {
                 $filePath = $request->file('proof_of_transaction')->store('expense_proofs', 'public');
                 $validatedData['proof_of_transaction'] = $filePath;
             }
-
-            $validatedData['recorded_by_user_id'] = Auth::id(); // Otomatis catat user yang input
-
-            Expense::create($validatedData);
-
+            $validatedData['recorded_by_user_id'] = Auth::id();
+            $expense = Expense::create($validatedData);
+            $kas->ks_saldo -= $expense->amount;
+            $kas->save();
             return redirect()->route('admin.expenses.index')->with('success', 'Pengeluaran berhasil ditambahkan!');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();

@@ -29,6 +29,17 @@
                         </div>
 
                         <div class="mb-4">
+                            <select name="ks_id" id="ks_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                <option value="">--Pilih Kas--</option>
+                                @foreach ($kas as $item)
+                                    <option value="{{ $item->id }}">{{ $item->ks_nama }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
                             <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
                                 (Opsional)</label>
                             <textarea name="description" id="description" rows="5"

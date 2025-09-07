@@ -70,7 +70,7 @@
                                 @forelse ($categories as $category)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $category->name }}
+                                            {{ $category->name }} - {{ $category->kas->ks_nama ?? '' }}
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-500">
                                             {{ Str::limit($category->description, 70) ?? '-' }}

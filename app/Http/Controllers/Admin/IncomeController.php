@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Income; // Pastikan model Income di-import
 use App\Models\IncomeCategory; // Pastikan model IncomeCategory di-import
+use App\Models\Kas;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage; // Untuk upload file
@@ -54,10 +55,11 @@ class IncomeController extends Controller
                 $validatedData['proof_of_transaction'] = $filePath;
             }
 
-            $validatedData['recorded_by_user_id'] = Auth::id(); // Otomatis catat user yang input
-
-            Income::create($validatedData);
-
+            $validatedData['recorded_by_user_id'] = Auth::id();
+            $income =   Income::create($validatedData);
+            $kas  = Kas::find($income->category->ks_id);
+            $kas->ks_saldo += $income->amount;
+            $kas->save();
             return redirect()->route('admin.incomes.index')->with('success', 'Pemasukan berhasil ditambahkan!');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
