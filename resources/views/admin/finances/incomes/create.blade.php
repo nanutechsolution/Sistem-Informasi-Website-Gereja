@@ -37,9 +37,10 @@
 
                         <div class="mb-4">
                             <label for="amount" class="block text-sm font-medium text-gray-700">Jumlah (Rp)</label>
-                            <input type="number" name="amount" id="amount" step="0.01"
+                            <input type="text" step="0.01"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                                value="{{ old('amount') }}" required>
+                                value="{{ old('amount') }}" required onkeyup="formatRupiah(this)">
+                            <input type="hidden" id="amount" name="amount">
                             @error('amount')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -101,4 +102,12 @@
             </div>
         </div>
     </div>
+    <script>
+        function formatRupiah(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            let formatedValue = 'Rp. ' + new Intl.NumberFormat('id-ID').format(value)
+            input.value = formatedValue;
+            document.getElementById('amount').value = value;
+        }
+    </script>
 @endsection

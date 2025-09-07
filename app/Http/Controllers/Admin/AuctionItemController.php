@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AuctionItem;
+use App\Models\Kas;
 use Illuminate\Http\Request;
 
 class AuctionItemController extends Controller
@@ -16,7 +17,8 @@ class AuctionItemController extends Controller
     public function index()
     {
         $items = AuctionItem::all();
-        return view('admin.auctions.index', compact('items'));
+        $kas = Kas::all();
+        return view('admin.auctions.index', compact('items', 'kas'));
     }
 
     /**
@@ -32,10 +34,9 @@ class AuctionItemController extends Controller
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'total_quantity' => 'required|integer|min:1',
+            'ks_id' => 'required|integer'
         ]);
-
         AuctionItem::create($validatedData);
-
         return redirect()->route('admin.auction_items.index')->with('success', 'Barang berhasil ditambahkan!');
     }
 
@@ -47,6 +48,7 @@ class AuctionItemController extends Controller
      */
     public function show(AuctionItem $item)
     {
+
         return view('auctions.item_details', compact('item'));
     }
 
@@ -64,6 +66,7 @@ class AuctionItemController extends Controller
             'description' => 'nullable|string',
             'category' => 'nullable|string|max:255',
             'total_quantity' => 'required|integer|min:1',
+            'ks_id' => 'required|integer'
         ]);
 
         $item->update($validatedData);

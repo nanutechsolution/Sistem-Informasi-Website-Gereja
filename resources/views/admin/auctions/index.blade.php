@@ -29,9 +29,14 @@
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2"></textarea>
                     </div>
                     <div>
-                        <label for="itemCategory" class="block text-sm font-medium text-gray-700">Kategori</label>
-                        <input type="text" id="itemCategory" name="category"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2">
+                        <label for="ks_id" class="block text-sm font-medium text-gray-700">Kas</label>
+                        <select name="ks_id" id="ks_id"
+                            class="block w-full rounded-md mt-1 border-gray-300 shadow-sm p-2">
+                            <option value="">--Pilih Kas--</option>
+                            @foreach ($kas as $item)
+                                <option value="{{ $item->id }}"> {{ $item->ks_nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div>
                         <label for="itemQuantity" class="block text-sm font-medium text-gray-700">Jumlah Stok</label>
@@ -58,7 +63,7 @@
                                 <span class="text-sm font-semibold text-gray-600">Stok: {{ $item->total_quantity }}</span>
                             </div>
                             <div class="text-sm text-gray-500">
-                                <p><strong>Kategori:</strong> {{ $item->category ?? '-' }}</p>
+                                <p><strong>Kategori:</strong> {{ $item->kas->ks_nama }}</p>
                             </div>
                             <div class="mt-4 text-right">
                                 <form action="#" method="POST">
@@ -99,7 +104,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         {{ $item->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $item->category ?? '-' }}</td>
+                                        {{ $item->kas->ks_nama ?? '-' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $item->total_quantity }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

@@ -9,41 +9,29 @@
         </h2>
     </x-slot>
 
-    <div class="py-4">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg p-6">
-                {{-- Welcome --}}
-                <p class="text-gray-900 dark:text-gray-200 text-lg font-medium">
-                    {{ __('Anda berhasil login sebagai Admin!') }}
-                </p>
-
                 {{-- Stat Cards --}}
                 <div class="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
                     {{-- Total Jemaat --}}
-                    <x-dashboard.card title="Total Jemaat" color="blue" :value="$totalMembers" />
+                    <x-dashboard.card title="Total Jemaat" color="red" :value="$totalMembers" />
 
                     {{-- Jemaat Aktif --}}
-                    <x-dashboard.card title="Total Jemaat Aktif" color="blue" :value="$totalActiveMembers" />
+                    <x-dashboard.card title="Total Jemaat Aktif" color="yellow" :value="$totalActiveMembers" />
 
                     {{-- Jemaat Pindah --}}
-                    <x-dashboard.card title="Total Jemaat Pindah" color="blue" :value="$totalPindahMembers" />
+                    <x-dashboard.card title="Total Jemaat Pindah" color="green" :value="$totalPindahMembers" />
 
                     {{-- Jemaat Meninggal --}}
                     <x-dashboard.card title="Total Jemaat Meninggal" color="blue" :value="$totalDeadMembers" />
 
                     {{-- Pengumuman Aktif --}}
-                    <x-dashboard.card title="Pengumuman Aktif" color="green" :value="$totalPublishedPosts" />
+                    <x-dashboard.card title="Pengumuman Aktif" color="indigo" :value="$totalPublishedPosts" />
 
                     {{-- Acara Mendatang --}}
                     <x-dashboard.card title="Acara Mendatang" color="purple" :value="$totalUpcomingEvents" />
 
-                    {{-- Kas Utama --}}
-                    <x-dashboard.money-card title="Pengeluaran Kas Utama" color="red" :value="$totalPengeluaranUtama" />
-                    <x-dashboard.money-card title="Saldo Kas Utama" color="emerald" :value="$kasUtama" />
-
-                    {{-- Kas Pembangunan --}}
-                    <x-dashboard.money-card title="Total Pengeluaran Kas Pembangunan" color="indigo" :value="$totalPengeluaranPembangunan" />
-                    <x-dashboard.money-card title="Total Saldo Pembangunan" color="blue" :value="$kasPembangunan" />
                 </div>
 
                 {{-- Notifications --}}

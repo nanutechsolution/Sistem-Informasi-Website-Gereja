@@ -181,10 +181,10 @@
                                 <div>
                                     <span
                                         class="px-2 py-1 inline-flex text-xs font-semibold rounded-full
-                                @if ($transaction->payment_status === 'paid') bg-green-100 text-green-800
-                                @elseif($transaction->payment_status === 'installment') bg-yellow-100 text-yellow-800
-                                @else bg-gray-100 text-gray-800 @endif">
-                                        {{ ucfirst($transaction->payment_status) }}
+                                @if ($transaction->payment_status === 'paid') bg-green-100
+                                @elseif($transaction->payment_status === 'installment') text-yellow-800
+                                @else @endif">
+                                        {{ ucfirst($transaction->payment_status == 'paid' ? 'Lunas' : ($transaction->payment_status == 'installment' ? 'Cicilan' : 'Belum Lunas')) }}
                                     </span>
                                 </div>
                             </div>

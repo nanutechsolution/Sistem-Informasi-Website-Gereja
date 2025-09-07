@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AuctionItem extends Model
@@ -20,6 +21,7 @@ class AuctionItem extends Model
         'description',
         'category',
         'total_quantity',
+        'ks_id'
     ];
 
     /**
@@ -28,5 +30,10 @@ class AuctionItem extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(AuctionTransaction::class);
+    }
+
+    function kas(): BelongsTo
+    {
+        return $this->belongsTo(Kas::class, 'ks_id');
     }
 }

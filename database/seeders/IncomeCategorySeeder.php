@@ -14,11 +14,9 @@ class IncomeCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Persembahan Mingguan', 'description' => 'Pemasukan dari ibadah Minggu rutin.'],
-            ['name' => 'Perpuluhan', 'description' => 'Persepuluhan jemaat.'],
-            ['name' => 'Donasi Khusus', 'description' => 'Donasi untuk proyek atau program spesifik.'],
-            ['name' => 'Sewa Aset', 'description' => 'Pemasukan dari penyewaan fasilitas gereja.'],
-            ['name' => 'Pemasukan Lain-lain', 'description' => 'Sumber pemasukan di luar kategori utama.'],
+            ['name' => 'Persembahan Mingguan', 'description' => 'Pemasukan dari ibadah Minggu rutin.', 'ks_id' => 1],
+            ['name' => 'Perpuluhan', 'description' => 'Persepuluhan jemaat.', 'ks_id' => 1],
+            ['name' => 'Donasi Khusus', 'description' => 'Donasi untuk proyek atau program spesifik.', 'ks_id' => 3],
         ];
 
         foreach ($categories as $category) {

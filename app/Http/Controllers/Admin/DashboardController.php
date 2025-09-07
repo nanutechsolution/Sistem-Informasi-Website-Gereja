@@ -44,8 +44,6 @@ class DashboardController extends Controller
         $currentMonthBalance = $currentMonthIncome - $currentMonthExpense;
         $kasUtama = Kas::where('ks_nama', 'Kas Utama')->sum('ks_saldo');
         $kasPembangunan = Kas::where('ks_nama', 'Pembangunan')->sum('ks_saldo');
-        $idPembangunan = DB::table('kas')->where('ks_nama', 'Pembangunan')->value('id');
-        $idUtama = DB::table('kas')->where('ks_nama', 'Kas Utama')->value('id');
         $totalPengeluaranPembangunan = Expense::join('expense_categories', 'expenses.expense_category_id', '=', 'expense_categories.id')
             ->join('kas', 'expense_categories.ks_id', '=', 'kas.id')
             ->where('kas.ks_nama', 'Pembangunan')

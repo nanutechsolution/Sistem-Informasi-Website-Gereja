@@ -48,7 +48,7 @@ class AuctionTransactionController extends Controller
         $transactions = $query->latest()->get();
 
         $items = AuctionItem::all();
-        $members = Member::all();
+        $members = Member::where('status', 'Aktif')->get();
 
         return view('admin.auctions.transactions', compact('transactions', 'items', 'members'));
     }
@@ -67,7 +67,6 @@ class AuctionTransactionController extends Controller
 
         try {
             DB::beginTransaction();
-
             $transaction = AuctionTransaction::create([
                 'auction_item_id' => $validated['auction_item_id'],
                 'member_id' => $validated['member_id'],
@@ -84,15 +83,16 @@ class AuctionTransactionController extends Controller
                     'payment_date' => Carbon::today(),
                 ]);
                 $transaction->payments()->save($payment);
+                // Perbarui status jika total pembayaran sudah lunas
+                $totalPaid = $transaction->payments()->sum('amount_paid');
+                if ($totalPaid >= $transaction->final_price) {
+                    $transaction->payment_status = 'paid';
+                    $transaction->save();
+                }
+                $kas = $transaction->item->kas;
+                $kas->ks_saldo += $validated['initial_payment'];
+                $kas->save();
             }
-
-            // Perbarui status jika total pembayaran sudah lunas
-            $totalPaid = $transaction->payments()->sum('amount_paid');
-            if ($totalPaid >= $transaction->final_price) {
-                $transaction->payment_status = 'paid';
-                $transaction->save();
-            }
-
             DB::commit();
 
             return redirect()->route('admin.auction-transactions.index')->with('success', 'Transaksi berhasil dicatat!');
@@ -114,7 +114,6 @@ class AuctionTransactionController extends Controller
             'amount_paid' => 'required|numeric|min:0',
             'payment_date' => 'required|date'
         ]);
-
         AuctionPayment::create([
             'auction_transaction_id' => $transaction->id,
             'amount_paid' => $validated['amount_paid'],
@@ -122,10 +121,14 @@ class AuctionTransactionController extends Controller
             'notes' => 'Pembayaran cicilan.'
         ]);
 
+        $kas = $transaction->item->kas;
+        $kas->ks_saldo += $validated['amount_paid'];
+        $kas->save();
+
+
         $totalPaid = $transaction->payments()->sum('amount_paid');
         $transaction->payment_status = $totalPaid >= $transaction->final_price ? 'paid' : 'installment';
         $transaction->save();
-
         return redirect()->back()->with('success', 'Pembayaran berhasil dicatat!');
     }
     public function getReport(Request $request)

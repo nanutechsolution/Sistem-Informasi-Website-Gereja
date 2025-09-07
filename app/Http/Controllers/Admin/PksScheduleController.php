@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Family;
+use App\Models\Kas;
 use App\Models\PksSchedule;
 use App\Models\User;
 use Carbon\Carbon;
@@ -213,6 +214,11 @@ class PksScheduleController extends Controller
         }
         $schedule->is_active = 0;
         $schedule->save();
+        $kasUtama = Kas::where('ks_nama', 'Kas Utama')->first();
+        $totalOffering = array_sum($data);
+        $kasUtama->ks_saldo += $totalOffering;
+        $kasUtama->save();
+
         return response()->json(['success' => true]);
     }
 }

@@ -38,28 +38,14 @@
                             </a>
                         </form>
                     </div>
-
                     {{-- Ringkasan Keuangan --}}
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-green-100 p-6 rounded-lg shadow-md">
-                            <h4 class="text-lg font-semibold text-green-800 mb-2">Total Pemasukan</h4>
-                            <p class="text-3xl font-bold text-green-900">Rp {{ number_format($totalIncome, 0, ',', '.') }}
-                            </p>
-                        </div>
-                        <div class="bg-red-100 p-6 rounded-lg shadow-md">
-                            <h4 class="text-lg font-semibold text-red-800 mb-2">Total Pengeluaran</h4>
-                            <p class="text-3xl font-bold text-red-900">Rp {{ number_format($totalExpense, 0, ',', '.') }}
-                            </p>
-                        </div>
-                        <div class="bg-blue-100 p-6 rounded-lg shadow-md">
-                            <h4 class="text-lg font-semibold text-blue-800 mb-2">Saldo Akhir</h4>
-                            <p class="text-3xl font-bold text-blue-900">Rp {{ number_format($balance, 0, ',', '.') }}</p>
-                        </div>
-                        <div class="bg-indigo-100 p-6 rounded-lg shadow-md hover:shadow-xl">
-                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">Total Persembahan PKS</h4>
-                            <p class="text-3xl font-bold text-indigo-900">Rp
-                                {{ number_format($currentMonthOffering, 0, ',', '.') }}</p>
-                        </div>
+                    <div class="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                        <x-dashboard.money-card title="Total Pemasukan" color="green" :value="$totalIncome" />
+                        <x-dashboard.money-card title="Total Pengeluaran" color="red" :value="$totalExpense" />
+                        <x-dashboard.money-card title="Total Persembahan PKS" color="indigo" :value="$currentMonthOffering" />
+                        <x-dashboard.money-card title="Saldo Kas Utama" color="emerald" :value="$kasUtama" />
+                        <x-dashboard.money-card title="Total Saldo Pembangunan" color="blue" :value="$kasPembangunan" />
+
                     </div>
 
 

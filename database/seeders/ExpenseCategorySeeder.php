@@ -14,12 +14,7 @@ class ExpenseCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Gaji Pegawai', 'description' => 'Gaji dan honorarium karyawan/pendeta.'],
-            ['name' => 'Biaya Listrik', 'description' => 'Pembayaran tagihan listrik.'],
-            ['name' => 'Biaya Air', 'description' => 'Pembayaran tagihan air.'],
-            ['name' => 'Pemeliharaan Gedung', 'description' => 'Biaya perbaikan dan perawatan fasilitas.'],
-            ['name' => 'Kegiatan Sosial', 'description' => 'Pengeluaran untuk program diakonia dan sosial.'],
-            ['name' => 'Pengeluaran Lain-lain', 'description' => 'Pengeluaran di luar kategori utama.'],
+            ['name' => 'Gaji Pegawai', 'description' => 'Gaji dan honorarium karyawan/pendeta.', 'ks_id' => 1],
         ];
 
         foreach ($categories as $category) {

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Income;
 use App\Models\Expense;
 use App\Models\IncomeCategory;
+use App\Models\Kas;
 use App\Models\PksSchedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -23,11 +24,12 @@ class FinanceReportController extends Controller
         $startDate = $request->input('start_date') ? Carbon::parse($request->input('start_date'))->startOfDay() : Carbon::now()->startOfMonth()->startOfDay();
         $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date'))->endOfDay() : Carbon::now()->endOfMonth()->endOfDay();
 
-        // Ambil data pemasukan dan pengeluaran dalam rentang tanggal
+        $kasUtama = Kas::where('ks_nama', 'Kas Utama')->sum('ks_saldo');
+        $kasPembangunan = Kas::where('ks_nama', 'Pembangunan')->sum('ks_saldo');
+
         $incomes = Income::whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'desc')
             ->get();
-
         $expenses = Expense::whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'desc')
             ->get();
@@ -105,7 +107,9 @@ class FinanceReportController extends Controller
             'monthlyIncomeData',
             'monthlyExpenseData',
             'currentMonthOffering',
-            'detailOfferings'
+            'detailOfferings',
+            'kasUtama',
+            'kasPembangunan'
         ));
     }
 

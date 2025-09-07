@@ -63,9 +63,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             AdminUserSeeder::class,
-
             MemberSeeder::class,
             MinistrySeeder::class,
+            KasSeeder::class,
             IncomeCategorySeeder::class,
             ExpenseCategorySeeder::class,
             PostSeeder::class,
@@ -73,8 +73,8 @@ class DatabaseSeeder extends Seeder
             ScheduleSeeder::class,
             GalleryAlbumSeeder::class,
 
-            IncomeSeeder::class,
-            ExpenseSeeder::class,
+            // IncomeSeeder::class,
+            // ExpenseSeeder::class,
             FamilySeeder::class,
             PksScheduleSeeder::class,
             ChurchSettingSeeder::class,

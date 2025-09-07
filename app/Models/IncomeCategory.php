@@ -11,7 +11,7 @@ class IncomeCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'ks_id'];
+    protected $fillable = ['name', 'ks_id', 'description'];
 
     public function incomes(): HasMany
     {
