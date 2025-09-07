@@ -253,7 +253,7 @@
             @foreach ($menuItems as $item)
                 <li>
                     <a href="{{ route($item['route']) }}"
-                        class="{{ request()->is(str_replace('.', '-', $item['route']) . '*') ? 'bg-gray-100 dark:bg-gray-700' : '' }}
+                        class="{{ request()->routeIs(str_replace('.index', '.*', $item['route'])) ? 'bg-gray-100 dark:bg-gray-700' : '' }}
                       flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
                         {!! $item['icon'] !!}
                         <span class="ml-3">{{ $item['label'] }}</span>

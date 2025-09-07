@@ -14,11 +14,11 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
-                    {{-- Header --}}
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-bold">Daftar Jadwal PKS</h3>
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-0">Daftar Jadwal PKS</h3>
+
                         <a href="{{ route('admin.families.index') }}"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center">
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md flex items-center w-full md:w-auto justify-center">
                             Tambah Jadwal Baru
                         </a>
                     </div>
@@ -34,90 +34,135 @@
 
                     {{-- Tabel PKS --}}
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Keluarga</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Hari</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tanggal</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Jam</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Pemimpin</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Firman Tuhan</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Anggota Terlibat</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status</th>
-                                    <th
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse($schedules as $schedule)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $schedule->families->pluck('family_name')->implode(', ') ?: 'N/A' }}
-                                        </td>
+                        {{-- Tampilan Kartu untuk Mobile (md:hidden) --}}
+                        <div class="space-y-4 md:hidden">
+                            @forelse($schedules as $schedule)
+                                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-bold text-lg text-gray-800">
+                                            {{ $schedule->families->pluck('family_name')->implode(', ') ?: 'N/A' }}</h4>
+                                        <span
+                                            class="px-2 py-1 text-xs font-semibold rounded-full {{ $schedule->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $schedule->is_active ? 'Aktif' : 'Nonaktif' }}
+                                        </span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <p><strong>Hari, Tanggal:</strong> {{ $schedule->day_of_week ?? '-' }},
+                                            {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}</p>
+                                        <p><strong>Jam:</strong>
+                                            {{ \Carbon\Carbon::parse($schedule->time)->format('H:i') }}</p>
+                                        <p><strong>Pemimpin:</strong>
+                                            {{ optional($schedule->leader)->name ?? 'Belum Ada' }}</p>
+                                        <p><strong>Firman Tuhan:</strong> {{ $schedule->scripture ?? '-' }}</p>
+                                        <p><strong>Anggota Terlibat:</strong> {{ $schedule->involved_members ?? '-' }}
+                                        </p>
+                                    </div>
+                                    <div class="mt-4 flex flex-wrap justify-start gap-3 text-sm font-medium">
+                                        <a href="{{ route('admin.pks_schedules.show', $schedule->id) }}"
+                                            class="text-blue-600 hover:text-blue-800">Detail</a>
+                                        <a href="{{ route('admin.pks_schedules.edit', $schedule->id) }}"
+                                            class="text-indigo-600 hover:text-indigo-800">Edit</a>
+                                        <button @click="openOfferingModal({{ $schedule->id }})"
+                                            class="text-yellow-600 hover:text-yellow-800">Persembahan</button>
+                                        <form action="{{ route('admin.pks_schedules.destroy', $schedule->id) }}"
+                                            method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-800">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center text-gray-500 py-4">Belum ada jadwal PKS.</div>
+                            @endforelse
+                        </div>
 
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $schedule->day_of_week ?? '-' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($schedule->time)->format('H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ optional($schedule->leader)->name ?? 'Belum Ada Pemimpin PKS' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $schedule->scripture ?? '-' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {{ $schedule->involved_members ?? '-' }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <span
-                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $schedule->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $schedule->is_active ? 'Aktif' : 'Nonaktif' }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                            <a href="{{ route('admin.pks_schedules.show', $schedule->id) }}"
-                                                class="text-blue-600 hover:text-blue-900">Detail</a>
-                                            <a href="{{ route('admin.pks_schedules.edit', $schedule->id) }}"
-                                                class="text-blue-600 hover:text-blue-900">Edit</a>
-                                            <button @click="openOfferingModal({{ $schedule->id }})"
-                                                class="text-yellow-600 hover:text-yellow-900">Persembahan</button>
-                                            <form action="{{ route('admin.pks_schedules.destroy', $schedule->id) }}"
-                                                method="POST" class="inline-block"
-                                                onsubmit="return confirm('Yakin ingin menghapus jadwal ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-red-600 hover:text-red-900">Hapus</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @empty
+                        {{-- Tampilan Tabel untuk Desktop (hidden md:block) --}}
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td colspan="9"
-                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Belum ada
-                                            jadwal PKS.</td>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Keluarga</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Hari</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Tanggal</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Jam</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Pemimpin</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Firman Tuhan</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Anggota</th>
+                                        <th
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status</th>
+                                        <th
+                                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Aksi</th>
                                     </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @forelse($schedules as $schedule)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {{ $schedule->families->pluck('family_name')->implode(', ') ?: 'N/A' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $schedule->day_of_week ?? '-' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ \Carbon\Carbon::parse($schedule->time)->format('H:i') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ optional($schedule->leader)->name ?? 'Belum Ada Pemimpin PKS' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $schedule->scripture ?? '-' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $schedule->involved_members ?? '-' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                <span
+                                                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $schedule->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                    {{ $schedule->is_active ? 'Aktif' : 'Nonaktif' }}
+                                                </span>
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                                <a href="{{ route('admin.pks_schedules.show', $schedule->id) }}"
+                                                    class="text-blue-600 hover:text-blue-900">Detail</a>
+                                                <a href="{{ route('admin.pks_schedules.edit', $schedule->id) }}"
+                                                    class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <button @click="openOfferingModal({{ $schedule->id }})"
+                                                    class="text-yellow-600 hover:text-yellow-900">Persembahan</button>
+                                                <form action="{{ route('admin.pks_schedules.destroy', $schedule->id) }}"
+                                                    method="POST" class="inline-block"
+                                                    onsubmit="return confirm('Yakin ingin menghapus jadwal ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="text-red-600 hover:text-red-900">Hapus</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="9"
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Belum
+                                                ada
+                                                jadwal PKS.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                         {{-- Modal Persembahan Keren + Total Rp --}}
                         <div x-show="isOpen" x-transition.opacity x-cloak
                             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
@@ -157,7 +202,6 @@
                             </div>
                         </div>
                     </div>
-
                     {{-- Pagination --}}
                     <div class="mt-4">
                         {{ $schedules->links() }}

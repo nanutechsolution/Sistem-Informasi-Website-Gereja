@@ -13,6 +13,7 @@
         @endif
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {{-- Formulir Tambah Barang --}}
             <div class="bg-blue-50 p-6 rounded-xl shadow-lg transition-transform hover:scale-105">
                 <h2 class="text-2xl font-semibold text-blue-800 mb-4">Tambah Barang Baru</h2>
                 <form action="#" method="POST" class="space-y-4">
@@ -44,9 +45,37 @@
                 </form>
             </div>
 
+            {{-- Daftar Barang --}}
             <div class="bg-white p-6 rounded-xl shadow-lg">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">Daftar Barang Tersedia</h2>
-                <div class="overflow-x-auto">
+
+                {{-- Tampilan Kartu untuk Mobile --}}
+                <div class="md:hidden space-y-4">
+                    @forelse($items as $item)
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm border-l-4 border-gray-400">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="text-lg font-bold text-gray-900">{{ $item->name }}</h3>
+                                <span class="text-sm font-semibold text-gray-600">Stok: {{ $item->total_quantity }}</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <p><strong>Kategori:</strong> {{ $item->category ?? '-' }}</p>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <form action="#" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900 font-medium"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?');">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center text-gray-500 py-4">Belum ada barang lelang.</div>
+                    @endforelse
+                </div>
+
+                {{-- Tampilan Tabel untuk Desktop --}}
+                <div class="hidden md:block overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -65,7 +94,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($items as $item)
+                            @forelse ($items as $item)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         {{ $item->name }}</td>
@@ -82,7 +111,13 @@
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="4"
+                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Belum ada
+                                        barang lelang.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

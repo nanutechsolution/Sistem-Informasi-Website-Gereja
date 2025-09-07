@@ -4,12 +4,13 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-gray-100 p-6 sm:p-10">
+    <div class="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-10">
         <div class="container mx-auto max-w-7xl">
 
             {{-- Header --}}
-            <h1 class="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-2">Pencatatan Transaksi & Pembayaran</h1>
-            <p class="text-center text-gray-600 mb-10">Kelola riwayat lelang, status pembayaran, dan cicilan.</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-2">Pencatatan Transaksi & Pembayaran</h1>
+            <p class="text-center text-sm sm:text-base text-gray-600 mb-6 sm:mb-10">Kelola riwayat lelang, status pembayaran,
+                dan cicilan.</p>
 
             {{-- Flash Message --}}
             @if (session('success'))
@@ -19,18 +20,17 @@
                 </div>
             @endif
 
-            {{-- Form Catat Transaksi Baru --}}
-            <div class="bg-white shadow-lg rounded-2xl p-6 mb-10 border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Catat Transaksi Baru</h2>
+            {{-- Form Catat Transaksi Baru (Optimasi Mobile) --}}
+            <div class="bg-white shadow-lg rounded-2xl p-6 mb-8 sm:mb-10 border border-gray-200">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Catat Transaksi Baru</h2>
                 <form action="{{ route('admin.auction-transactions.store') }}" method="POST" class="space-y-6">
                     @csrf
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div>
                             <label for="transactionItem" class="block text-sm font-medium text-gray-700">Barang
                                 Lelang</label>
                             <select id="transactionItem" name="auction_item_id" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm">
                                 <option value="" data-stock="0">Pilih Barang...</option>
                                 @foreach ($items as $item)
                                     <option value="{{ $item->id }}" data-stock="{{ $item->total_quantity }}">
@@ -44,7 +44,7 @@
                             <label for="transactionMember" class="block text-sm font-medium text-gray-700">Nama
                                 Jemaat</label>
                             <select id="transactionMember" name="member_id" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm">
                                 <option value="">Pilih Jemaat...</option>
                                 @foreach ($members as $member)
                                     <option value="{{ $member->id }}">{{ $member->full_name }}</option>
@@ -56,7 +56,7 @@
                             <label for="transactionQuantity" class="block text-sm font-medium text-gray-700">Jumlah
                                 Dibeli</label>
                             <input type="number" id="transactionQuantity" name="quantity_bought" required min="1"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm">
                             <p id="stockInfo" class="mt-1 text-xs text-gray-500 italic"></p>
                         </div>
 
@@ -64,45 +64,41 @@
                             <label for="transactionPrice" class="block text-sm font-medium text-gray-700">Harga
                                 Akhir</label>
                             <input type="number" id="transactionPrice" name="final_price" required min="0"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm">
                         </div>
 
                         <div>
                             <label for="transactionStatus" class="block text-sm font-medium text-gray-700">Status Pembayaran
                                 Awal</label>
                             <select id="transactionStatus" name="payment_status" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm">
                                 <option value="pending">Belum Bayar</option>
                                 <option value="installment">Cicilan</option>
                                 <option value="paid">Lunas</option>
                             </select>
                         </div>
-
                         <div id="initialPaymentContainer" class="hidden">
                             <label for="initialPayment" class="block text-sm font-medium text-gray-700">Jumlah Pembayaran
                                 Awal</label>
                             <input type="number" id="initialPayment" name="initial_payment" min="0" value="0"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm">
                         </div>
 
-                        <div class="col-span-1 sm:col-span-2 lg:col-span-3">
+                        <div class="col-span-1 md:col-span-2 lg:col-span-3">
                             <label for="transactionNotes" class="block text-sm font-medium text-gray-700">Catatan</label>
                             <textarea id="transactionNotes" name="notes" rows="2"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2"></textarea>
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition duration-150 p-2 text-sm"></textarea>
                         </div>
-
                     </div>
-
                     <button type="submit"
-                        class="w-full md:w-1/3 mt-4 flex justify-center py-2 px-6 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors shadow-md">
+                        class="w-full sm:w-1/2 md:w-1/3 mt-4 flex justify-center py-2 px-6 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors shadow-md">
                         Catat Transaksi
                     </button>
                 </form>
             </div>
-
-            {{-- Filter Section --}}
-            <div class="bg-white shadow-lg rounded-2xl p-6 mb-10 border border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Filter Riwayat Transaksi</h2>
+            {{-- Filter Section (Optimasi Mobile) --}}
+            <div class="bg-white shadow-lg rounded-2xl p-6 mb-8 sm:mb-10 border border-gray-200">
+                <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Filter Riwayat Transaksi</h2>
                 <form action="{{ route('admin.auction-transactions.index') }}" method="GET"
                     class="space-y-4 md:space-y-0 md:flex md:gap-4 md:items-end">
 
@@ -146,23 +142,104 @@
                         </select>
                     </div>
 
-                    <div class="flex gap-2 mt-4 md:mt-0">
+                    <div class="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0">
                         <button type="submit"
-                            class="py-2 px-6 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-sm">
+                            class="w-full py-2 px-6 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-sm text-center">
                             Filter
                         </button>
                         <a href="{{ route('admin.auction-transactions.index') }}"
-                            class="py-2 px-6 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition-colors shadow-sm text-center">
+                            class="w-full py-2 px-6 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition-colors shadow-sm text-center">
                             Reset
                         </a>
                     </div>
                 </form>
             </div>
 
-            {{-- Tabel Riwayat Transaksi --}}
+            {{-- Riwayat Transaksi --}}
             <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Riwayat Transaksi & Pembayaran</h2>
-                <div class="overflow-x-auto">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Riwayat Transaksi &
+                    Pembayaran</h2>
+
+                {{-- Tampilan Kartu untuk Mobile --}}
+                <div class="md:hidden space-y-4">
+                    @forelse ($transactions as $transaction)
+                        @php
+                            $totalPaid = $transaction->payments->sum('amount_paid');
+                            $remaining = $transaction->final_price - $totalPaid;
+                        @endphp
+                        <div class="bg-gray-50 rounded-lg p-4 shadow-sm border-l-4 border-gray-400">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-lg font-bold text-gray-900">
+                                        {{ $transaction->member->full_name ?? 'N/A' }}</p>
+                                    <p class="text-sm text-gray-500">{{ $transaction->item->name ?? 'N/A' }}
+                                        ({{ $transaction->quantity_bought }} unit)
+                                    </p>
+                                </div>
+                                <div>
+                                    <span
+                                        class="px-2 py-1 inline-flex text-xs font-semibold rounded-full
+                                @if ($transaction->payment_status === 'paid') bg-green-100 text-green-800
+                                @elseif($transaction->payment_status === 'installment') bg-yellow-100 text-yellow-800
+                                @else bg-gray-100 text-gray-800 @endif">
+                                        {{ ucfirst($transaction->payment_status) }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 flex justify-between items-center text-sm">
+                                <p class="text-gray-700">Total: <span
+                                        class="font-semibold">Rp{{ number_format($transaction->final_price, 0, ',', '.') }}</span>
+                                </p>
+                                @if ($remaining > 0)
+                                    <p class="text-red-500 text-xs font-semibold">Sisa:
+                                        Rp{{ number_format($remaining, 0, ',', '.') }}</p>
+                                @endif
+                            </div>
+
+                            <div class="mt-4 flex gap-2">
+                                <button data-transaction-id="{{ $transaction->id }}"
+                                    class="btn-show-payments flex-1 py-2 rounded-full border border-blue-400 text-blue-600 font-medium text-xs hover:bg-blue-50 transition-colors">
+                                    Lihat Riwayat Bayar
+                                </button>
+                                @if ($transaction->payment_status !== 'paid')
+                                    <button onclick="togglePaymentForm({{ $transaction->id }})"
+                                        class="flex-1 py-2 rounded-full border border-indigo-400 text-indigo-600 font-medium text-xs hover:bg-indigo-50 transition-colors">
+                                        Catat Pembayaran
+                                    </button>
+                                @endif
+                            </div>
+
+                            {{-- Form Cicilan di Mobile --}}
+                            <div id="paymentForm-{{ $transaction->id }}"
+                                class="hidden bg-white p-4 mt-4 rounded-xl border border-dashed border-gray-300">
+                                <form action="{{ route('admin.auction-transactions.recordPayment', $transaction) }}"
+                                    method="POST" class="space-y-3">
+                                    @csrf
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700">Jumlah Bayar</label>
+                                        <input type="number" name="amount_paid" required min="1"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700">Tanggal</label>
+                                        <input type="date" name="payment_date" value="{{ date('Y-m-d') }}" required
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm focus:ring-indigo-500 focus:border-indigo-500 transition">
+                                    </div>
+                                    <button type="submit"
+                                        class="w-full py-2 px-4 rounded-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors shadow-sm text-sm">
+                                        Simpan Pembayaran
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center text-gray-500 py-4">Belum ada riwayat transaksi yang tercatat.</div>
+                    @endforelse
+                </div>
+
+                {{-- Tampilan Tabel untuk Desktop --}}
+                <div class="hidden md:block overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 table-auto">
                         <thead class="bg-gray-50">
                             <tr>
@@ -178,7 +255,7 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($transactions as $transaction)
+                            @forelse ($transactions as $transaction)
                                 @php
                                     $totalPaid = $transaction->payments->sum('amount_paid');
                                     $remaining = $transaction->final_price - $totalPaid;
@@ -211,16 +288,15 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         @if ($transaction->payment_status !== 'paid')
-                                            <button
-                                                onclick="document.getElementById('paymentForm-{{ $transaction->id }}').classList.toggle('hidden')"
+                                            <button onclick="togglePaymentForm({{ $transaction->id }})"
                                                 class="text-indigo-600 hover:text-indigo-900 text-xs transition-colors py-1 px-2 rounded-lg border border-indigo-200 hover:bg-indigo-50">Catat
                                                 Pembayaran</button>
                                         @endif
                                     </td>
                                 </tr>
 
-                                {{-- Form Cicilan --}}
-                                <tr id="paymentForm-{{ $transaction->id }}" class="hidden bg-gray-50">
+                                {{-- Form Cicilan di Desktop --}}
+                                <tr id="paymentFormDesktop-{{ $transaction->id }}" class="hidden bg-gray-50">
                                     <td colspan="5" class="p-4">
                                         <form
                                             action="{{ route('admin.auction-transactions.recordPayment', $transaction) }}"
@@ -245,7 +321,13 @@
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5"
+                                        class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Belum ada
+                                        riwayat transaksi yang tercatat.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -291,11 +373,11 @@
 
                         if (payments.length > 0) {
                             content.innerHTML = payments.map(payment => `
-                            <div class="border-b last:border-b-0 py-2">
-                                <p class="text-sm font-medium text-gray-900">Rp${new Intl.NumberFormat('id-ID').format(payment.amount_paid)}</p>
-                                <p class="text-xs text-gray-500">Tanggal: ${new Date(payment.payment_date).toLocaleDateString('id-ID')}</p>
-                            </div>
-                        `).join('');
+                        <div class="border-b last:border-b-0 py-2">
+                            <p class="text-sm font-medium text-gray-900">Rp${new Intl.NumberFormat('id-ID').format(payment.amount_paid)}</p>
+                            <p class="text-xs text-gray-500">Tanggal: ${new Date(payment.payment_date).toLocaleDateString('id-ID')}</p>
+                        </div>
+                    `).join('');
                         } else {
                             content.innerHTML =
                                 '<p class="text-center text-gray-500">Belum ada pembayaran dicatat.</p>';
@@ -324,7 +406,6 @@
                 }
             });
 
-            // Logic to show/hide initial payment field
             const statusSelect = document.getElementById('transactionStatus');
             const initialPaymentContainer = document.getElementById('initialPaymentContainer');
             const initialPaymentInput = document.getElementById('initialPayment');
@@ -340,9 +421,23 @@
             });
         });
 
+        function togglePaymentForm(transactionId) {
+            // Toggle form for mobile
+            const formMobile = document.getElementById(`paymentForm-${transactionId}`);
+            if (formMobile) {
+                formMobile.classList.toggle('hidden');
+            }
+
+            const formDesktop = document.getElementById(`paymentFormDesktop-${transactionId}`);
+            if (formDesktop) {
+                formDesktop.classList.toggle('hidden');
+            }
+        }
+
         function closeModal() {
             document.getElementById('paymentModal').classList.add('hidden');
         }
     </script>
+
 
 @endsection
