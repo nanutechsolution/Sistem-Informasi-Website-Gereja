@@ -19,9 +19,16 @@
             @endif
             {{-- Form Catat Transaksi Baru (Optimasi Mobile) --}}
             <button onclick="toggleFormTransaksi()"
-                class="py-2 px-3 my-2 rounded-full border border-indigo-400 text-indigo-600 font-medium text-xs hover:bg-indigo-50 transition-colors">
-                Transaksi Baru
+                class="w-full sm:w-auto flex items-center justify-center gap-2 py-3 px-5 
+           my-2 rounded-xl bg-indigo-600 text-white font-semibold text-sm 
+           shadow-md hover:bg-indigo-700 active:scale-95 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>Transaksi Baru</span>
             </button>
+
             <div id="formTransaksiBaru"
                 class="hidden bg-white shadow-lg rounded-2xl p-6 mb-8 sm:mb-10 border border-gray-200">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Catat Transaksi Baru</h2>
@@ -96,65 +103,86 @@
                     </button>
                 </form>
             </div>
-            {{-- Filter Section (Optimasi Mobile) --}}
-            <div class="bg-white shadow-lg rounded-2xl p-6 mb-8 sm:mb-10 border border-gray-200">
-                <h2 class="text-lg sm:text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Filter Riwayat Transaksi</h2>
-                <form action="{{ route('admin.auction-transactions.index') }}" method="GET"
-                    class="space-y-4 md:space-y-0 md:flex md:gap-4 md:items-end">
+            {{-- Filter Section (Optimasi Mobile + Collapse) --}}
+            <div class="bg-white shadow-lg rounded-2xl border border-gray-200 mb-2">
+                <button type="button" onclick="document.getElementById('filterForm').classList.toggle('hidden')"
+                    class="w-full flex justify-between items-center px-6 py-4 text-left sm:cursor-default sm:pointer-events-none">
+                    <h2 class="text-lg sm:text-xl font-semibold text-gray-800">
+                        Filter Riwayat Transaksi
+                    </h2>
+                    <span class="sm:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 text-gray-500">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </span>
+                </button>
 
-                    <div class="flex-1">
-                        <label for="startDate" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
-                        <input type="date" id="startDate" name="start_date" value="{{ request('start_date') }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
-                    </div>
+                {{-- Form Filter --}}
+                <div id="filterForm" class="hidden sm:block px-6 pb-6">
+                    <form action="{{ route('admin.auction-transactions.index') }}" method="GET"
+                        class="space-y-4 md:space-y-0 md:flex md:gap-4 md:items-end">
 
-                    <div class="flex-1">
-                        <label for="endDate" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
-                        <input type="date" id="endDate" name="end_date" value="{{ request('end_date') }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
-                    </div>
+                        {{-- Start Date --}}
+                        <div class="flex-1">
+                            <label for="startDate" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+                            <input type="date" id="startDate" name="start_date" value="{{ request('start_date') }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
+                        </div>
 
-                    <div class="flex-1">
-                        <label for="filterStatus" class="block text-sm font-medium text-gray-700">Status Pembayaran</label>
-                        <select id="filterStatus" name="payment_status"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
-                            <option value="">Semua Status</option>
-                            <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>Belum
-                                Bayar</option>
-                            <option value="installment"
-                                {{ request('payment_status') == 'installment' ? 'selected' : '' }}>
-                                Cicilan</option>
-                            <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Lunas
-                            </option>
-                        </select>
-                    </div>
+                        {{-- End Date --}}
+                        <div class="flex-1">
+                            <label for="endDate" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                            <input type="date" id="endDate" name="end_date" value="{{ request('end_date') }}"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
+                        </div>
 
-                    <div class="flex-1">
-                        <label for="filterMember" class="block text-sm font-medium text-gray-700">Nama Jemaat</label>
-                        <select id="filterMember" name="member_id"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
-                            <option value="">Semua Jemaat</option>
-                            @foreach ($members as $member)
-                                <option value="{{ $member->id }}"
-                                    {{ request('member_id') == $member->id ? 'selected' : '' }}>
-                                    {{ $member->full_name }}
+                        {{-- Status Pembayaran --}}
+                        <div class="flex-1">
+                            <label for="filterStatus" class="block text-sm font-medium text-gray-700">Status
+                                Pembayaran</label>
+                            <select id="filterStatus" name="payment_status"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
+                                <option value="">Semua Status</option>
+                                <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>
+                                    Belum Bayar</option>
+                                <option value="installment"
+                                    {{ request('payment_status') == 'installment' ? 'selected' : '' }}>Cicilan</option>
+                                <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>Lunas
                                 </option>
-                            @endforeach
-                        </select>
-                    </div>
+                            </select>
+                        </div>
 
-                    <div class="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0">
-                        <button type="submit"
-                            class="w-full py-2 px-6 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-sm text-center">
-                            Filter
-                        </button>
-                        <a href="{{ route('admin.auction-transactions.index') }}"
-                            class="w-full py-2 px-6 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition-colors shadow-sm text-center">
-                            Reset
-                        </a>
-                    </div>
-                </form>
+                        {{-- Nama Jemaat --}}
+                        <div class="flex-1">
+                            <label for="filterMember" class="block text-sm font-medium text-gray-700">Nama Jemaat</label>
+                            <select id="filterMember" name="member_id"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 text-sm">
+                                <option value="">Semua Jemaat</option>
+                                @foreach ($members as $member)
+                                    <option value="{{ $member->id }}"
+                                        {{ request('member_id') == $member->id ? 'selected' : '' }}>
+                                        {{ $member->full_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Buttons --}}
+                        <div class="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0">
+                            <button type="submit"
+                                class="w-full py-2 px-6 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors shadow-sm text-center">
+                                Filter
+                            </button>
+                            <a href="{{ route('admin.auction-transactions.index') }}"
+                                class="w-full py-2 px-6 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition-colors shadow-sm text-center">
+                                Reset
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
+
             {{-- Riwayat Transaksi --}}
             <div class="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 border-b pb-4">Riwayat Transaksi &

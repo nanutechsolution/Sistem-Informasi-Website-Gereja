@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ $churchName }} @yield('title', 'Dashboard')</title>
+    <link rel="icon" href="{{ Storage::url($logo_path) }}" type="image/x-icon">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,8 +14,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet"> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -26,7 +24,6 @@
     <div class="min-h-screen flex flex-col transition-all duration-300 ease-in-out">
         {{-- Navbar --}}
         @include('partials.navbar')
-
         <!-- Page Heading (Opsional, jika Anda ingin header di halaman publik) -->
         @isset($header)
             <header class="bg-white dark:bg-gray-800 shadow">

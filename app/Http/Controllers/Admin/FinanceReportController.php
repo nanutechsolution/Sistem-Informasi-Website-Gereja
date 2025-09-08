@@ -25,7 +25,7 @@ class FinanceReportController extends Controller
         $endDate = $request->input('end_date') ? Carbon::parse($request->input('end_date'))->endOfDay() : Carbon::now()->endOfMonth()->endOfDay();
 
         $kasUtama = Kas::where('ks_nama', 'Kas Utama')->sum('ks_saldo');
-        $kasPembangunan = Kas::where('ks_nama', 'Pembangunan')->sum('ks_saldo');
+        $kasPembangunan = Kas::where('ks_nama', 'Kas Pembangunan')->sum('ks_saldo');
 
         $incomes = Income::whereBetween('transaction_date', [$startDate, $endDate])
             ->orderBy('transaction_date', 'desc')
