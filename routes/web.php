@@ -23,6 +23,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PksScheduleController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Models\Announcement;
 
 Route::get('/', [HomeController::class, 'index'])->name('home'); // <-- PERBARUI INI
 
@@ -43,7 +44,9 @@ Route::post('/kontak', [ContactController::class, 'submit'])->name('public.conta
 
 Route::get('/pks-calendar', [HomeController::class, 'publicCalendar'])->name('public.pks_calendar');
 Route::get('/pks-calendar/data', [HomeController::class, 'calendarData'])->name('public.pks_calendar.data');
-
+Route::get('/announcements/latest', function () {
+    return Announcement::latest('published_at')->first();
+});
 // Rute Otentikasi Laravel Breeze
 require __DIR__ . '/auth.php';
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Event;
@@ -42,12 +43,16 @@ class HomeController extends Controller
 
         // $churchImage = $this->getUnsplashChurchImage() ?? '';
         // $unsplashImage = UnsplashService::getChurchImage();
-
+        $announcements = Announcement::whereNotNull('published_at')
+            ->orderBy('published_at', 'desc')
+            ->take(5) // ambil max 5 terbaru
+            ->get();
         return view('welcome', compact(
             'latestPosts',
             'upcomingEvents',
             'upcomingSchedules',
             'latestAlbums',
+            'announcements'
             // 'churchImage',
             // 'unsplashImage'
         ));

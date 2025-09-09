@@ -2,6 +2,55 @@
 
 @section('title', '| Beranda')
 @section('content')
+    @if ($announcements->isNotEmpty())
+        <div x-data="{
+            open: false,
+            index: 0,
+            total: {{ $announcements->count() }},
+            key: 'announcement_seen_{{ $announcements->last()->id }}',
+            startAutoSlide() {
+                setInterval(() => {
+                    if (this.open) {
+                        this.index = (this.index + 1) % this.total
+                    }
+                }, 5000)
+            }
+        }" x-init="if (!localStorage.getItem(key)) {
+            open = true
+            startAutoSlide()
+        }" x-show="open" x-transition x-cloak
+            class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" x-transition>
+            <div class="bg-white w-11/12 max-w-lg rounded-lg shadow-lg p-6 relative">
+                <template x-for="(item, i) in {{ $announcements->toJson() }}" :key="i">
+                    <div x-show="index === i" x-transition>
+                        <h2 class="text-2xl font-bold text-blue-700 mb-3" x-text="item.title"></h2>
+                        <p class="text-gray-700 mb-4" x-text="item.content"></p>
+                    </div>
+                </template>
+
+                <div class="flex justify-between items-center mt-4">
+                    <button @click="index = (index - 1 + total) % total"
+                        class="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                        ←
+                    </button>
+
+                    <div class="text-sm text-gray-500" x-text="(index+1) + ' / ' + total"></div>
+
+                    <button @click="index = (index + 1) % total" class="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                        →
+                    </button>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button @click="open = false; localStorage.setItem(key, true)"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <section class="relative h-screen  bg-gradient-to-r from-blue-700 to-blue-900 text-white overflow-hidden"
         data-aos-offset="0">
         <div class="absolute inset-0 z-0">
@@ -128,7 +177,8 @@
     {{-- Jadwal Ibadah --}}
     <section class="py-16 bg-gray-50" data-aos="fade-up">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10" data-aos="fade-up">Jadwal Ibadah Rutin</h2>
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-10" data-aos="fade-up">Jadwal Ibadah Rutin
+            </h2>
             @if ($upcomingSchedules->isEmpty())
                 <p class="text-center text-gray-600" data-aos="fade-up" data-aos-delay="100">Tidak ada jadwal ibadah
                     mendatang yang terdaftar.</p>
@@ -142,7 +192,8 @@
                                 {{ $schedule->date->format('d M Y') }}</p>
                             <p class="text-gray-600 text-sm mb-3"><strong class="font-medium">Waktu:</strong>
                                 {{ \Carbon\Carbon::parse($schedule->time)->format('H:i') }} WIB</p>
-                            <p class="text-gray-700">{{ Str::limit($schedule->description, 80) ?? 'Tanpa deskripsi.' }}</p>
+                            <p class="text-gray-700">{{ Str::limit($schedule->description, 80) ?? 'Tanpa deskripsi.' }}
+                            </p>
                             <div class="mt-4 text-right">
                                 <a href="{{ route('public.schedules.index') }}"
                                     class="text-blue-600 hover:text-blue-800 font-medium">Lihat Detail Jadwal &rarr;</a>

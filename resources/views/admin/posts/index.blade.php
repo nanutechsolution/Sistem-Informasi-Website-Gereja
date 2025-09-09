@@ -29,21 +29,24 @@
                     </div>
 
 
-                    {{-- Pesan Sukses/Error --}}
-                    @if (session('success'))
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
-                            role="alert">
-                            <strong class="font-bold">Sukses!</strong>
-                            <span class="block sm:inline">{{ session('success') }}</span>
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
-                            role="alert">
-                            <strong class="font-bold">Error!</strong>
-                            <span class="block sm:inline">{{ session('error') }}</span>
-                        </div>
-                    @endif
+                    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition
+                        class="fixed top-5 right-5 z-50">
+                        @if (session('success'))
+                            <div class="bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg mb-2 flex items-center justify-between space-x-4"
+                                role="alert">
+                                <span>{{ session('success') }}</span>
+                                <button @click="show = false" class="text-white hover:text-gray-200">&times;</button>
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg mb-2 flex items-center justify-between space-x-4"
+                                role="alert">
+                                <span>{{ session('error') }}</span>
+                                <button @click="show = false" class="text-white hover:text-gray-200">&times;</button>
+                            </div>
+                        @endif
+                    </div>
 
                     {{-- Tabel Postingan --}}
                     <div class="overflow-x-auto">
