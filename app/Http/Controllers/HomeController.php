@@ -39,7 +39,7 @@ class HomeController extends Controller
             ->get();
 
         // Ambil 3 album galeri terbaru
-        $latestAlbums = GalleryAlbum::latest('event_date')->take(3)->get();
+        $latestAlbums = GalleryAlbum::latest('event_date')->take(6)->get();
 
         // $churchImage = $this->getUnsplashChurchImage() ?? '';
         // $unsplashImage = UnsplashService::getChurchImage();
@@ -47,12 +47,22 @@ class HomeController extends Controller
             ->orderBy('published_at', 'desc')
             ->take(5) // ambil max 5 terbaru
             ->get();
+        $galleryFolder = public_path('images/gallery');
+        $galleryImages = [];
+
+        if (file_exists($galleryFolder)) {
+            $galleryImages = collect(scandir($galleryFolder))
+                ->filter(fn($file) => in_array(pathinfo($file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png']))
+                ->values()
+                ->all();
+        }
         return view('welcome', compact(
             'latestPosts',
             'upcomingEvents',
             'upcomingSchedules',
             'latestAlbums',
-            'announcements'
+            'announcements',
+            'galleryImages'
             // 'churchImage',
             // 'unsplashImage'
         ));

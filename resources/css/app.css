@@ -40,3 +40,28 @@ html, body {
         width: 100%;
         height: 100%;
     }
+ 
+
+.masonry {
+    column-count: 2; /* Adjust based on screen size */
+    column-gap: 1em; /* Spacing between columns */
+}
+
+.masonry-item {
+    display: inline-block; /* Essential for CSS columns */
+    width: 100%; /* Items should take full width of column */
+    margin-bottom: 1em; /* Spacing between items */
+}
+
+/* Responsive adjustments using Tailwind CSS classes */
+@media (min-width: 768px) {
+    .masonry {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1024px) {
+    .masonry {
+        column-count: 4;
+    }
+}
