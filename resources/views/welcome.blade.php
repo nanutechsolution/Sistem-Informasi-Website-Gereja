@@ -88,13 +88,13 @@
     {{-- Section Template Component --}}
     @php
         $sections = [
-            // [
-            //     'title' => 'Berita & Pengumuman Terbaru',
-            //     'items' => $latestPosts,
-            //     'empty' => 'Belum ada berita atau pengumuman terbaru.',
-            //     'viewAll' => route('public.posts.index'),
-            //     'type' => 'post',
-            // ],
+            [
+                'title' => 'Berita & Pengumuman Terbaru',
+                'items' => $latestPosts,
+                'empty' => 'Belum ada berita atau pengumuman terbaru.',
+                'viewAll' => route('public.posts.index'),
+                'type' => 'post',
+            ],
             [
                 'title' => 'Acara Mendatang',
                 'items' => $upcomingEvents,
@@ -118,61 +118,6 @@
             ],
         ];
     @endphp
-
-    {{-- Berita & Pengumuman --}}
-    <section class="py-20 bg-white" data-aos="fade-up">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-3xl font-extrabold text-center mb-12">📰 Berita & Pengumuman Terbaru</h2>
-
-            @if ($latestPosts->isEmpty())
-                <p class="text-center text-gray-500">Belum ada berita atau pengumuman terbaru.</p>
-            @else
-                {{-- Masonry Grid --}}
-                <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                    @foreach ($latestPosts as $post)
-                        <div
-                            class="break-inside-avoid relative group overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition duration-300">
-
-                            {{-- Gambar / Placeholder --}}
-                            @if ($post->image)
-                                <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
-                                    class="w-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500">
-                            @else
-                                <div class="h-56 w-full bg-gray-200 flex items-center justify-center text-gray-400">
-                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2
-                                                           l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01
-                                                           M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2
-                                                           0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                            @endif
-
-                            {{-- Overlay konten saat hover --}}
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col justify-end p-6">
-                                <h3 class="text-lg font-semibold text-white mb-2">{{ $post->title }}</h3>
-                                <p class="text-gray-200 text-sm mb-4">{{ Str::limit(strip_tags($post->content), 100) }}</p>
-                                <div class="flex justify-between items-center text-sm text-gray-300">
-                                    <span>{{ $post->published_at ? $post->published_at->format('d M Y') : 'N/A' }}</span>
-                                    <a href="{{ route('public.posts.show', $post->slug) }}"
-                                        class="text-yellow-400 hover:text-yellow-300 font-medium">Baca Selengkapnya →</a>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                {{-- Lihat Semua --}}
-                <div class="text-center mt-14">
-                    <a href="{{ route('public.posts.index') }}"
-                        class="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition">
-                        Semua Berita
-                    </a>
-                </div>
-            @endif
-        </div>
-    </section>
 
     @foreach ($sections as $section)
         <section class="py-16 {{ $loop->odd ? 'bg-gray-50' : 'bg-white' }}" data-aos="fade-up">
