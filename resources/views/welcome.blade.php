@@ -147,7 +147,8 @@
               rounded-full shadow-lg 
               hover:scale-105 hover:brightness-110 
               transition-all duration-300
-              text-center">
+              text-center
+              drop-shadow-lg">
                             Lihat Semua
                         </a>
                     </div>
