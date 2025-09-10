@@ -49,36 +49,81 @@
     @endif
 
     {{-- Hero Section --}}
-    <section class="relative h-screen flex items-center justify-center text-white overflow-hidden">
-        <div class="absolute inset-0">
+    <section
+        class="relative h-screen flex items-center justify-center text-white overflow-hidden bg-gradient-to-b from-blue-900 to-blue-800">
+        {{-- Background --}}
+        <div class="absolute inset-0 overflow-hidden">
             <img src="{{ asset('images/cover/cover.jpg') }}" alt="Gereja" class="w-full h-full object-cover opacity-60">
             <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-blue-700/70"></div>
         </div>
-        <div class="relative z-10 text-center max-w-3xl px-6">
+
+        {{-- Content --}}
+        <div class="relative z-10 text-center max-w-3xl px-6" x-data="heroAnimation()">
             @php
                 $displayName = $churchName
                     ? str_replace('GKS', 'Gereja Kristen Sumba', $churchName)
                     : 'Gereja Kristen Sumba Jemaat Reda Pada';
             @endphp
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-up">
-                Selamat Datang di <br>
-                <span class="text-yellow-400">{{ $displayName }}</span>
+
+            {{-- Typing Effect --}}
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 text-yellow-400">
+                Selamat Datang di
+                <br>
+                <span x-text="typedText" class="inline-block"></span>
+                <span class="blinking-cursor">|</span>
             </h1>
-            <p class="text-lg md:text-xl mb-8 opacity-90 animate-fade-up delay-200">
+
+            {{-- Motto --}}
+            <p class="text-lg md:text-xl mb-8 opacity-90" x-show="showMotto" x-transition.duration.1000ms>
                 {{ $churchSettings->motto ?? 'Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan.' }}
             </p>
-            <div class="flex flex-wrap justify-center gap-4 animate-fade-up delay-400">
+
+            {{-- Buttons --}}
+            <div class="flex flex-wrap justify-center gap-4" x-show="showButtons" x-transition.duration.1000ms>
                 <a href="{{ route('public.about') }}"
-                    class="bg-yellow-400 text-blue-900 font-semibold py-3 px-8 rounded-full shadow hover:scale-105 hover:shadow-lg transition">
+                    class="bg-yellow-400 text-blue-900 font-semibold py-3 px-8 rounded-full shadow hover:scale-105 hover:shadow-lg transition transform motion-safe:animate-bounce">
                     Tentang Kami
                 </a>
                 <a href="{{ route('public.contact') }}"
-                    class="border-2 border-white text-white font-semibold py-3 px-8 rounded-full shadow hover:bg-white hover:text-blue-900 hover:scale-105 transition">
+                    class="border-2 border-white text-white font-semibold py-3 px-8 rounded-full shadow hover:bg-white hover:text-blue-900 hover:scale-105 transition transform motion-safe:animate-bounce">
                     Kontak Kami
                 </a>
             </div>
         </div>
     </section>
+
+    {{-- Alpine.js Script --}}
+    <script>
+        function heroAnimation() {
+            return {
+                typedText: '',
+                fullText: '{{ $displayName }}',
+                showMotto: false,
+                showButtons: false,
+                init() {
+                    let i = 0;
+                    const speed = 100; // ms per character
+                    const type = () => {
+                        if (i < this.fullText.length) {
+                            this.typedText += this.fullText[i];
+                            i++;
+                            setTimeout(type, speed);
+                        } else {
+                            // tampilkan motto & buttons setelah typing selesai
+                            this.showMotto = true;
+                            setTimeout(() => {
+                                this.showButtons = true
+                            }, 500);
+                        }
+                    };
+                    type();
+                }
+            }
+        }
+    </script>
+
+
+
 
     {{-- Sections --}}
     @php

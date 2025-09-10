@@ -52,7 +52,24 @@ html, body {
     width: 100%; /* Items should take full width of column */
     margin-bottom: 1em; /* Spacing between items */
 }
+.blinking-cursor {
+    animation: blink 1s step-start infinite;
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
 
+/* Floating particle animation */
+@keyframes float {
+    0% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+    50% { transform: translateY(-20px) translateX(10px); opacity: 1; }
+    100% { transform: translateY(0px) translateX(0px); opacity: 0.5; }
+}
+.animate-float {
+    animation-name: float;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
 /* Responsive adjustments using Tailwind CSS classes */
 @media (min-width: 768px) {
     .masonry {
