@@ -19,7 +19,8 @@
             }
         }" x-init="if (!localStorage.getItem(key)) {
             open = true;
-            start()
+            start();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }" x-show="open" x-transition.opacity x-cloak
             class="fixed inset-0 flex items-center justify-center z-50 bg-black/60 backdrop-blur-sm">
 
@@ -32,8 +33,6 @@
                         </div>
                     </div>
                 </template>
-
-                {{-- Navigasi --}}
                 <div class="flex items-center justify-between px-6 py-4 bg-gray-50 border-t">
                     <button @click="index = (index - 1 + total) % total"
                         class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition">←</button>
@@ -41,7 +40,6 @@
                     <button @click="index = (index + 1) % total"
                         class="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition">→</button>
                 </div>
-
                 <button @click="open = false; localStorage.setItem(key, true)"
                     class="absolute top-3 right-3 bg-red-500 hover:bg-red-600 text-white rounded-full px-3 py-1 text-sm shadow">
                     ✕
@@ -56,14 +54,12 @@
             <img src="{{ asset('images/cover/cover.jpg') }}" alt="Gereja" class="w-full h-full object-cover opacity-60">
             <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-blue-700/70"></div>
         </div>
-
         <div class="relative z-10 text-center max-w-3xl px-6">
             @php
                 $displayName = $churchName
                     ? str_replace('GKS', 'Gereja Kristen Sumba', $churchName)
                     : 'Gereja Kristen Sumba Jemaat Reda Pada';
             @endphp
-
             <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-up">
                 Selamat Datang di <br>
                 <span class="text-yellow-400">{{ $displayName }}</span>
@@ -71,7 +67,6 @@
             <p class="text-lg md:text-xl mb-8 opacity-90 animate-fade-up delay-200">
                 {{ $churchSettings->motto ?? 'Melayani Tuhan dan sesama dengan kasih, iman, dan pengharapan.' }}
             </p>
-
             <div class="flex flex-wrap justify-center gap-4 animate-fade-up delay-400">
                 <a href="{{ route('public.about') }}"
                     class="bg-yellow-400 text-blue-900 font-semibold py-3 px-8 rounded-full shadow hover:scale-105 hover:shadow-lg transition">
@@ -85,7 +80,7 @@
         </div>
     </section>
 
-    {{-- Section Template Component --}}
+    {{-- Sections --}}
     @php
         $sections = [
             [
@@ -120,41 +115,126 @@
     @endphp
 
     @foreach ($sections as $section)
-        <section class="py-16 {{ $loop->odd ? 'bg-gray-50' : 'bg-white' }}" data-aos="fade-up">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-12">{{ $section['title'] }}</h2>
-
-                @if ($section['items']->isEmpty())
-                    <p class="text-center text-gray-600">{{ $section['empty'] }}</p>
-                @else
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        @foreach ($section['items'] as $index => $item)
-                            @include('components.home-section-card', [
-                                'item' => $item,
-                                'type' => $section['type'],
-                                'index' => $index,
-                            ])
-                        @endforeach
-                    </div>
-
-                    <div class="text-center mt-12">
-                        <a href="{{ $section['viewAll'] }}"
-                            class="inline-block 
-              px-6 md:px-12 py-3 md:py-4 
-              min-w-[180px] md:min-w-[220px] 
-              bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400
-              text-white font-semibold 
-              rounded-full shadow-lg 
-              hover:scale-105 hover:brightness-110 
-              transition-all duration-300
-              text-center
-              drop-shadow-lg">
-                            Lihat Semua
-                        </a>
-                    </div>
-                @endif
-            </div>
-        </section>
+        @if ($section['type'] === 'album')
+            <section class="py-16 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-12">{{ $section['title'] }}</h2>
+                    @if ($section['items']->isEmpty())
+                        <p class="text-center text-gray-600">{{ $section['empty'] }}</p>
+                    @else
+                        <div class="masonry gap-6">
+                            @foreach ($section['items'] as $item)
+                                <div class="masonry-item bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-2xl group"
+                                    data-aos="fade-up" data-aos-duration="{{ 800 + $loop->index * 100 }}">
+                                    <div class="relative overflow-hidden">
+                                        @if ($item->cover_image)
+                                            <img src="{{ asset('storage/' . $item->cover_image) }}"
+                                                alt="{{ $item->name }}"
+                                                class="w-full h-auto object-cover transform transition-transform duration-500 hover:scale-110">
+                                        @else
+                                            <div
+                                                class="h-48 w-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                                <svg class="w-12 h-12" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                        @endif
+                                        <div
+                                            class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <span class="text-white font-semibold text-center">{{ $item->name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 text-center">
+                                        <p class="text-gray-500 text-sm mt-1">
+                                            {{ $item->event_date ? $item->event_date->format('d M Y') : 'N/A' }}</p>
+                                        <a href="{{ route('public.gallery.show', $item->id) }}"
+                                            class="text-blue-600 hover:text-blue-800 font-medium mt-2 inline-block">
+                                            Lihat Album &rarr;
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </section>
+        @else
+            <section class="py-16 {{ $loop->odd ? 'bg-gray-50' : 'bg-white' }}" data-aos="fade-up">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-12">{{ $section['title'] }}</h2>
+                    @if ($section['items']->isEmpty())
+                        <p class="text-center text-gray-600">{{ $section['empty'] }}</p>
+                    @else
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            @foreach ($section['items'] as $index => $item)
+                                @include('components.home-section-card', [
+                                    'item' => $item,
+                                    'type' => $section['type'],
+                                    'index' => $index,
+                                ])
+                            @endforeach
+                        </div>
+                        <div class="text-center mt-12">
+                            <a href="{{ $section['viewAll'] }}"
+                                class="inline-block 
+                           px-6 md:px-12 py-3 md:py-4 
+                           min-w-[180px] md:min-w-[220px] 
+                           bg-gradient-to-r from-blue-600 to-blue-500 
+                           text-white font-semibold 
+                           rounded-full shadow-lg 
+                           hover:scale-105 hover:brightness-110 
+                           transition-all duration-300
+                           text-center
+                           drop-shadow-lg">
+                                Lihat Semua
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </section>
+        @endif
     @endforeach
 
+    {{-- Masonry CSS --}}
+    <style>
+        .masonry {
+            column-count: 4;
+            column-gap: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .masonry {
+                column-count: 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .masonry {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .masonry {
+                column-count: 1;
+            }
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+
+    {{-- AOS Init --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof AOS !== 'undefined') AOS.init({
+                once: true
+            });
+        });
+    </script>
 @endsection
