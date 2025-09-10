@@ -139,12 +139,15 @@
 
                     <div class="text-center mt-12">
                         <a href="{{ $section['viewAll'] }}"
-                            class="inline-block w-full sm:w-auto 
-              bg-blue-600 dark:bg-blue-500 
-              text-white font-semibold py-3 px-6 sm:px-10 
-              rounded-full shadow 
-              hover:bg-blue-700 dark:hover:bg-blue-400 
-              hover:scale-105 transition text-ellipsis whitespace-nowrap overflow-hidden">
+                            class="inline-block 
+              px-6 md:px-12 py-3 md:py-4 
+              min-w-[180px] md:min-w-[220px] 
+              bg-gradient-to-r from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400
+              text-white font-semibold 
+              rounded-full shadow-lg 
+              hover:scale-105 hover:brightness-110 
+              transition-all duration-300
+              text-center">
                             Lihat Semua
                         </a>
                     </div>
