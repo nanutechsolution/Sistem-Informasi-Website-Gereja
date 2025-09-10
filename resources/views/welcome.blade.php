@@ -9,8 +9,8 @@
         <div x-data="{
             open: false,
             index: 0,
-            items: {{ $announcements->toJson() }},
             total: {{ $announcements->count() }},
+            items: {{ $announcements->toJson() }},
             key: 'announcement_seen_{{ $announcements->last()->id }}',
             start() {
                 setInterval(() => {
