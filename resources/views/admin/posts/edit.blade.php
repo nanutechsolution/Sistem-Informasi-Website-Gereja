@@ -46,7 +46,7 @@
                             @if ($post->image)
                                 <div class="mt-2 mb-4">
                                     <p class="text-sm text-gray-600">Gambar saat ini:</p>
-                                    <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}"
+                                    <img src="{{ Storage::url($post->image) }}" alt="{{ $post->title }}"
                                         class="h-32 w-32 object-cover rounded-md mt-1">
                                     <div class="mt-2 flex items-center">
                                         <input type="checkbox" name="clear_image" id="clear_image" value="1"

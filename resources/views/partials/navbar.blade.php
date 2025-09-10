@@ -33,13 +33,11 @@
                 <a href="{{ route('public.contact') }}"
                     class="{{ request()->routeIs('public.contact') ? 'text-blue-700 font-bold' : 'text-gray-600' }} hover:text-blue-700 transition px-3 py-2 rounded-md font-medium">Kontak</a>
             </div>
-
             <!-- Tombol Hamburger -->
             <div class="md:hidden flex items-center">
                 <button @click="open = !open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                     <span class="sr-only">Open main menu</span>
-
                     <!-- Icon Menu -->
                     <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -89,8 +87,16 @@
             <a href="{{ route('public.contact') }}"
                 class="block px-3 py-2 rounded-md text-base font-medium
                {{ request()->routeIs('public.contact') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">Kontak</a>
-        </div>
-    </div>
-</nav>
 
-<!-- pastikan ini ada -->
+            {{-- add login button --}}
+            <div class="border-t border-gray-200 mt-2 pt-2">
+                @auth
+                    <a href="{{ route('dashboard') }}"
+                        class="block w-full text-center px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="block w-full text-center px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700">Masuk</a>
+                @endauth
+            </div>
+        </div>
+</nav>
